@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Kirana Customer",
+    "slug": "kirana-customer-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kirana.customer"
+    },
+    "android": {
+      "package": "com.kirana.customer"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "scheme": "kirana",
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
