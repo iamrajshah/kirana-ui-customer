@@ -1,50 +1,48 @@
 import { create } from 'zustand';
-import { storage } from '@/utils/storage';
-import type { Customer } from '@/types/auth';
+import { storageService } from '@services/storage';
 
-interface AuthState {
-  token: string | null;
-  customer: Customer | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  
-  setAuth: (token: string, customer: Customer) => Promise<void>;
-  clearAuth: () => Promise<void>;
-  loadAuth: () => Promise<void>;
+interface Customer {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
-  customer: null,
-  isAuthenticated: false,
-  isLoading: true,
+interface AuthState {
+  isAuthenticated: boolean;
+  token: string | null;
+  customer: Customer | null;
+  login: (token: string, customer: Customer) => void;
+  logout: () => void;
+  updateCustomer: (customer: Customer) => void;
+}
 
-  setAuth: async (token, customer) => {
-    await storage.setItem('auth_token', token);
-    await storage.setItem('customer', JSON.stringify(customer));
-    set({ token, customer, isAuthenticated: true });
-  },
+export const useAuthStore = create<AuthState>((set) => {
+  // Initialize from localStorage
+  const token = storageService.getAuthToken();
+  const userData = storageService.getUserData();
 
-  clearAuth: async () => {
-    await storage.deleteItem('auth_token');
-    await storage.deleteItem('customer');
-    set({ token: null, customer: null, isAuthenticated: false });
-  },
-
-  loadAuth: async () => {
-    try {
-      const token = await storage.getItem('auth_token');
-      const customerStr = await storage.getItem('customer');
-      
-      if (token && customerStr) {
-        const customer = JSON.parse(customerStr);
-        set({ token, customer, isAuthenticated: true, isLoading: false });
-      } else {
-        set({ isLoading: false });
-      }
-    } catch (error) {
-      console.error('Failed to load auth:', error);
-      set({ isLoading: false });
-    }
-  },
-}));
+  return {
+    isAuthenticated: !!token,
+    token,
+    customer: userData,
+    
+    login: (token: string, customer: Customer) => {
+      storageService.setAuthToken(token);
+      storageService.setUserData(customer);
+      set({ isAuthenticated: true, token, customer });
+    },
+    
+    logout: () => {
+      storageService.removeAuthToken();
+      storageService.removeUserData();
+      storageService.removeCart();
+      set({ isAuthenticated: false, token: null, customer: null });
+    },
+    
+    updateCustomer: (customer: Customer) => {
+      storageService.setUserData(customer);
+      set({ customer });
+    },
+  };
+});

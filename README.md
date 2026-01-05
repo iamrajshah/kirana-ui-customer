@@ -1,14 +1,6 @@
 # Kirana Customer App
 
-A React Native (Expo) customer ordering application for kirana/grocery shops.
-
-## Features
-
-- 🔐 Customer authentication (login/register)
-- 🛍️ Product browsing with categories and search
-- 🛒 Shopping cart management
-- 📦 Order placement and tracking
-- 📱 Mobile-first, village-friendly UI
+Customer-facing grocery ordering application built with React + Vite + Ionic.
 
 ## Setup
 
@@ -17,55 +9,63 @@ A React Native (Expo) customer ordering application for kirana/grocery shops.
 npm install
 ```
 
-2. Configure backend API:
-   - Update `API_BASE_URL` in `src/api/client.ts`
-
-3. Start the app:
+2. Create `.env` file:
 ```bash
-npm start
+cp .env.example .env
 ```
+
+3. Update `.env` with your backend API URL and tenant ID:
+```
+VITE_API_BASE_URL=http://your-backend-url
+VITE_TENANT_ID=your_tenant_id
+```
+
+4. Run development server:
+```bash
+npm run dev
+```
+
+## Features
+
+- 📱 Mobile-first design
+- 🌐 i18n support (English & Hindi)
+- 🛒 Shopping cart (persisted in localStorage)
+- 📦 Product catalog with categories
+- 🔍 Product search
+- 📋 Order management
+- 💰 Manual payment options (UPI/Cash/At Shop)
+- 👤 Customer authentication via OTP
 
 ## Tech Stack
 
-- **React Native** with Expo
-- **Expo Router** for file-based navigation
-- **TanStack Query** for server state
-- **Zustand** for client state (cart, auth)
-- **TypeScript** for type safety
-- **Axios** for API calls
+- **React 18** - UI library
+- **Vite** - Build tool
+- **Ionic React** - Mobile UI components
+- **Zustand** - State management
+- **i18next** - Internationalization
+- **Axios** - HTTP client
+- **TypeScript** - Type safety
 
 ## Project Structure
 
-- `/app` - Screens and navigation (Expo Router)
-- `/src/api` - API client and endpoints
-- `/src/store` - Zustand stores
-- `/src/hooks` - TanStack Query hooks
-- `/src/components` - Reusable components
-- `/src/types` - TypeScript types
-- `/src/utils` - Utility functions
-- `/src/constants` - Design tokens
-
-## API Integration
-
-All backend APIs are integrated:
-- Customer auth (register, login, profile)
-- Products catalog (categories, products, search)
-- Cart operations (add, update, remove, checkout)
-- Orders (create, list, details, status, cancel)
-
-## Running the App
-
-### iOS
-```bash
-npm run ios
+```
+src/
+├── app/           # App configuration, routing
+├── features/      # Feature modules (auth, catalog, cart, orders, profile)
+├── components/    # Reusable UI components
+├── services/      # API & storage services, i18n
+├── store/         # Zustand stores (auth, cart)
+├── utils/         # Utility functions
+├── theme/         # CSS & Ionic theme
+└── assets/        # Static assets
 ```
 
-### Android
+## Build for Production
+
 ```bash
-npm run android
+npm run build
 ```
 
-### Web
-```bash
-npm run web
-```
+## License
+
+Proprietary

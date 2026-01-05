@@ -1,49 +1,55 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '@/constants/colors';
-import { spacing, fontSize } from '@/constants/spacing';
 
 interface EmptyStateProps {
-  emoji: string;
-  title: string;
-  description?: string;
+  icon?: string;
+  message: string;
+  actionLabel?: string;
+  onAction?: () => void;
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({
-  emoji,
-  title,
-  description,
+const EmptyState: React.FC<EmptyStateProps> = ({
+  icon,
+  message,
+  actionLabel,
+  onAction,
 }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={styles.title}>{title}</Text>
-      {description && <Text style={styles.description}>{description}</Text>}
-    </View>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '40px 20px',
+        textAlign: 'center',
+      }}
+    >
+      {icon && (
+        <div style={{ fontSize: '64px', marginBottom: '16px', opacity: 0.5 }}>
+          {icon}
+        </div>
+      )}
+      <p style={{ fontSize: '16px', color: '#666', marginBottom: '20px' }}>
+        {message}
+      </p>
+      {actionLabel && onAction && (
+        <button
+          onClick={onAction}
+          style={{
+            padding: '12px 24px',
+            fontSize: '16px',
+            backgroundColor: '#3880ff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+          }}
+        >
+          {actionLabel}
+        </button>
+      )}
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.xl,
-  },
-  emoji: {
-    fontSize: 64,
-    marginBottom: spacing.md,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: '600',
-    color: colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: spacing.sm,
-  },
-  description: {
-    fontSize: fontSize.md,
-    color: colors.textSecondary,
-    textAlign: 'center',
-  },
-});
+export default EmptyState;

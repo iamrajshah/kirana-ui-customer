@@ -1,98 +1,96 @@
 import { create } from 'zustand';
-import type { Cart, CartItem } from '@/types/cart';
+import { storageService } from '@services/storage';
 
-interface LocalCartState {
-  items: Map<string, CartItem>;
-  
-  addItem: (variantId: string, productName: string, variantName: string | null, price: number, quantity: number) => void;
-  updateQuantity: (itemId: string, quantity: number) => void;
-  removeItem: (itemId: string) => void;
-  clearCart: () => void;
-  getTotalAmount: () => number;
-  getTotalItems: () => number;
-  getItemCount: (variantId: string) => number;
+export interface CartItem {
+  variant_id: string;
+  product_id: string;
+  product_name: string;
+  brand?: string;
+  unit?: string;
+  price: number;
+  quantity: number;
+  image_url?: string;
+  max_quantity: number; // Stock limit
 }
 
-export const useLocalCartStore = create<LocalCartState>((set, get) => ({
-  items: new Map(),
+interface CartState {
+  items: CartItem[];
+  addItem: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
+  removeItem: (variant_id: string) => void;
+  updateQuantity: (variant_id: string, quantity: number) => void;
+  clearCart: () => void;
+  getTotal: () => number;
+  getItemCount: () => number;
+}
 
-  addItem: (variantId, productName, variantName, price, quantity) => {
-    set((state) => {
-      const newItems = new Map(state.items);
-      const existingItem = Array.from(newItems.values()).find(
-        (item) => item.variant_id === variantId
-      );
+export const useCartStore = create<CartState>((set, get) => {
+  // Initialize from localStorage
+  const savedCart = storageService.getCart();
 
+  const saveToStorage = (items: CartItem[]) => {
+    storageService.setCart(items);
+  };
+
+  return {
+    items: savedCart || [],
+
+    addItem: (item, quantity = 1) => {
+      const items = get().items;
+      const existingItem = items.find((i) => i.variant_id === item.variant_id);
+
+      let newItems: CartItem[];
       if (existingItem) {
-        existingItem.quantity += quantity;
-        newItems.set(existingItem.id, existingItem);
+        // Update quantity
+        const newQty = Math.min(existingItem.quantity + quantity, item.max_quantity);
+        newItems = items.map((i) =>
+          i.variant_id === item.variant_id ? { ...i, quantity: newQty } : i
+        );
       } else {
-        const newItem: CartItem = {
-          id: Date.now().toString(),
-          variant_id: variantId,
-          product_name: productName,
-          variant_name: variantName,
-          quantity,
-          selling_price_snapshot: price,
-        };
-        newItems.set(newItem.id, newItem);
+        // Add new item
+        newItems = [...items, { ...item, quantity: Math.min(quantity, item.max_quantity) }];
       }
-
-      return { items: newItems };
-    });
-  },
-
-  updateQuantity: (itemId, quantity) => {
-    set((state) => {
-      const newItems = new Map(state.items);
-      const item = newItems.get(itemId);
       
-      if (item) {
-        if (quantity <= 0) {
-          newItems.delete(itemId);
-        } else {
-          item.quantity = quantity;
-          newItems.set(itemId, item);
-        }
+      saveToStorage(newItems);
+      set({ items: newItems });
+    },
+
+    removeItem: (variant_id) => {
+      const newItems = get().items.filter((i) => i.variant_id !== variant_id);
+      saveToStorage(newItems);
+      set({ items: newItems });
+    },
+
+    updateQuantity: (variant_id, quantity) => {
+      const items = get().items;
+      const item = items.find((i) => i.variant_id === variant_id);
+      
+      if (!item) return;
+
+      if (quantity <= 0) {
+        get().removeItem(variant_id);
+        return;
       }
 
-      return { items: newItems };
-    });
-  },
+      const newQty = Math.min(quantity, item.max_quantity);
+      const newItems = items.map((i) =>
+        i.variant_id === variant_id ? { ...i, quantity: newQty } : i
+      );
+      
+      saveToStorage(newItems);
+      set({ items: newItems });
+    },
 
-  removeItem: (itemId) => {
-    set((state) => {
-      const newItems = new Map(state.items);
-      newItems.delete(itemId);
-      return { items: newItems };
-    });
-  },
+    clearCart: () => {
+      storageService.removeCart();
+      set({ items: [] });
+    },
 
-  clearCart: () => {
-    set({ items: new Map() });
-  },
+    getTotal: () => {
+      return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    },
 
-  getTotalAmount: () => {
-    const items = get().items;
-    return Array.from(items.values()).reduce(
-      (sum, item) => sum + item.selling_price_snapshot * item.quantity,
-      0
-    );
-  },
-
-  getTotalItems: () => {
-    const items = get().items;
-    return Array.from(items.values()).reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
-  },
-
-  getItemCount: (variantId) => {
-    const items = get().items;
-    const item = Array.from(items.values()).find(
-      (item) => item.variant_id === variantId
-    );
-    return item?.quantity || 0;
-  },
-}));
+    getItemCount: () => {
+      return get().items.reduce((count, item) => count + item.quantity, 0);
+    },
+  };
+});

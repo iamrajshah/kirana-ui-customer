@@ -1,17 +1,30 @@
+# Dependencies
 node_modules/
-.expo/
+.pnpm-store/
+
+# Production
 dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
+build/
 
-# macOS
+# Environment
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
+# Logs
+*.log
+npm-debug.log*
+
+# Capacitor
+android/
+ios/
