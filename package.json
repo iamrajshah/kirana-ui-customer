@@ -6,23 +6,34 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+     "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\"",
+    "ionic:serve": "vite",
+    "ionic:build": "vite build"
   },
   "dependencies": {
-    "@ionic/react": "^7.6.4",
-    "@ionic/react-router": "^7.6.4",
+    "@capacitor/android": "^5.7.8",
+    "@capacitor/app": "^5.0.6",
+    "@capacitor/core": "^5.7.8",
+    "@capacitor/haptics": "^5.0.6",
+    "@capacitor/keyboard": "^5.0.6",
+    "@capacitor/status-bar": "^5.0.6",
+    "@ionic/react": "^7.6.2",
+    "@ionic/react-router": "^7.6.2",
     "@types/qrcode": "^1.5.6",
     "axios": "^1.6.5",
-    "i18next": "^23.7.16",
+    "i18next": "^23.7.13",
     "qrcode": "^1.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^14.0.1",
+    "react-i18next": "^14.0.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@capacitor/cli": "^5.7.8",
+    "@ionic/cli": "^7.2.1",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
     "@types/react-router": "^5.1.20",
@@ -33,7 +44,9 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "typescript": "^5.3.3",
+    "postcss": "^8.4.33",
+       "prettier": "^3.1.1",
+"typescript": "^5.3.3",
     "vite": "^5.0.11"
   }
 }
