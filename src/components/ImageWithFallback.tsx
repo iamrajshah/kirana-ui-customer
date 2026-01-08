@@ -13,7 +13,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   alt,
   className = '',
   style,
-  fallbackSrc = '/assets/placeholder-product.png',
+  fallbackSrc = 'https://placehold.co/300x300/png',
 }) => {
   const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
   const [hasError, setHasError] = useState(false);

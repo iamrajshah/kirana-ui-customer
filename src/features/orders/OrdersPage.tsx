@@ -18,7 +18,9 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { apiService } from '@services/api';
 import EmptyState from '@components/EmptyState';
+import AppHeader from '@components/AppHeader';
 import { formatCurrency } from '@utils/currency';
+import { toast } from '@services/toast';
 
 const OrdersPage: React.FC = () => {
   const { t } = useTranslation();
@@ -34,11 +36,12 @@ const OrdersPage: React.FC = () => {
     setLoading(true);
     try {
       const response = await apiService.getOrders();
-      if (response.success) {
-        setOrders(response.data);
+      if (response.success && response.data.orders) {
+        setOrders(response.data.orders);
       }
     } catch (error) {
       console.error('Failed to load orders:', error);
+      toast.error('Failed to load orders');
     } finally {
       setLoading(false);
     }
@@ -64,6 +67,7 @@ const OrdersPage: React.FC = () => {
 
   return (
     <IonPage>
+      <AppHeader />
       <IonHeader>
         <IonToolbar>
           <IonTitle>{t('my_orders')}</IonTitle>
@@ -98,7 +102,7 @@ const OrdersPage: React.FC = () => {
                   <h2 style={{ fontWeight: 'bold' }}>
                     {t('order_id')}: #{order.invoice_number || order.id}
                   </h2>
-                  <p style={{ fontSize: '12px', color: '#666' }}>
+                  <p style={{ fontSize: '12px', color: 'var(--ion-color-medium, #666)' }}>
                     {new Date(order.created_at).toLocaleDateString()}
                   </p>
                   <p style={{ fontSize: '16px', fontWeight: 'bold', marginTop: '8px' }}>

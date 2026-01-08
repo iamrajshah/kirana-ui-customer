@@ -21,6 +21,7 @@ import { useCartStore } from '@store/cart.store';
 import QuantitySelector from '@components/QuantitySelector';
 import ImageWithFallback from '@components/ImageWithFallback';
 import EmptyState from '@components/EmptyState';
+import AppHeader from '@components/AppHeader';
 import { formatCurrency } from '@utils/currency';
 
 const CartPage: React.FC = () => {
@@ -55,6 +56,7 @@ const CartPage: React.FC = () => {
 
   return (
     <IonPage>
+      <AppHeader />
       <IonHeader>
         <IonToolbar>
           <IonTitle>{t('my_cart')}</IonTitle>
@@ -75,8 +77,8 @@ const CartPage: React.FC = () => {
               
               <IonLabel>
                 <h2 style={{ fontWeight: 'bold', marginBottom: '4px' }}>{item.product_name}</h2>
-                {item.brand && <p style={{ fontSize: '12px', color: '#666' }}>{item.brand}</p>}
-                {item.unit && <p style={{ fontSize: '12px', color: '#666' }}>{item.unit}</p>}
+                {item.brand && <p style={{ fontSize: '12px', color: 'var(--ion-color-medium, #666)' }}>{item.brand}</p>}
+                {item.unit && <p style={{ fontSize: '12px', color: 'var(--ion-color-medium, #666)' }}>{item.unit}</p>}
                 <p style={{ fontSize: '16px', fontWeight: 'bold', marginTop: '8px' }}>
                   {formatCurrency(item.price * item.quantity)}
                 </p>
@@ -108,7 +110,7 @@ const CartPage: React.FC = () => {
           <IonCardContent>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
               <span style={{ fontSize: '18px', fontWeight: 'bold' }}>{t('total')}</span>
-              <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#000' }}>
+              <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--ion-text-color, #000)' }}>
                 {formatCurrency(getTotal())}
               </span>
             </div>

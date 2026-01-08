@@ -7,26 +7,38 @@ import {
   IonContent,
   IonCard,
   IonCardContent,
-  IonButton,
   IonItem,
   IonLabel,
   IonIcon,
+  IonSelect,
+  IonSelectOption,
+  IonToggle,
 } from '@ionic/react';
-import { logOut, language, person } from 'ionicons/icons';
+import { language as languageIcon, person, contrast } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@store/auth.store';
+import { useTheme } from '../../contexts/ThemeContext';
+import AppHeader from '@components/AppHeader';
 
 const ProfilePage: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { customer, logout } = useAuthStore();
+  const { customer } = useAuthStore();
+  const { theme, toggleTheme } = useTheme();
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'hi' : 'en';
-    i18n.changeLanguage(newLang);
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'hi', name: 'हिंदी' },
+    { code: 'mr', name: 'मराठी' },
+    { code: 'gu', name: 'ગુજરાતી' },
+  ];
+
+  const handleLanguageChange = (langCode: string) => {
+    i18n.changeLanguage(langCode);
   };
 
   return (
     <IonPage>
+      <AppHeader />
       <IonHeader>
         <IonToolbar>
           <IonTitle>{t('my_profile')}</IonTitle>
@@ -44,33 +56,43 @@ const ProfilePage: React.FC = () => {
               <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>
                 {customer?.name}
               </h2>
-              <p style={{ fontSize: '16px', color: '#666' }}>{customer?.phone}</p>
+              <p style={{ fontSize: '16px', color: 'var(--ion-color-medium, #666)' }}>{customer?.phone}</p>
               {customer?.email && (
-                <p style={{ fontSize: '14px', color: '#666' }}>{customer.email}</p>
+                <p style={{ fontSize: '14px', color: 'var(--ion-color-medium, #666)' }}>{customer.email}</p>
               )}
             </div>
           </IonCardContent>
         </IonCard>
 
         <IonCard>
-          <IonItem button onClick={toggleLanguage}>
-            <IonIcon icon={language} slot="start" />
-            <IonLabel>
-              <h3>{t('language')}</h3>
-              <p>{i18n.language === 'en' ? 'English' : 'हिंदी'}</p>
-            </IonLabel>
+          <IonItem>
+            <IonIcon icon={languageIcon} slot="start" />
+            <IonLabel>{t('language')}</IonLabel>
+            <IonSelect
+              value={i18n.language}
+              placeholder={t('select_language')}
+              onIonChange={(e) => handleLanguageChange(e.detail.value)}
+            >
+              {languages.map((lang) => (
+                <IonSelectOption key={lang.code} value={lang.code}>
+                  {lang.name}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+
+          <IonItem>
+            <IonIcon icon={contrast} slot="start" />
+            <IonLabel>{t('theme')}</IonLabel>
+            <IonToggle
+              checked={theme === 'dark'}
+              onIonChange={toggleTheme}
+              slot="end"
+            >
+              {theme === 'dark' ? t('dark_mode') : t('light_mode')}
+            </IonToggle>
           </IonItem>
         </IonCard>
-
-        <IonButton
-          expand="block"
-          color="danger"
-          onClick={logout}
-          style={{ marginTop: '32px' }}
-        >
-          <IonIcon icon={logOut} slot="start" />
-          {t('logout')}
-        </IonButton>
       </IonContent>
     </IonPage>
   );

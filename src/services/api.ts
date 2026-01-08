@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { useAuthStore } from '@store/auth.store';
+import { toast } from './toast';
 
 // Configure your backend base URL here
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
@@ -12,7 +13,7 @@ class ApiService {
 
   constructor() {
     this.api = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: `${API_BASE_URL}/api/v1`,
       headers: {
         'Content-Type': 'application/json',
         'X-Tenant-ID': TENANT_ID,
@@ -34,8 +35,19 @@ class ApiService {
     // Response interceptor - handle errors
     this.api.interceptors.response.use(
       (response) => response,
-      (error: AxiosError) => {
-        if (error.response?.status === 401) {
+      (error: AxiosError<{ success: boolean; message: string; errors?: Record<string, string[]> }>) => {
+        // Show toast for errors
+        if (error.response?.data?.message) {
+          toast.error(error.response.data.message);
+        } else if (error.message) {
+          toast.error(error.message);
+        } else {
+          toast.error('Something went wrong. Please try again.');
+        }
+
+        // Only logout on 401 if user is currently authenticated
+        // This prevents recursive logout calls
+        if (error.response?.status === 401 && useAuthStore.getState().isAuthenticated) {
           useAuthStore.getState().logout();
         }
         return Promise.reject(error);
@@ -44,12 +56,12 @@ class ApiService {
   }
 
   // Auth APIs
-  async login(phone: string, otp: string) {
-    const response = await this.api.post('/customer-auth/login', { phone, otp });
+  async login(phone: string, password: string) {
+    const response = await this.api.post('/customer-auth/login', { phone, password });
     return response.data;
   }
 
-  async register(data: { name: string; phone: string; email?: string }) {
+  async register(data: { name: string; phone: string; email?: string; password: string }) {
     const response = await this.api.post('/customer-auth/register', data);
     return response.data;
   }
@@ -107,8 +119,13 @@ class ApiService {
   }
 
   // Order APIs
-  async createOrder(items: Array<{ variant_id: string; quantity: number; price: number }>) {
-    const response = await this.api.post('/orders', { items });
+  async createOrder(orderData: {
+    customerId?: number;
+    items: Array<{ productId: number; quantity: number; price: number }>;
+    paymentMethod: string;
+    total: number;
+  }) {
+    const response = await this.api.post('/orders', orderData);
     return response.data;
   }
 

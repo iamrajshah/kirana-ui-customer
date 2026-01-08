@@ -1,6 +1,7 @@
 const STORAGE_KEYS = {
   AUTH_TOKEN: 'kirana_auth_token',
   USER_DATA: 'kirana_user_data',
+  TENANT_DATA: 'kirana_tenant_data',
   CART: 'kirana_cart',
   LANGUAGE: 'kirana_language',
 };
@@ -31,6 +32,20 @@ class StorageService {
 
   removeUserData() {
     localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+  }
+
+  // Tenant Data
+  setTenantData(data: any) {
+    localStorage.setItem(STORAGE_KEYS.TENANT_DATA, JSON.stringify(data));
+  }
+
+  getTenantData(): any | null {
+    const data = localStorage.getItem(STORAGE_KEYS.TENANT_DATA);
+    return data ? JSON.parse(data) : null;
+  }
+
+  removeTenantData() {
+    localStorage.removeItem(STORAGE_KEYS.TENANT_DATA);
   }
 
   // Cart

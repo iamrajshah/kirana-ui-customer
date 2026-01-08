@@ -29,7 +29,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
           {icon}
         </div>
       )}
-      <p style={{ fontSize: '16px', color: '#666', marginBottom: '20px' }}>
+      <p style={{ fontSize: '16px', color: 'var(--ion-color-medium, #666)', marginBottom: '20px' }}>
         {message}
       </p>
       {actionLabel && onAction && (

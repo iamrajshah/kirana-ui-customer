@@ -1,6 +1,14 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge } from '@ionic/react';
+import { 
+  IonTabs, 
+  IonRouterOutlet, 
+  IonTabBar, 
+  IonTabButton, 
+  IonIcon, 
+  IonLabel, 
+  IonBadge,
+} from '@ionic/react';
 import { home, cart, receipt, person } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useCartStore } from '@store/cart.store';
@@ -9,6 +17,7 @@ import { useCartStore } from '@store/cart.store';
 import HomePage from '@features/catalog/HomePage';
 import ProductDetailPage from '@features/catalog/ProductDetailPage';
 import CartPage from '@features/cart/CartPage';
+import CheckoutPage from '@features/checkout/CheckoutPage';
 import OrdersPage from '@features/orders/OrdersPage';
 import OrderDetailPage from '@features/orders/OrderDetailPage';
 import ProfilePage from '@features/profile/ProfilePage';
@@ -23,6 +32,7 @@ const TabsLayout: React.FC = () => {
         <Route exact path="/home" component={HomePage} />
         <Route exact path="/product/:id" component={ProductDetailPage} />
         <Route exact path="/cart" component={CartPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
         <Route exact path="/orders" component={OrdersPage} />
         <Route exact path="/order/:id" component={OrderDetailPage} />
         <Route exact path="/profile" component={ProfilePage} />

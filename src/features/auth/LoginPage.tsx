@@ -6,60 +6,68 @@ import {
   IonCardContent,
   IonInput,
   IonButton,
-  IonText,
   IonLoading,
   IonToast,
+  IonIcon,
+  IonSelect,
+  IonSelectOption,
+  IonToggle,
+  IonItem,
+  IonLabel,
 } from '@ionic/react';
+import { eye, eyeOff, language as languageIcon, contrast } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { useAuthStore } from '@store/auth.store';
 import { apiService } from '@services/api';
+import { useTheme } from '../../contexts/ThemeContext';
+import { toast } from '@services/toast';
 
 const LoginPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const history = useHistory();
   const { login } = useAuthStore();
+  const { theme, toggleTheme } = useTheme();
   
   const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSendOTP = async () => {
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'hi', name: 'हिंदी' },
+    { code: 'mr', name: 'मराठी' },
+    { code: 'gu', name: 'ગુજરાતી' },
+  ];
+
+  const handleLogin = async () => {
     if (phone.length !== 10) {
       setError('Please enter a valid 10-digit mobile number');
       return;
     }
 
-    setLoading(true);
-    try {
-      // For now, just move to OTP step
-      // In production, backend will send actual OTP via SMS
-      setStep('otp');
-      setError('');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to send OTP');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOTP = async () => {
-    if (!otp || otp.length < 4) {
-      setError('Please enter a valid OTP');
+    if (!password || password.length < 6) {
+      setError('Password must be at least 6 characters');
       return;
     }
 
     setLoading(true);
     try {
-      const response = await apiService.login(phone, otp);
+      const response = await apiService.login(phone, password);
+      
+      console.log('Login response:', response);
+      console.log('Tenant data:', response.data?.tenant);
       
       if (response.success) {
-        login(response.data.token, response.data.customer);
+        login(response.data.token, response.data.customer, response.data.tenant);
+        toast.success(t('login_success') || 'Login successful!');
       } else {
         setError(response.message || 'Login failed');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid OTP');
+      setError(err.response?.data?.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
@@ -79,71 +87,90 @@ const LoginPage: React.FC = () => {
             <h1 style={{ fontSize: '32px', fontWeight: 'bold', margin: '0 0 8px 0' }}>
               {t('app_name')}
             </h1>
-            <p style={{ fontSize: '16px', color: '#666' }}>
+            <p style={{ fontSize: '16px', color: 'var(--ion-color-medium, #666)' }}>
               {t('welcome')}
             </p>
           </div>
 
-          <IonCard style={{ width: '100%', maxWidth: '400px' }}>
-            <IonCardContent>
-              {step === 'phone' ? (
-                <>
-                  <IonInput
-                    type="tel"
-                    placeholder={t('enter_mobile')}
-                    value={phone}
-                    onIonChange={(e) => setPhone(e.detail.value || '')}
-                    maxlength={10}
-                    style={{ fontSize: '18px', marginBottom: '20px' }}
-                  />
-                  <IonButton
-                    expand="block"
-                    onClick={handleSendOTP}
-                    disabled={loading}
-                    style={{ fontSize: '16px', height: '48px' }}
-                  >
-                    {t('send_otp')}
-                  </IonButton>
-                </>
-              ) : (
-                <>
-                  <IonText>
-                    <p style={{ marginBottom: '16px' }}>
-                      OTP sent to {phone}
-                    </p>
-                  </IonText>
-                  <IonInput
-                    type="number"
-                    placeholder={t('enter_otp')}
-                    value={otp}
-                    onIonChange={(e) => setOtp(e.detail.value || '')}
-                    maxlength={6}
-                    style={{ fontSize: '18px', marginBottom: '20px' }}
-                  />
-                  <IonButton
-                    expand="block"
-                    onClick={handleVerifyOTP}
-                    disabled={loading}
-                    style={{ fontSize: '16px', height: '48px' }}
-                  >
-                    {t('verify_otp')}
-                  </IonButton>
-                  <IonButton
-                    expand="block"
-                    fill="clear"
-                    onClick={() => setStep('phone')}
-                    style={{ marginTop: '8px' }}
-                  >
-                    Change Number
-                  </IonButton>
-                </>
-              )}
-            </IonCardContent>
+          {/* Language and Theme Settings */}
+          <IonCard style={{ width: '100%', maxWidth: '400px', marginBottom: '16px' }}>
+            <IonItem lines="none">
+              <IonIcon icon={languageIcon} slot="start" />
+              <IonLabel>{t('language')}</IonLabel>
+              <IonSelect
+                value={i18n.language}
+                placeholder={t('select_language')}
+                onIonChange={(e) => i18n.changeLanguage(e.detail.value)}
+                interface="action-sheet"
+              >
+                {languages.map((lang) => (
+                  <IonSelectOption key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+            <IonItem lines="none">
+              <IonIcon icon={contrast} slot="start" />
+              <IonLabel>{t('theme')}</IonLabel>
+              <IonToggle
+                checked={theme === 'dark'}
+                onIonChange={toggleTheme}
+                slot="end"
+              />
+            </IonItem>
           </IonCard>
 
-          <p style={{ marginTop: '20px', fontSize: '12px', color: '#999', textAlign: 'center' }}>
-            For demo: Use any 10-digit number and OTP "1234"
-          </p>
+          <IonCard style={{ width: '100%', maxWidth: '400px' }}>
+            <IonCardContent>
+              <IonInput
+                type="tel"
+                placeholder={t('enter_mobile')}
+                value={phone}
+                onIonChange={(e) => setPhone(e.detail.value || '')}
+                maxlength={10}
+                style={{ fontSize: '18px', marginBottom: '20px' }}
+              />
+              <div style={{ position: 'relative', marginBottom: '20px' }}>
+                <IonInput
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder={t('enter_password')}
+                  value={password}
+                  onIonChange={(e) => setPassword(e.detail.value || '')}
+                  style={{ fontSize: '18px' }}
+                />
+                <IonIcon
+                  icon={showPassword ? eyeOff : eye}
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    cursor: 'pointer',
+                    fontSize: '20px',
+                    color: 'var(--ion-color-medium, #666)',
+                  }}
+                />
+              </div>
+              <IonButton
+                expand="block"
+                onClick={handleLogin}
+                disabled={loading}
+                style={{ fontSize: '16px', height: '48px' }}
+              >
+                {t('login')}
+              </IonButton>
+              <IonButton
+                expand="block"
+                fill="clear"
+                onClick={() => history.push('/register')}
+                style={{ marginTop: '8px' }}
+              >
+                {t('create_account')}
+              </IonButton>
+            </IonCardContent>
+          </IonCard>
         </div>
 
         <IonLoading isOpen={loading} message={t('loading')} />

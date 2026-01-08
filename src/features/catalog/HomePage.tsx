@@ -3,7 +3,6 @@ import {
   IonPage,
   IonHeader,
   IonToolbar,
-  IonTitle,
   IonContent,
   IonSearchbar,
   IonSegment,
@@ -19,7 +18,9 @@ import { useHistory } from 'react-router-dom';
 import { apiService } from '@services/api';
 import ProductCard from '@components/ProductCard';
 import EmptyState from '@components/EmptyState';
+import AppHeader from '@components/AppHeader';
 import { debounce } from '@utils/debounce';
+import { toast } from '@services/toast';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -48,6 +49,7 @@ const HomePage: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to load categories:', error);
+      toast.error('Failed to load categories');
     }
   };
 
@@ -60,11 +62,12 @@ const HomePage: React.FC = () => {
       }
       
       const response = await apiService.getProducts(params);
-      if (response.success) {
-        setProducts(response.data);
+      if (response.success && response.data.products) {
+        setProducts(response.data.products);
       }
     } catch (error) {
       console.error('Failed to load products:', error);
+      toast.error('Failed to load products');
     } finally {
       setLoading(false);
     }
@@ -79,11 +82,12 @@ const HomePage: React.FC = () => {
     setLoading(true);
     try {
       const response = await apiService.searchProducts(query);
-      if (response.success) {
-        setProducts(response.data);
+      if (response.success && response.data.products) {
+        setProducts(response.data.products);
       }
     } catch (error) {
       console.error('Search failed:', error);
+      toast.error('Search failed');
     } finally {
       setLoading(false);
     }
@@ -101,10 +105,8 @@ const HomePage: React.FC = () => {
 
   return (
     <IonPage>
+      <AppHeader />
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>{t('app_name')}</IonTitle>
-        </IonToolbar>
         <IonToolbar>
           <IonSearchbar
             value={searchQuery}
@@ -119,6 +121,7 @@ const HomePage: React.FC = () => {
         {categories.length > 0 && (
           <IonToolbar>
             <IonSegment
+              key={selectedCategory}
               value={selectedCategory}
               onIonChange={(e) => setSelectedCategory(e.detail.value as string)}
               scrollable
