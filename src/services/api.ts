@@ -1,13 +1,22 @@
-import axios, { AxiosInstance, AxiosError } from 'axios';
-import { useAuthStore } from '@store/auth.store';
-import { toast } from './toast';
-import { storageService, type StorefrontSelection } from './storage';
+import axios, { AxiosInstance, AxiosError } from "axios";
+import { useAuthStore } from "@store/auth.store";
+import { toast } from "./toast";
+import { storageService, type StorefrontSelection } from "./storage";
+import i18n from "./i18n";
 
-// Configure your backend base URL here
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim().replace(
+  /\/$/,
+  "",
+);
+if (import.meta.env.PROD && !configuredApiBaseUrl) {
+  throw new Error(
+    "VITE_API_BASE_URL is required for a production customer build",
+  );
+}
+const API_BASE_URL = configuredApiBaseUrl || "http://localhost:5000";
 
 // Configure your tenant ID here (each shop has unique tenant)
-const ENV_TENANT_ID = import.meta.env.VITE_TENANT_ID || '';
+const ENV_TENANT_ID = import.meta.env.VITE_TENANT_ID || "";
 
 class ApiService {
   private api: AxiosInstance;
@@ -15,75 +24,102 @@ class ApiService {
   constructor() {
     this.api = axios.create({
       baseURL: `${API_BASE_URL}/api/v1`,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
 
     // Request interceptor - add auth token
     this.api.interceptors.request.use(
       (config) => {
-        const tenantId = storageService.getStorefront()?.tenantId || ENV_TENANT_ID;
-        if (tenantId) config.headers['X-Tenant-ID'] = tenantId;
+        const tenantId =
+          storageService.getStorefront()?.tenantId || ENV_TENANT_ID;
+        if (tenantId) config.headers["X-Tenant-ID"] = tenantId;
         const token = useAuthStore.getState().token;
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     // Response interceptor - handle errors
     this.api.interceptors.response.use(
       (response) => response,
-      (error: AxiosError<{ success: boolean; message: string; errors?: Record<string, string[]> }>) => {
+      (
+        error: AxiosError<{
+          success: boolean;
+          message: string;
+          errors?: Record<string, string[]>;
+        }>,
+      ) => {
         // Show toast for errors
         if (error.response?.data?.message) {
           toast.error(error.response.data.message);
         } else if (error.message) {
           toast.error(error.message);
         } else {
-          toast.error('Something went wrong. Please try again.');
+          toast.error(i18n.t("generic_error"));
         }
 
         // Only logout on 401 if user is currently authenticated
         // This prevents recursive logout calls
-        if (error.response?.status === 401 && useAuthStore.getState().isAuthenticated) {
+        if (
+          error.response?.status === 401 &&
+          useAuthStore.getState().isAuthenticated
+        ) {
           useAuthStore.getState().logout();
         }
         return Promise.reject(error);
-      }
+      },
     );
   }
 
   // Auth APIs
-  async resolveStorefront(slug: string): Promise<{ success: true; data: StorefrontSelection }> {
-    const response = await axios.get(`${API_BASE_URL}/api/v1/storefront/${slug}`);
+  async resolveStorefront(
+    slug: string,
+  ): Promise<{ success: true; data: StorefrontSelection }> {
+    const response = await axios.get(
+      `${API_BASE_URL}/api/v1/storefront/${slug}`,
+    );
     return response.data;
   }
 
   async login(phone: string, password: string) {
-    const response = await this.api.post('/customer-auth/login', { phone, password });
+    const response = await this.api.post("/customer-auth/login", {
+      phone,
+      password,
+    });
     return response.data;
   }
 
-  async register(data: { name: string; phone: string; email?: string; password: string }) {
-    const response = await this.api.post('/customer-auth/register', data);
+  async register(data: {
+    name: string;
+    phone: string;
+    email?: string;
+    password: string;
+  }) {
+    const response = await this.api.post("/customer-auth/register", data);
     return response.data;
   }
 
   async getProfile() {
-    const response = await this.api.get('/customer-auth/me');
+    const response = await this.api.get("/customer-auth/me");
     return response.data;
   }
 
   // Catalog APIs
   async getCategories() {
-    const response = await this.api.get('/catalog/categories');
+    const response = await this.api.get("/catalog/categories");
     return response.data;
   }
 
-  async getProducts(params?: { category_id?: string; search?: string; skip?: number; take?: number }) {
-    const response = await this.api.get('/catalog/products', { params });
+  async getProducts(params?: {
+    category_id?: string;
+    search?: string;
+    skip?: number;
+    take?: number;
+  }) {
+    const response = await this.api.get("/catalog/products", { params });
     return response.data;
   }
 
@@ -93,23 +129,31 @@ class ApiService {
   }
 
   async searchProducts(query: string) {
-    const response = await this.api.get('/catalog/search', { params: { q: query } });
+    const response = await this.api.get("/catalog/search", {
+      params: { q: query },
+    });
     return response.data;
   }
 
   // Cart APIs (if backend supports)
   async getCart() {
-    const response = await this.api.get('/cart');
+    const response = await this.api.get("/cart");
     return response.data;
   }
 
   async addToCart(variantId: string, quantity: number) {
-    const response = await this.api.post('/cart/add', { variant_id: variantId, quantity });
+    const response = await this.api.post("/cart/add", {
+      variant_id: variantId,
+      quantity,
+    });
     return response.data;
   }
 
   async updateCartItem(variantId: string, quantity: number) {
-    const response = await this.api.put('/cart/update-variant', { variant_id: variantId, quantity });
+    const response = await this.api.put("/cart/update-variant", {
+      variant_id: variantId,
+      quantity,
+    });
     return response.data;
   }
 
@@ -119,7 +163,7 @@ class ApiService {
   }
 
   async clearCart() {
-    const response = await this.api.delete('/cart/clear');
+    const response = await this.api.delete("/cart/clear");
     return response.data;
   }
 
@@ -130,12 +174,12 @@ class ApiService {
     paymentMethod: string;
     total: number;
   }) {
-    const response = await this.api.post('/orders', orderData);
+    const response = await this.api.post("/orders", orderData);
     return response.data;
   }
 
   async getOrders() {
-    const response = await this.api.get('/orders');
+    const response = await this.api.get("/orders");
     return response.data;
   }
 
@@ -156,12 +200,17 @@ class ApiService {
 
   // Payment APIs
   async initiatePayment(orderId: string, method: string) {
-    const response = await this.api.post('/payments/initiate', { order_id: orderId, method });
+    const response = await this.api.post("/payments/initiate", {
+      order_id: orderId,
+      method,
+    });
     return response.data;
   }
 
   async confirmPayment(orderId: string) {
-    const response = await this.api.post('/payments/confirm', { order_id: orderId });
+    const response = await this.api.post("/payments/confirm", {
+      order_id: orderId,
+    });
     return response.data;
   }
 }

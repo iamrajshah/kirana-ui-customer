@@ -17,12 +17,12 @@
   "verify_otp": "OTP ચકાસો",
   "mobile_number": "મોબાઇલ નંબર",
   "otp": "OTP",
-  
+
   "home": "હોમ",
   "cart": "કાર્ટ",
   "orders": "ઓર્ડર",
   "profile": "પ્રોફાઇલ",
-  
+
   "search_products": "ઉત્પાદનો શોધો...",
   "all_categories": "બધી શ્રેણીઓ",
   "out_of_stock": "સ્ટોકમાં નથી",
@@ -34,7 +34,7 @@
   "price": "કિંમત",
   "total": "કુલ",
   "subtotal": "પેટા-કુલ",
-  
+
   "my_cart": "મારી કાર્ટ",
   "cart_empty": "તમારી કાર્ટ ખાલી છે",
   "continue_shopping": "ખરીદી ચાલુ રાખો",
@@ -46,7 +46,7 @@
   "cash": "રોકડ",
   "card": "કાર્ડ",
   "upi": "યુપીઆઈ",
-  
+
   "my_orders": "મારા ઓર્ડર",
   "no_orders": "હજી સુધી કોઈ ઓર્ડર નથી",
   "order_id": "ઓર્ડર ID",
@@ -55,7 +55,7 @@
   "order_total": "કુલ",
   "view_details": "વિગતો જુઓ",
   "cancel_order": "ઓર્ડર રદ કરો",
-  
+
   "order_status_draft": "ડ્રાફ્ટ",
   "order_status_pending": "બાકી",
   "order_status_confirmed": "પક્કું",
@@ -63,7 +63,7 @@
   "order_status_ready": "તૈયાર છે",
   "order_status_completed": "પૂર્ણ થયું",
   "order_status_cancelled": "રદ",
-  
+
   "my_profile": "મારી પ્રોફાઇલ",
   "name": "નામ",
   "email": "ઇમેઇલ",
@@ -72,15 +72,16 @@
   "edit_profile": "પ્રોફાઇલ સંપાદિત કરો",
   "save": "સાચવો",
   "cancel": "રદ કરો",
-  
+
   "payment_method": "ચુકવણીની રીત",
+  "payment_status": "ચુકવણીની સ્થિતિ",
   "payment_upi": "UPI / QR કોડ",
   "payment_cash": "પિકઅપ પર રોકડ",
   "payment_at_shop": "દુકાનમાં ચુકવણી",
   "i_have_paid": "મેં ચુકવણી કરી છે",
   "payment_pending": "ચુકવણી બાકી",
   "payment_completed": "ચુકવણી પૂર્ણ",
-  
+
   "place_order": "ઓર્ડર આપો",
   "order_placed": "ઓર્ડર સફળતાપૂર્વક આપવામાં આવ્યો",
   "order_placed_successfully": "ઓર્ડર સફળતાપૂર્વક આપ્યો!",
@@ -92,22 +93,65 @@
   "no_results": "કોઈ પરિણામો મળ્યા નથી",
   "added_to_cart": "કાર્ટમાં ઉમેર્યું",
   "low_stock": "ઓછું સ્ટોક",
-  
+
   "confirm": "પુષ્ટિ કરો",
   "yes": "હા",
   "no": "ના",
   "ok": "બરાબર",
   "back": "પાછળ",
-  
+
   "language": "ભાષા",
   "theme": "થીમ",
   "light_mode": "લાઇટ મોડ",
   "dark_mode": "ડાર્ક મોડ",
   "select_language": "ભાષા પસંદ કરો",
-  
+
   "login_success": "લોગિન સફળ!",
   "register_success": "નોંધણી સફળ!",
   "order_cancelled_success": "ઓર્ડર રદ થયો",
   "order_cancel_failed": "ઓર્ડર રદ કરવામાં નિષ્ફળ",
-  "failed_to_load": "ડેટા લોડ કરવામાં નિષ્ફળ"
+  "failed_to_load": "ડેટા લોડ કરવામાં નિષ્ફળ",
+  "product": "ઉત્પાદન",
+  "order_details": "ઓર્ડરની વિગતો",
+  "placing_order": "તમારો ઓર્ડર નોંધાઈ રહ્યો છે...",
+  "storefront_unavailable": "દુકાન ઉપલબ્ધ નથી",
+  "storefront_unavailable_message": "આ દુકાનની લિંક ઉપલબ્ધ નથી. નવી લિંક દુકાનદાર પાસેથી લો.",
+  "opening_shop": "દુકાન ખુલી રહી છે...",
+  "valid_mobile": "સાચો 10 અંકનો મોબાઇલ નંબર દાખલ કરો",
+  "password_min": "પાસવર્ડ ઓછામાં ઓછો 6 અક્ષરનો હોવો જોઈએ",
+  "login_failed": "લોગિન નિષ્ફળ થયું",
+  "invalid_credentials": "મોબાઇલ નંબર અથવા પાસવર્ડ ખોટો છે",
+  "open_shop_link": "લોગિન પહેલાં દુકાનદારે આપેલી દુકાનની લિંક ખોલો.",
+  "name_required": "નામ જરૂરી છે",
+  "valid_email": "સાચો ઇમેઇલ દાખલ કરો",
+  "passwords_mismatch": "બંને પાસવર્ડ સરખા નથી",
+  "registration_failed": "નોંધણી નિષ્ફળ થઈ",
+  "load_categories_failed": "શ્રેણીઓ લોડ થઈ શકી નથી",
+  "load_products_failed": "ઉત્પાદનો લોડ થઈ શક્યા નથી",
+  "search_failed": "શોધ પૂર્ણ થઈ શકી નથી",
+  "shop_online_from": "ઓનલાઇન ખરીદી કરો",
+  "show_all_products": "બધા ઉત્પાદનો બતાવો",
+  "view_offers": "આજની ઓફર જુઓ ({{count}})",
+  "no_products_available": "કોઈ ઉત્પાદન ઉપલબ્ધ નથી",
+  "load_product_failed": "ઉત્પાદનની વિગતો લોડ થઈ શકી નથી",
+  "product_details": "ઉત્પાદનની વિગતો",
+  "brand": "બ્રાન્ડ",
+  "mrp": "એમઆરપી",
+  "off": "છૂટ",
+  "sku": "એસકેયુ",
+  "gst": "જીએસટી",
+  "stock": "સ્ટોક",
+  "units": "નંગ",
+  "load_orders_failed": "ઓર્ડર લોડ થઈ શક્યા નથી",
+  "paid": "ચૂકવેલ",
+  "due": "બાકી",
+  "online": "ઓનલાઇન",
+  "upi_qr_alt": "UPI ચુકવણી QR કોડ",
+  "scan_upi": "કોઈપણ UPI એપથી આ QR કોડ સ્કેન કરો",
+  "upi_id": "UPI ID",
+  "amount": "રકમ",
+  "upi_unavailable": "UPI ચુકવણી ઉપલબ્ધ નથી. દુકાનનો સંપર્ક કરો.",
+  "generic_error": "કંઈક ખોટું થયું. ફરી પ્રયાસ કરો.",
+  "sync_failed": "કાર્ટ સિંક થઈ શકી નથી. ફરી પ્રયાસ કરો.",
+  "clear_cart_failed": "સર્વર પર કાર્ટ ખાલી થઈ શકી નથી."
 }
