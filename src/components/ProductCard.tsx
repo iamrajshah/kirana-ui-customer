@@ -33,19 +33,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
   // Use first variant for display
   const variant = product.variants?.[0];
   
-  // Don't render if no variants
-  if (!variant) {
-    return null;
-  }
-  
-  const isOutOfStock = variant.quantity === 0;
-  const isLowStock = variant.quantity > 0 && variant.quantity <= 10;
-
   // Check cart for current quantity
   useEffect(() => {
+    if (!variant) {
+      setCartQuantity(0);
+      return;
+    }
     const cartItem = items.find(item => item.variant_id === variant.id);
     setCartQuantity(cartItem?.quantity || 0);
-  }, [items, variant.id]);
+  }, [items, variant]);
+
+  // Don't render if no variants
+  if (!variant) return null;
+
+  const isOutOfStock = variant.quantity === 0;
+  const isLowStock = variant.quantity > 0 && variant.quantity <= 10;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();

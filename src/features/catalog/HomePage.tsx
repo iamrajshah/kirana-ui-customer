@@ -21,6 +21,7 @@ import EmptyState from '@components/EmptyState';
 import AppHeader from '@components/AppHeader';
 import { debounce } from '@utils/debounce';
 import { toast } from '@services/toast';
+import { storageService } from '@services/storage';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -31,10 +32,11 @@ const HomePage: React.FC = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [offersOnly, setOffersOnly] = useState(false);
+  const storefront = storageService.getStorefront();
 
   useEffect(() => {
     loadCategories();
-    loadProducts();
   }, []);
 
   useEffect(() => {
@@ -103,6 +105,14 @@ const HomePage: React.FC = () => {
     history.push(`/product/${productId}`);
   };
 
+  const discountedProducts = products.filter((product) =>
+    product.variants?.some(
+      (variant: { mrp_price?: number; selling_price?: number }) =>
+        Number(variant.mrp_price) > Number(variant.selling_price)
+    )
+  );
+  const visibleProducts = offersOnly ? discountedProducts : products;
+
   return (
     <IonPage>
       <AppHeader />
@@ -144,11 +154,31 @@ const HomePage: React.FC = () => {
           <IonRefresherContent />
         </IonRefresher>
 
+        <section
+          style={{
+            margin: '12px 12px 4px',
+            padding: 18,
+            borderRadius: 20,
+            color: '#fff',
+            background: `linear-gradient(135deg, ${storefront?.brandColor || '#087F5B'}, #164e3f)`,
+          }}
+        >
+          <p style={{ margin: 0, opacity: 0.85 }}>Shop online from</p>
+          <h1 style={{ margin: '4px 0 12px' }}>{storefront?.name || t('app_name')}</h1>
+          <button
+            type="button"
+            onClick={() => setOffersOnly((value) => !value)}
+            style={{ border: 0, borderRadius: 999, padding: '8px 14px', fontWeight: 700 }}
+          >
+            {offersOnly ? 'Show all products' : `View today's offers (${discountedProducts.length})`}
+          </button>
+        </section>
+
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}>
             <IonSpinner />
           </div>
-        ) : products.length === 0 ? (
+        ) : visibleProducts.length === 0 ? (
           <EmptyState
             icon="📦"
             message={searchQuery ? t('no_results') : 'No products available'}
@@ -160,7 +190,7 @@ const HomePage: React.FC = () => {
             gap: '8px',
             padding: '8px' 
           }}>
-            {products.map((product) => (
+            {visibleProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}

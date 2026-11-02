@@ -31,8 +31,6 @@ export const useAuthStore = create<AuthState>((set) => {
   const userData = storageService.getUserData();
   const tenantData = storageService.getTenantData();
 
-  console.log('Auth Store Init - Token:', !!token, 'User:', userData, 'Tenant:', tenantData);
-
   return {
     isAuthenticated: !!token,
     token,
@@ -40,7 +38,6 @@ export const useAuthStore = create<AuthState>((set) => {
     tenant: tenantData,
     
     login: (token: string, customer: Customer, tenant?: Tenant) => {
-      console.log('Auth Store login called with:', { token: !!token, customer, tenant });
       storageService.setAuthToken(token);
       storageService.setUserData(customer);
       if (tenant) {

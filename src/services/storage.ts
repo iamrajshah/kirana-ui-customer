@@ -2,11 +2,22 @@ const STORAGE_KEYS = {
   AUTH_TOKEN: 'kirana_auth_token',
   USER_DATA: 'kirana_user_data',
   TENANT_DATA: 'kirana_tenant_data',
+  STOREFRONT: 'kirana_storefront',
   CART: 'kirana_cart',
   LANGUAGE: 'kirana_language',
 };
 
 class StorageService {
+  private readJson<T>(key: string): T | null {
+    const value = localStorage.getItem(key);
+    if (!value) return null;
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      localStorage.removeItem(key);
+      return null;
+    }
+  }
   // Auth
   setAuthToken(token: string) {
     localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
@@ -26,8 +37,7 @@ class StorageService {
   }
 
   getUserData(): any | null {
-    const data = localStorage.getItem(STORAGE_KEYS.USER_DATA);
-    return data ? JSON.parse(data) : null;
+    return this.readJson(STORAGE_KEYS.USER_DATA);
   }
 
   removeUserData() {
@@ -40,12 +50,23 @@ class StorageService {
   }
 
   getTenantData(): any | null {
-    const data = localStorage.getItem(STORAGE_KEYS.TENANT_DATA);
-    return data ? JSON.parse(data) : null;
+    return this.readJson(STORAGE_KEYS.TENANT_DATA);
   }
 
   removeTenantData() {
     localStorage.removeItem(STORAGE_KEYS.TENANT_DATA);
+  }
+
+  setStorefront(data: StorefrontSelection) {
+    localStorage.setItem(STORAGE_KEYS.STOREFRONT, JSON.stringify(data));
+  }
+
+  getStorefront(): StorefrontSelection | null {
+    return this.readJson<StorefrontSelection>(STORAGE_KEYS.STOREFRONT);
+  }
+
+  removeStorefront() {
+    localStorage.removeItem(STORAGE_KEYS.STOREFRONT);
   }
 
   // Cart
@@ -75,6 +96,15 @@ class StorageService {
   clearAll() {
     localStorage.clear();
   }
+}
+
+export interface StorefrontSelection {
+  tenantId: string;
+  slug: string;
+  name: string;
+  logoUrl: string | null;
+  brandColor: string;
+  phone: string | null;
 }
 
 export const storageService = new StorageService();
