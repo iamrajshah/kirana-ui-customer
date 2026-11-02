@@ -8,6 +8,7 @@ import TabsLayout from '@features/layout/TabsLayout';
 // Auth Pages
 import LoginPage from '@features/auth/LoginPage';
 import RegisterPage from '@features/auth/RegisterPage';
+import StorefrontEntryPage from '@features/storefront/StorefrontEntryPage';
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuthStore();
@@ -15,6 +16,7 @@ const AppRoutes: React.FC = () => {
   if (!isAuthenticated) {
     return (
       <>
+        <Route exact path="/shop/:slug" component={StorefrontEntryPage} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/">
@@ -29,6 +31,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     <>
+      <Route exact path="/shop/:slug" component={StorefrontEntryPage} />
       <Route exact path="/login">
         <Redirect to="/home" />
       </Route>

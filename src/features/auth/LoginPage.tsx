@@ -22,6 +22,7 @@ import { useAuthStore } from '@store/auth.store';
 import { apiService } from '@services/api';
 import { useTheme } from '../../contexts/ThemeContext';
 import { toast } from '@services/toast';
+import { storageService } from '@services/storage';
 
 const LoginPage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -34,6 +35,7 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const storefront = storageService.getStorefront();
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -84,8 +86,11 @@ const LoginPage: React.FC = () => {
           minHeight: '100%' 
         }}>
           <div style={{ marginBottom: '40px', textAlign: 'center' }}>
+            {storefront?.logoUrl && (
+              <img src={storefront.logoUrl} alt="" style={{ width: 72, height: 72, objectFit: 'contain' }} />
+            )}
             <h1 style={{ fontSize: '32px', fontWeight: 'bold', margin: '0 0 8px 0' }}>
-              {t('app_name')}
+              {storefront?.name || t('app_name')}
             </h1>
             <p style={{ fontSize: '16px', color: 'var(--ion-color-medium, #666)' }}>
               {t('welcome')}
@@ -156,11 +161,16 @@ const LoginPage: React.FC = () => {
               <IonButton
                 expand="block"
                 onClick={handleLogin}
-                disabled={loading}
+                disabled={loading || !storefront}
                 style={{ fontSize: '16px', height: '48px' }}
               >
                 {t('login')}
               </IonButton>
+              {!storefront && (
+                <p style={{ color: 'var(--ion-color-danger)', textAlign: 'center' }}>
+                  Open the shop link shared by your shopkeeper before signing in.
+                </p>
+              )}
               <IonButton
                 expand="block"
                 fill="clear"

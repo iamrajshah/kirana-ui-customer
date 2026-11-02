@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { useAuthStore } from '@store/auth.store';
 import { toast } from './toast';
+import { storageService, type StorefrontSelection } from './storage';
 
 // Configure your backend base URL here
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 // Configure your tenant ID here (each shop has unique tenant)
-const TENANT_ID = import.meta.env.VITE_TENANT_ID || '1';
+const ENV_TENANT_ID = import.meta.env.VITE_TENANT_ID || '';
 
 class ApiService {
   private api: AxiosInstance;
@@ -14,15 +15,14 @@ class ApiService {
   constructor() {
     this.api = axios.create({
       baseURL: `${API_BASE_URL}/api/v1`,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Tenant-ID': TENANT_ID,
-      },
+      headers: { 'Content-Type': 'application/json' },
     });
 
     // Request interceptor - add auth token
     this.api.interceptors.request.use(
       (config) => {
+        const tenantId = storageService.getStorefront()?.tenantId || ENV_TENANT_ID;
+        if (tenantId) config.headers['X-Tenant-ID'] = tenantId;
         const token = useAuthStore.getState().token;
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
@@ -56,6 +56,11 @@ class ApiService {
   }
 
   // Auth APIs
+  async resolveStorefront(slug: string): Promise<{ success: true; data: StorefrontSelection }> {
+    const response = await axios.get(`${API_BASE_URL}/api/v1/storefront/${slug}`);
+    return response.data;
+  }
+
   async login(phone: string, password: string) {
     const response = await this.api.post('/customer-auth/login', { phone, password });
     return response.data;
@@ -104,12 +109,12 @@ class ApiService {
   }
 
   async updateCartItem(variantId: string, quantity: number) {
-    const response = await this.api.put('/cart/update', { variant_id: variantId, quantity });
+    const response = await this.api.put('/cart/update-variant', { variant_id: variantId, quantity });
     return response.data;
   }
 
   async removeFromCart(variantId: string) {
-    const response = await this.api.delete(`/cart/${variantId}`);
+    const response = await this.api.delete(`/cart/remove-variant/${variantId}`);
     return response.data;
   }
 
