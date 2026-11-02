@@ -17,12 +17,12 @@
   "verify_otp": "OTP तपासा",
   "mobile_number": "मोबाइल नंबर",
   "otp": "OTP",
-  
+
   "home": "होम",
   "cart": "कार्ट",
   "orders": "ऑर्डर",
   "profile": "प्रोफाइल",
-  
+
   "search_products": "उत्पादने शोधा...",
   "all_categories": "सर्व श्रेणी",
   "out_of_stock": "स्टॉक नाही",
@@ -34,7 +34,7 @@
   "price": "किंमत",
   "total": "एकूण",
   "subtotal": "उप-एकूण",
-  
+
   "my_cart": "माझे कार्ट",
   "cart_empty": "तुमचे कार्ट रिकामे आहे",
   "continue_shopping": "खरेदी सुरू ठेवा",
@@ -46,7 +46,7 @@
   "cash": "रोख",
   "card": "कार्ड",
   "upi": "यूपीआय",
-  
+
   "my_orders": "माझे ऑर्डर",
   "no_orders": "अद्याप कोणतेही ऑर्डर नाहीत",
   "order_id": "ऑर्डर ID",
@@ -55,7 +55,7 @@
   "order_total": "एकूण",
   "view_details": "तपशील पहा",
   "cancel_order": "ऑर्डर रद्द करा",
-  
+
   "order_status_draft": "मसुदा",
   "order_status_pending": "प्रलंबित",
   "order_status_confirmed": "पक्के",
@@ -63,7 +63,7 @@
   "order_status_ready": "तयार आहे",
   "order_status_completed": "पूर्ण झाले",
   "order_status_cancelled": "रद्द",
-  
+
   "my_profile": "माझे प्रोफाइल",
   "name": "नाव",
   "email": "ईमेल",
@@ -72,7 +72,7 @@
   "edit_profile": "प्रोफाइल संपादित करा",
   "save": "जतन करा",
   "cancel": "रद्द करा",
-  
+
   "payment_method": "पेमेंट पद्धत",
   "payment_status": "पेमेंट स्थिती",
   "payment_upi": "UPI / QR कोड",
@@ -81,7 +81,7 @@
   "i_have_paid": "मी पेमेंट केले आहे",
   "payment_pending": "पेमेंट प्रलंबित",
   "payment_completed": "पेमेंट पूर्ण",
-  
+
   "place_order": "ऑर्डर द्या",
   "order_placed": "ऑर्डर यशस्वीरित्या दिले",
   "order_placed_successfully": "ऑर्डर यशस्वीरीत्या दिले!",
@@ -93,22 +93,65 @@
   "no_results": "काहीही सापडले नाही",
   "added_to_cart": "कार्टमध्ये जोडले",
   "low_stock": "कमी स्टॉक",
-  
+
   "confirm": "पक्के करा",
   "yes": "होय",
   "no": "नाही",
   "ok": "ठीक आहे",
   "back": "मागे",
-  
+
   "language": "भाषा",
   "theme": "थीम",
   "light_mode": "लाइट मोड",
   "dark_mode": "डार्क मोड",
   "select_language": "भाषा निवडा",
-  
+
   "login_success": "लॉगिन यशस्वी!",
   "register_success": "नोंदणी यशस्वी!",
   "order_cancelled_success": "ऑर्डर रद्द झाली",
   "order_cancel_failed": "ऑर्डर रद्द करण्यात अयशस्वी",
-  "failed_to_load": "डेटा लोड करण्यात अयशस्वी"
+  "failed_to_load": "डेटा लोड करण्यात अयशस्वी",
+  "product": "उत्पादन",
+  "order_details": "ऑर्डर तपशील",
+  "placing_order": "तुमची ऑर्डर नोंदवली जात आहे...",
+  "storefront_unavailable": "दुकान उपलब्ध नाही",
+  "storefront_unavailable_message": "ही दुकान लिंक उपलब्ध नाही. नवीन लिंक दुकानदाराकडून घ्या.",
+  "opening_shop": "दुकान उघडत आहे...",
+  "valid_mobile": "योग्य 10 अंकी मोबाइल नंबर टाका",
+  "password_min": "पासवर्ड किमान 6 अक्षरांचा असावा",
+  "login_failed": "लॉगिन अयशस्वी",
+  "invalid_credentials": "मोबाइल नंबर किंवा पासवर्ड चुकीचा आहे",
+  "open_shop_link": "लॉगिन करण्यापूर्वी दुकानदाराने दिलेली दुकान लिंक उघडा.",
+  "name_required": "नाव आवश्यक आहे",
+  "valid_email": "योग्य ईमेल टाका",
+  "passwords_mismatch": "दोन्ही पासवर्ड जुळत नाहीत",
+  "registration_failed": "नोंदणी अयशस्वी",
+  "load_categories_failed": "श्रेणी लोड झाल्या नाहीत",
+  "load_products_failed": "उत्पादने लोड झाली नाहीत",
+  "search_failed": "शोध पूर्ण झाला नाही",
+  "shop_online_from": "ऑनलाइन खरेदी करा",
+  "show_all_products": "सर्व उत्पादने दाखवा",
+  "view_offers": "आजच्या ऑफर्स पहा ({{count}})",
+  "no_products_available": "कोणतीही उत्पादने उपलब्ध नाहीत",
+  "load_product_failed": "उत्पादन तपशील लोड झाले नाहीत",
+  "product_details": "उत्पादन तपशील",
+  "brand": "ब्रँड",
+  "mrp": "एमआरपी",
+  "off": "सूट",
+  "sku": "एसकेयू",
+  "gst": "जीएसटी",
+  "stock": "स्टॉक",
+  "units": "नग",
+  "load_orders_failed": "ऑर्डर्स लोड झाल्या नाहीत",
+  "paid": "भरले",
+  "due": "बाकी",
+  "online": "ऑनलाइन",
+  "upi_qr_alt": "UPI पेमेंट QR कोड",
+  "scan_upi": "कोणत्याही UPI अॅपने हा QR कोड स्कॅन करा",
+  "upi_id": "UPI ID",
+  "amount": "रक्कम",
+  "upi_unavailable": "UPI पेमेंट उपलब्ध नाही. दुकानाशी संपर्क करा.",
+  "generic_error": "काहीतरी चुकले. पुन्हा प्रयत्न करा.",
+  "sync_failed": "कार्ट सिंक झाले नाही. पुन्हा प्रयत्न करा.",
+  "clear_cart_failed": "सर्व्हरवरील कार्ट रिकामे करता आले नाही."
 }

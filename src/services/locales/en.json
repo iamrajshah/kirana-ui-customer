@@ -17,12 +17,12 @@
   "verify_otp": "Verify OTP",
   "mobile_number": "Mobile Number",
   "otp": "OTP",
-  
+
   "home": "Home",
   "cart": "Cart",
   "orders": "Orders",
   "profile": "Profile",
-  
+
   "search_products": "Search products...",
   "all_categories": "All Categories",
   "out_of_stock": "Out of Stock",
@@ -34,7 +34,7 @@
   "price": "Price",
   "total": "Total",
   "subtotal": "Subtotal",
-  
+
   "my_cart": "My Cart",
   "cart_empty": "Your cart is empty",
   "continue_shopping": "Continue Shopping",
@@ -46,7 +46,7 @@
   "cash": "Cash",
   "card": "Card",
   "upi": "UPI",
-  
+
   "my_orders": "My Orders",
   "no_orders": "No orders yet",
   "order_id": "Order ID",
@@ -55,7 +55,7 @@
   "order_total": "Total",
   "view_details": "View Details",
   "cancel_order": "Cancel Order",
-  
+
   "order_status_draft": "Draft",
   "order_status_pending": "Pending",
   "order_status_confirmed": "Confirmed",
@@ -63,7 +63,7 @@
   "order_status_ready": "Ready for Pickup",
   "order_status_completed": "Completed",
   "order_status_cancelled": "Cancelled",
-  
+
   "my_profile": "My Profile",
   "name": "Name",
   "email": "Email",
@@ -72,7 +72,7 @@
   "edit_profile": "Edit Profile",
   "save": "Save",
   "cancel": "Cancel",
-  
+
   "payment_method": "Payment Method",
   "payment_status": "Payment Status",
   "payment_upi": "UPI / QR Code",
@@ -81,7 +81,7 @@
   "i_have_paid": "I Have Paid",
   "payment_pending": "Payment Pending",
   "payment_completed": "Payment Completed",
-  
+
   "place_order": "Place Order",
   "order_placed": "Order Placed Successfully",
   "order_placed_successfully": "Order placed successfully!",
@@ -93,22 +93,65 @@
   "no_results": "No results found",
   "added_to_cart": "Added to cart",
   "low_stock": "Low Stock",
-  
+
   "confirm": "Confirm",
   "yes": "Yes",
   "no": "No",
   "ok": "OK",
   "back": "Back",
-  
+
   "language": "Language",
   "theme": "Theme",
   "light_mode": "Light Mode",
   "dark_mode": "Dark Mode",
   "select_language": "Select Language",
-  
+
   "login_success": "Login successful!",
   "register_success": "Registration successful!",
   "order_cancelled_success": "Order cancelled successfully",
   "order_cancel_failed": "Failed to cancel order",
-  "failed_to_load": "Failed to load data"
+  "failed_to_load": "Failed to load data",
+  "product": "Product",
+  "order_details": "Order details",
+  "placing_order": "Placing your order...",
+  "storefront_unavailable": "Shop unavailable",
+  "storefront_unavailable_message": "This shop link is unavailable. Ask the shopkeeper for the latest link.",
+  "opening_shop": "Opening shop...",
+  "valid_mobile": "Please enter a valid 10-digit mobile number",
+  "password_min": "Password must be at least 6 characters",
+  "login_failed": "Login failed",
+  "invalid_credentials": "Invalid mobile number or password",
+  "open_shop_link": "Open the shop link shared by your shopkeeper before signing in.",
+  "name_required": "Name is required",
+  "valid_email": "Please enter a valid email",
+  "passwords_mismatch": "Passwords do not match",
+  "registration_failed": "Registration failed",
+  "load_categories_failed": "Failed to load categories",
+  "load_products_failed": "Failed to load products",
+  "search_failed": "Search failed",
+  "shop_online_from": "Shop online from",
+  "show_all_products": "Show all products",
+  "view_offers": "View today's offers ({{count}})",
+  "no_products_available": "No products available",
+  "load_product_failed": "Failed to load product details",
+  "product_details": "Product details",
+  "brand": "Brand",
+  "mrp": "MRP",
+  "off": "OFF",
+  "sku": "SKU",
+  "gst": "GST",
+  "stock": "Stock",
+  "units": "units",
+  "load_orders_failed": "Failed to load orders",
+  "paid": "Paid",
+  "due": "Due",
+  "online": "Online",
+  "upi_qr_alt": "UPI payment QR code",
+  "scan_upi": "Scan this QR code with any UPI app",
+  "upi_id": "UPI ID",
+  "amount": "Amount",
+  "upi_unavailable": "UPI payment is not available. Please contact the shop.",
+  "generic_error": "Something went wrong. Please try again.",
+  "sync_failed": "Could not sync your cart. Please try again.",
+  "clear_cart_failed": "Could not clear your cart on the server."
 }

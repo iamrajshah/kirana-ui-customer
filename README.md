@@ -1,71 +1,54 @@
-# Kirana Customer App
+# Kirana Customer Storefront
 
-Customer-facing grocery ordering application built with React + Vite + Ionic.
+Tenant-branded, customer-facing ordering UI for Kirana POS. It is an Ionic React web app hosted on Cloudflare Pages and uses the same Railway Express API and MySQL tenant data as the POS.
 
-## Setup
+## Customer journey
 
-1. Install dependencies:
+1. Open the shop-specific URL: `/shop/<storefront-slug>`.
+2. The public storefront route resolves the tenant name, logo and brand colour.
+3. Register or sign in with a customer phone number and password.
+4. Browse/search the tenant catalog, maintain the server-backed cart, and place an order.
+5. Review or cancel eligible orders from **My Orders**.
+
+Never publish a generic login URL as the customer entry point. The shop slug establishes tenant context before authentication.
+
+## Local setup
+
 ```bash
-npm install
-```
-
-2. Create `.env` file:
-```bash
+npm ci
 cp .env.example .env
-```
-
-3. Update `.env` with your backend API URL and tenant ID:
-```
-VITE_API_BASE_URL=http://your-backend-url
-VITE_TENANT_ID=your_tenant_id
-```
-
-4. Run development server:
-```bash
 npm run dev
 ```
 
-## Features
+Set `VITE_API_BASE_URL` to the API origin without `/api/v1`. `VITE_TENANT_ID` is a legacy local fallback; production tenant selection comes from the storefront slug.
 
-- 📱 Mobile-first design
-- 🌐 i18n support (English & Hindi)
-- 🛒 Shopping cart (persisted in localStorage)
-- 📦 Product catalog with categories
-- 🔍 Product search
-- 📋 Order management
-- 💰 Manual payment options (UPI/Cash/At Shop)
-- 👤 Customer authentication via OTP
-
-## Tech Stack
-
-- **React 18** - UI library
-- **Vite** - Build tool
-- **Ionic React** - Mobile UI components
-- **Zustand** - State management
-- **i18next** - Internationalization
-- **Axios** - HTTP client
-- **TypeScript** - Type safety
-
-## Project Structure
-
-```
-src/
-├── app/           # App configuration, routing
-├── features/      # Feature modules (auth, catalog, cart, orders, profile)
-├── components/    # Reusable UI components
-├── services/      # API & storage services, i18n
-├── store/         # Zustand stores (auth, cart)
-├── utils/         # Utility functions
-├── theme/         # CSS & Ionic theme
-└── assets/        # Static assets
-```
-
-## Build for Production
+## Quality gate
 
 ```bash
-npm run build
+npm run lint
+npm test
+VITE_API_BASE_URL=https://your-api.example npm run build
 ```
 
-## License
+Translations are required in English, Hindi, Marathi and Gujarati. The localization coverage test rejects missing or blank keys.
 
-Proprietary
+## Deployment
+
+Production is Cloudflare Pages project `kirana-customer`, output directory `dist`, with SPA fallback in `public/_redirects`. Build with the Railway API URL and deploy the exact tested output:
+
+```bash
+VITE_API_BASE_URL=https://your-api.example npm run build
+npx wrangler pages deploy dist --project-name kirana-customer --branch main
+```
+
+`dist/release.json` identifies the deployed commit. See [HANDBOOK.md](./HANDBOOK.md) for product invariants and operational checks.
+
+## Technology
+
+- Ionic React + Vite + TypeScript
+- Zustand state
+- Axios API client
+- i18next (English, Hindi, Marathi and Gujarati)
+- Cloudflare Pages UI, Railway API, MySQL tenant data
+
+Proprietary software.

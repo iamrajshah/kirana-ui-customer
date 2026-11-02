@@ -17,12 +17,12 @@
   "verify_otp": "OTP वेरीफाई करें",
   "mobile_number": "मोबाइल नंबर",
   "otp": "OTP",
-  
+
   "home": "होम",
   "cart": "कार्ट",
   "orders": "ऑर्डर",
   "profile": "प्रोफाइल",
-  
+
   "search_products": "सामान खोजें...",
   "all_categories": "सभी केटेगरी",
   "out_of_stock": "स्टॉक में नहीं",
@@ -34,7 +34,7 @@
   "price": "कीमत",
   "total": "कुल",
   "subtotal": "उप-योग",
-  
+
   "my_cart": "मेरा कार्ट",
   "cart_empty": "आपका कार्ट खाली है",
   "continue_shopping": "खरीदारी जारी रखें",
@@ -42,18 +42,11 @@
   "checkout": "चेकआउट",
   "customer_details": "ग्राहक विवरण",
   "order_summary": "ऑर्डर सारांश",
-  "store": "स्टोर",
-  "cash": "कैश",
-  "card": "कार्ड",
-  "upi": "UPI",
-  "checkout": "चेकआउट",
-  "customer_details": "ग्राहक विवरण",
-  "order_summary": "ऑर्डर सारांश",
   "store": "दुकान",
   "cash": "नकद",
   "card": "कार्ड",
   "upi": "यूपीआई",
-  
+
   "my_orders": "मेरे ऑर्डर",
   "no_orders": "अभी कोई ऑर्डर नहीं",
   "order_id": "ऑर्डर ID",
@@ -62,7 +55,7 @@
   "order_total": "कुल",
   "view_details": "विवरण देखें",
   "cancel_order": "ऑर्डर रद्द करें",
-  
+
   "order_status_draft": "ड्राफ्ट",
   "order_status_pending": "लंबित",
   "order_status_confirmed": "पक्का",
@@ -70,7 +63,7 @@
   "order_status_ready": "तैयार है",
   "order_status_completed": "पूरा हुआ",
   "order_status_cancelled": "रद्द",
-  
+
   "my_profile": "मेरी प्रोफाइल",
   "name": "नाम",
   "email": "ईमेल",
@@ -79,15 +72,16 @@
   "edit_profile": "प्रोफाइल बदलें",
   "save": "सेव करें",
   "cancel": "रद्द करें",
-  
+
   "payment_method": "पेमेंट का तरीका",
+  "payment_status": "पेमेंट की स्थिति",
   "payment_upi": "UPI / QR Code",
   "payment_cash": "पिकअप पर कैश",
   "payment_at_shop": "दुकान पर पेमेंट",
   "i_have_paid": "मैंने पेमेंट कर दी",
   "payment_pending": "पेमेंट बाकी है",
   "payment_completed": "पेमेंट हो गई",
-  
+
   "place_order": "ऑर्डर करें",
   "order_placed": "ऑर्डर हो गया",
   "order_placed_successfully": "ऑर्डर सफलतापूर्वक हो गया!",
@@ -99,22 +93,65 @@
   "no_results": "कुछ नहीं मिला",
   "added_to_cart": "कार्ट में जोड़ा गया",
   "low_stock": "कम स्टॉक",
-  
+
   "confirm": "पक्का करें",
   "yes": "हां",
   "no": "नहीं",
   "ok": "ठीक है",
   "back": "वापस",
-  
+
   "language": "भाषा",
   "theme": "थीम",
   "light_mode": "लाइट मोड",
   "dark_mode": "डार्क मोड",
   "select_language": "भाषा चुनें",
-  
+
   "login_success": "लॉगिन सफल!",
   "register_success": "पंजीकरण सफल!",
   "order_cancelled_success": "ऑर्डर रद्द हो गया",
   "order_cancel_failed": "ऑर्डर रद्द करने में विफल",
-  "failed_to_load": "डेटा लोड करने में विफल"
+  "failed_to_load": "डेटा लोड करने में विफल",
+  "product": "सामान",
+  "order_details": "ऑर्डर की जानकारी",
+  "placing_order": "आपका ऑर्डर किया जा रहा है...",
+  "storefront_unavailable": "दुकान उपलब्ध नहीं है",
+  "storefront_unavailable_message": "यह दुकान लिंक उपलब्ध नहीं है। नया लिंक दुकानदार से लें।",
+  "opening_shop": "दुकान खुल रही है...",
+  "valid_mobile": "सही 10 अंकों का मोबाइल नंबर डालें",
+  "password_min": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+  "login_failed": "लॉगिन विफल रहा",
+  "invalid_credentials": "मोबाइल नंबर या पासवर्ड गलत है",
+  "open_shop_link": "लॉगिन से पहले दुकानदार द्वारा दिया गया दुकान लिंक खोलें।",
+  "name_required": "नाम जरूरी है",
+  "valid_email": "सही ईमेल डालें",
+  "passwords_mismatch": "दोनों पासवर्ड मेल नहीं खाते",
+  "registration_failed": "रजिस्ट्रेशन विफल रहा",
+  "load_categories_failed": "श्रेणियां लोड नहीं हो सकीं",
+  "load_products_failed": "सामान लोड नहीं हो सका",
+  "search_failed": "खोज पूरी नहीं हो सकी",
+  "shop_online_from": "ऑनलाइन खरीदें",
+  "show_all_products": "सभी सामान दिखाएं",
+  "view_offers": "आज के ऑफर देखें ({{count}})",
+  "no_products_available": "कोई सामान उपलब्ध नहीं है",
+  "load_product_failed": "सामान की जानकारी लोड नहीं हो सकी",
+  "product_details": "सामान की जानकारी",
+  "brand": "ब्रांड",
+  "mrp": "एमआरपी",
+  "off": "छूट",
+  "sku": "एसकेयू",
+  "gst": "जीएसटी",
+  "stock": "स्टॉक",
+  "units": "इकाई",
+  "load_orders_failed": "ऑर्डर लोड नहीं हो सके",
+  "paid": "जमा",
+  "due": "बाकी",
+  "online": "ऑनलाइन",
+  "upi_qr_alt": "UPI पेमेंट QR कोड",
+  "scan_upi": "किसी भी UPI ऐप से यह QR कोड स्कैन करें",
+  "upi_id": "UPI ID",
+  "amount": "राशि",
+  "upi_unavailable": "UPI पेमेंट उपलब्ध नहीं है। दुकान से संपर्क करें।",
+  "generic_error": "कुछ गड़बड़ हुई। फिर कोशिश करें।",
+  "sync_failed": "कार्ट सिंक नहीं हुआ। फिर कोशिश करें।",
+  "clear_cart_failed": "सर्वर पर कार्ट साफ नहीं हो सका।"
 }
