@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   IonPage,
   IonHeader,
@@ -13,6 +13,8 @@ import {
   IonRefresher,
   IonRefresherContent,
   RefresherEventDetail,
+  useIonViewDidLeave,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -22,49 +24,59 @@ import EmptyState from "@components/EmptyState";
 import AppHeader from "@components/AppHeader";
 import { formatCurrency } from "@utils/currency";
 import { toast } from "@services/toast";
+import { startForegroundPolling } from "@utils/foregroundPolling";
+import {
+  getOrderStatusColor,
+  getOrderStatusTranslationKey,
+} from "./orderStatus";
 
 const OrdersPage: React.FC = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const activePage = useRef(false);
 
-  useEffect(() => {
-    loadOrders();
-  }, []);
-
-  const loadOrders = async () => {
-    setLoading(true);
-    try {
-      const response = await apiService.getOrders();
-      if (response.success && response.data.orders) {
-        setOrders(response.data.orders);
+  const loadOrders = useCallback(
+    async ({ showLoader = false, notifyError = false } = {}) => {
+      if (showLoader) setLoading(true);
+      try {
+        const response = await apiService.getOrders();
+        if (response.success && response.data.orders) {
+          setOrders(response.data.orders);
+        }
+      } catch (error) {
+        console.error("Failed to load orders:", error);
+        if (notifyError) toast.error(t("load_orders_failed"));
+      } finally {
+        if (showLoader) setLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to load orders:", error);
-      toast.error(t("load_orders_failed"));
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [t],
+  );
+
+  useIonViewWillEnter(() => {
+    activePage.current = true;
+    void loadOrders({ showLoader: orders.length === 0, notifyError: true });
+  }, [loadOrders, orders.length]);
+
+  useIonViewDidLeave(() => {
+    activePage.current = false;
+  });
+
+  useEffect(
+    () =>
+      startForegroundPolling({
+        poll: () => loadOrders(),
+        intervalMs: 15_000,
+        isHidden: () => document.hidden || !activePage.current,
+      }),
+    [loadOrders],
+  );
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    await loadOrders();
+    await loadOrders({ notifyError: true });
     event.detail.complete();
-  };
-
-  const getStatusColor = (status: string) => {
-    const colors: Record<string, string> = {
-      DRAFT: "medium",
-      PENDING: "warning",
-      PLACED: "warning",
-      ACCEPTED: "primary",
-      PREPARING: "tertiary",
-      READY: "success",
-      COMPLETED: "success",
-      CANCELLED: "danger",
-    };
-    return colors[status] || "medium";
   };
 
   return (
@@ -104,7 +116,9 @@ const OrdersPage: React.FC = () => {
               <IonItem
                 key={order.id}
                 button
-                onClick={() => history.push(storefrontPath(`/order/${order.id}`))}
+                onClick={() =>
+                  history.push(storefrontPath(`/order/${order.id}`))
+                }
               >
                 <IonLabel>
                   <h2 style={{ fontWeight: "bold" }}>
@@ -128,8 +142,8 @@ const OrdersPage: React.FC = () => {
                     {formatCurrency(order.total_amount)}
                   </p>
                 </IonLabel>
-                <IonBadge slot="end" color={getStatusColor(order.status)}>
-                  {t(`order_status_${order.status.toLowerCase()}`)}
+                <IonBadge slot="end" color={getOrderStatusColor(order.status)}>
+                  {t(getOrderStatusTranslationKey(order.status))}
                 </IonBadge>
               </IonItem>
             ))}
