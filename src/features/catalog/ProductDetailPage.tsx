@@ -20,6 +20,13 @@ import { toast } from "@services/toast";
 import ProductCard from "@components/ProductCard";
 import AppHeader from "@components/AppHeader";
 import { storefrontPath } from "@features/storefront/storefrontPath";
+import { storageService } from "@services/storage";
+import {
+  getCartStockLimit,
+  getStockQuantity,
+  isVariantInStock,
+  shouldShowExactStock,
+} from "./stockPresentation";
 
 const ProductDetailPage: React.FC = () => {
   const { t } = useTranslation();
@@ -63,6 +70,9 @@ const ProductDetailPage: React.FC = () => {
     ) {
       const variant = product.product_variants[0];
       const imageUrl = variant.image_url || product.image_url;
+      const exactStockIsVisible = shouldShowExactStock(
+        storageService.getStorefront(),
+      );
       addItem({
         variant_id: variant.id,
         product_id: product.id,
@@ -71,7 +81,9 @@ const ProductDetailPage: React.FC = () => {
         unit: variant.size,
         price: variant.selling_price,
         image_url: imageUrl,
-        max_quantity: variant.inventory?.quantity || 0,
+        max_quantity: exactStockIsVisible
+          ? getCartStockLimit(variant)
+          : undefined,
       });
     }
   };
@@ -79,9 +91,11 @@ const ProductDetailPage: React.FC = () => {
   const variant = product?.product_variants?.[0];
   const imageUrl = variant?.image_url || product?.image_url;
   const displayName = product?.name?.replace(/_/g, " ");
-  const stockQty = variant?.inventory?.quantity || 0;
-  const isLowStock =
-    variant?.inventory && stockQty <= variant.inventory.low_stock_threshold;
+  const stockQuantity = getStockQuantity(variant);
+  const inStock = isVariantInStock(variant);
+  const exactStockIsVisible = shouldShowExactStock(
+    storageService.getStorefront(),
+  );
 
   return (
     <IonPage>
@@ -197,14 +211,7 @@ const ProductDetailPage: React.FC = () => {
                   </div>
 
                   {/* Product Details */}
-                  <div
-                    style={{
-                      background: "var(--ion-color-light)",
-                      borderRadius: "8px",
-                      padding: "12px",
-                      marginBottom: "16px",
-                    }}
-                  >
+                  <div className="product-detail-information">
                     <h3
                       style={{
                         fontSize: "16px",
@@ -237,17 +244,21 @@ const ProductDetailPage: React.FC = () => {
                       </p>
                     )}
                     <p
+                      data-testid="product-stock-availability"
                       style={{
                         fontSize: "14px",
                         margin: "4px 0",
-                        color:
-                          stockQty > 0
-                            ? "var(--ion-color-success)"
-                            : "var(--ion-color-danger)",
+                        color: inStock
+                          ? "var(--ion-color-success)"
+                          : "var(--ion-color-danger)",
                       }}
                     >
-                      {t("stock")}: {stockQty} {t("units")}{" "}
-                      {isLowStock && stockQty > 0 && `(${t("low_stock")})`}
+                      {!inStock
+                        ? t("out_of_stock")
+                        : exactStockIsVisible &&
+                            typeof stockQuantity === "number"
+                          ? t("units_available", { count: stockQuantity })
+                          : t("available")}
                     </p>
                   </div>
 
@@ -256,17 +267,32 @@ const ProductDetailPage: React.FC = () => {
                       expand="block"
                       size="large"
                       onClick={handleAddToCart}
-                      disabled={stockQty <= 0}
+                      disabled={!inStock}
                     >
-                      {stockQty > 0 ? t("add_to_cart") : t("out_of_stock")}
+                      {inStock ? t("add_to_cart") : t("out_of_stock")}
                     </IonButton>
                   </div>
                   {recommendations.length > 0 && (
                     <section style={{ marginTop: 28 }}>
                       <h2>{t("frequently_bought_together")}</h2>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 8 }}>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns:
+                            "repeat(auto-fill, minmax(150px, 1fr))",
+                          gap: 8,
+                        }}
+                      >
                         {recommendations.map((recommended) => (
-                          <ProductCard key={recommended.id} product={recommended} onProductClick={(productId) => history.push(storefrontPath(`/product/${productId}`))} />
+                          <ProductCard
+                            key={recommended.id}
+                            product={recommended}
+                            onProductClick={(productId) =>
+                              history.push(
+                                storefrontPath(`/product/${productId}`),
+                              )
+                            }
+                          />
                         ))}
                       </div>
                     </section>

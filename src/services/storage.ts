@@ -123,6 +123,9 @@ export interface StorefrontSelection {
   logoUrl: string | null;
   brandColor: string;
   phone: string | null;
+  preferences?: {
+    showStockQuantity?: boolean;
+  };
 }
 
 export const storageService = new StorageService();

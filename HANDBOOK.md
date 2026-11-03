@@ -38,12 +38,24 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 
 - Branded storefront link resolution
 - Public catalogue, category, product and published-offer search
+- Modern Bazaar home with six uncluttered category shortcuts; every remaining
+  category stays available in the All Categories sheet
+- Language and light/dark controls remain available before customer sign-in
 - Tenant-isolated device-local cart with server-authoritative checkout
 - Phone OTP identity at checkout
 - Pickup or consented saved delivery address
 - Order placement, foreground status refresh, history, detail and eligible cancellation
 - Light/dark theme
 - English, Hindi, Marathi and Gujarati with persisted language choice
+
+## Public stock privacy
+
+Exact inventory is private by default. The storefront consumes the public
+`in_stock` value and shows only Available or Out of stock. Numeric `quantity`
+is optional and may be rendered (and used as a client-side cart cap) only when
+the resolved shop returns `preferences.showStockQuantity: true`. Never infer a
+missing quantity as zero and never display `low_stock_threshold` to shoppers.
+The server remains authoritative at checkout in either mode.
 
 ## Release checklist
 
@@ -56,6 +68,10 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 7. Add, update, remove and clear cart operations survive refresh.
 8. Place an order and verify it appears in the customer order list and POS order intake.
 9. Verify 390px mobile, 768px tablet and desktop layouts in light and dark modes.
+10. With exact stock disabled, inspect catalogue and product-detail responses:
+    `quantity` and `low_stock_threshold` must be absent while `in_stock` remains.
+11. Enable exact stock as the tenant owner, reload the shop link, and verify the
+    count appears without affecting another tenant.
 
 ## Failure diagnosis
 
@@ -72,11 +88,13 @@ Built by Rajesh Shah (@iamrajshah). Keep this handbook updated whenever storefro
 
 ## Current release qualification
 
-On 3 November 2026, the deployed storefront passed 9 files / 19 tests, lint,
-production build, API checks, and desktop/tablet/mobile browser journeys. Both
-showcase storefronts resolved independently, visible offer/product media loaded,
-anonymous checkout was denied, duplicate OTP verification was guarded, customer
-order polling remained foreground-only, and switching shops cleared the cart.
+On 3 November 2026, the deployed storefront baseline passed 9 files / 19 tests,
+lint, production build, API checks, and desktop/tablet/mobile browser journeys.
+The subsequent Modern Bazaar release candidate passed 14 files / 33 tests,
+lint, and production build. Both showcase storefronts resolved independently,
+visible offer/product media loaded, anonymous checkout was denied, duplicate OTP
+verification was guarded, customer order polling remained foreground-only, and
+switching shops cleared the cart.
 
 Use [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) for diagnosis and
 [`docs/QA_REGRESSION_SUITE.md`](docs/QA_REGRESSION_SUITE.md) for future runs.
