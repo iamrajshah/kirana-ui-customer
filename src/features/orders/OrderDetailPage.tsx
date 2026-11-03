@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { storefrontPath } from "@features/storefront/storefrontPath";
 import {
   IonPage,
@@ -19,6 +19,8 @@ import {
   IonBadge,
   IonSpinner,
   IonThumbnail,
+  useIonViewDidLeave,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -26,37 +28,80 @@ import { apiService } from "@services/api";
 import { formatCurrency } from "@utils/currency";
 import { toast } from "@services/toast";
 import ImageWithFallback from "@components/ImageWithFallback";
+import { startForegroundPolling } from "@utils/foregroundPolling";
+import {
+  getOrderStatusColor,
+  getOrderStatusTranslationKey,
+} from "./orderStatus";
 
 const OrderDetailPage: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const activePage = useRef(false);
 
-  useEffect(() => {
-    loadOrder();
-  }, [id]);
+  const loadOrder = useCallback(
+    async ({ showLoader = false, notifyError = false } = {}) => {
+      if (showLoader) setLoading(true);
+      try {
+        const response = await apiService.getOrderById(id);
+        if (response.success) {
+          setOrder(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to load order:", error);
+        if (notifyError) toast.error(t("failed_to_load"));
+      } finally {
+        if (showLoader) setLoading(false);
+      }
+    },
+    [id, t],
+  );
 
-  const loadOrder = async () => {
-    setLoading(true);
+  const refreshOrderStatus = useCallback(async () => {
     try {
-      const response = await apiService.getOrderById(id);
-      if (response.success) {
-        setOrder(response.data);
+      const response = await apiService.getOrderStatus(id);
+      if (response.success && response.data) {
+        setOrder((current: any) =>
+          current
+            ? {
+                ...current,
+                status: response.data.status,
+                updated_at: response.data.updated_at,
+              }
+            : current,
+        );
       }
     } catch (error) {
-      console.error("Failed to load order:", error);
-      toast.error(t("failed_to_load"));
-    } finally {
-      setLoading(false);
+      console.debug("Order status refresh skipped:", error);
     }
-  };
+  }, [id]);
+
+  useIonViewWillEnter(() => {
+    activePage.current = true;
+    void loadOrder({ showLoader: !order, notifyError: true });
+  }, [loadOrder, Boolean(order)]);
+
+  useIonViewDidLeave(() => {
+    activePage.current = false;
+  });
+
+  useEffect(
+    () =>
+      startForegroundPolling({
+        poll: refreshOrderStatus,
+        intervalMs: 10_000,
+        isHidden: () => document.hidden || !activePage.current,
+      }),
+    [refreshOrderStatus],
+  );
 
   const handleCancelOrder = async () => {
     try {
       await apiService.cancelOrder(id);
       toast.success(t("order_cancelled_success"));
-      loadOrder();
+      await loadOrder();
     } catch (error) {
       console.error("Failed to cancel order:", error);
       toast.error(t("order_cancel_failed"));
@@ -129,18 +174,8 @@ const OrderDetailPage: React.FC = () => {
                       {new Date(order.created_at).toLocaleDateString()}{" "}
                       {new Date(order.created_at).toLocaleTimeString()}
                     </p>
-                    <IonBadge
-                      color={
-                        order.status === "CANCELLED"
-                          ? "danger"
-                          : order.status === "COMPLETED"
-                            ? "success"
-                            : order.status === "PLACED"
-                              ? "primary"
-                              : "medium"
-                      }
-                    >
-                      {order.status}
+                    <IonBadge color={getOrderStatusColor(order.status)}>
+                      {t(getOrderStatusTranslationKey(order.status))}
                     </IonBadge>
                   </div>
                 </div>
@@ -244,68 +279,70 @@ const OrderDetailPage: React.FC = () => {
             </IonCard>
 
             {/* Payment status exists only after the shop accepts and creates a bill. */}
-            {order.invoice_id && <IonCard>
-              <IonCardContent>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <div>
-                    <p
-                      style={{
-                        fontSize: "14px",
-                        color: "var(--ion-color-medium)",
-                        margin: "0 0 4px 0",
-                      }}
-                    >
-                      {t("payment_status")}
-                    </p>
-                    <IonBadge
-                      color={
-                        order.invoice_status === "PAID"
-                          ? "success"
-                          : order.invoice_status === "CANCELLED"
-                            ? "danger"
-                            : "warning"
-                      }
-                    >
-                      {order.invoice_status}
-                    </IonBadge>
-                  </div>
-                  {order.status !== "CANCELLED" && (
-                    <div style={{ textAlign: "right" }}>
+            {order.invoice_id && (
+              <IonCard>
+                <IonCardContent>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
                       <p
                         style={{
-                          fontSize: "12px",
+                          fontSize: "14px",
                           color: "var(--ion-color-medium)",
                           margin: "0 0 4px 0",
                         }}
                       >
-                        {t("paid")}: {formatCurrency(order.paid_amount || 0)}
+                        {t("payment_status")}
                       </p>
-                      {order.paid_amount < order.total_amount && (
+                      <IonBadge
+                        color={
+                          order.invoice_status === "PAID"
+                            ? "success"
+                            : order.invoice_status === "CANCELLED"
+                              ? "danger"
+                              : "warning"
+                        }
+                      >
+                        {order.invoice_status}
+                      </IonBadge>
+                    </div>
+                    {order.status !== "CANCELLED" && (
+                      <div style={{ textAlign: "right" }}>
                         <p
                           style={{
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            color: "var(--ion-color-danger)",
-                            margin: 0,
+                            fontSize: "12px",
+                            color: "var(--ion-color-medium)",
+                            margin: "0 0 4px 0",
                           }}
                         >
-                          {t("due")}:{" "}
-                          {formatCurrency(
-                            order.total_amount - (order.paid_amount || 0),
-                          )}
+                          {t("paid")}: {formatCurrency(order.paid_amount || 0)}
                         </p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </IonCardContent>
-            </IonCard>}
+                        {order.paid_amount < order.total_amount && (
+                          <p
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                              color: "var(--ion-color-danger)",
+                              margin: 0,
+                            }}
+                          >
+                            {t("due")}:{" "}
+                            {formatCurrency(
+                              order.total_amount - (order.paid_amount || 0),
+                            )}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </IonCardContent>
+              </IonCard>
+            )}
 
             {order.status === "PLACED" && (
               <IonButton
