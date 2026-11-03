@@ -10,7 +10,7 @@ import {
   IonBadge,
   IonSpinner,
 } from "@ionic/react";
-import { home, cart, receipt, person } from "ionicons/icons";
+import { cart, compassOutline, home, receipt } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { useCartStore } from "@store/cart.store";
 import { useAuthStore } from "@store/auth.store";
@@ -52,23 +52,43 @@ const TabsLayout: React.FC = () => {
           }
         >
           <Route exact path={`${base}/home`} component={HomePage} />
-          <Route exact path={`${base}/product/:id`} component={ProductDetailPage} />
+          <Route
+            exact
+            path={`${base}/product/:id`}
+            component={ProductDetailPage}
+          />
           <Route exact path={`${base}/cart`} component={CartPage} />
           <Route exact path={`${base}/checkout`} component={CheckoutPage} />
           <Route exact path={`${base}/login`}>
             {isAuthenticated ? <Redirect to={`${base}/home`} /> : <LoginPage />}
           </Route>
           <Route exact path={`${base}/register`}>
-            {isAuthenticated ? <Redirect to={`${base}/home`} /> : <RegisterPage />}
+            {isAuthenticated ? (
+              <Redirect to={`${base}/home`} />
+            ) : (
+              <RegisterPage />
+            )}
           </Route>
           <Route exact path={`${base}/orders`}>
-            {isAuthenticated ? <OrdersPage /> : <Redirect to={`${base}/home`} />}
+            {isAuthenticated ? (
+              <OrdersPage />
+            ) : (
+              <Redirect to={`${base}/home`} />
+            )}
           </Route>
           <Route exact path={`${base}/order/:id`}>
-            {isAuthenticated ? <OrderDetailPage /> : <Redirect to={`${base}/home`} />}
+            {isAuthenticated ? (
+              <OrderDetailPage />
+            ) : (
+              <Redirect to={`${base}/home`} />
+            )}
           </Route>
           <Route exact path={`${base}/profile`}>
-            {isAuthenticated ? <ProfilePage /> : <Redirect to={`${base}/home`} />}
+            {isAuthenticated ? (
+              <ProfilePage />
+            ) : (
+              <Redirect to={`${base}/home`} />
+            )}
           </Route>
           <Route exact path={base}>
             <Redirect to={`${base}/home`} />
@@ -76,23 +96,23 @@ const TabsLayout: React.FC = () => {
         </Suspense>
       </IonRouterOutlet>
 
-      <IonTabBar slot="bottom">
+      <IonTabBar slot="bottom" className="storefront-bottom-nav">
         <IonTabButton tab="home" href={`${base}/home`}>
           <IonIcon icon={home} />
           <IonLabel>{t("home")}</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="cart" href={`${base}/cart`}>
-          <IonIcon icon={cart} />
-          <IonLabel>{t("cart")}</IonLabel>
-          {itemCount > 0 && (
-            <IonBadge
-              color="danger"
-              style={{ position: "absolute", top: "4px", right: "20px" }}
-            >
-              {itemCount}
-            </IonBadge>
-          )}
+        <IonTabButton
+          tab="browse"
+          href={`${base}/home#catalog`}
+          onClick={() =>
+            document
+              .getElementById("catalog")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
+        >
+          <IonIcon icon={compassOutline} />
+          <IonLabel>{t("browse")}</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="orders" href={`${base}/orders`}>
@@ -100,9 +120,14 @@ const TabsLayout: React.FC = () => {
           <IonLabel>{t("orders")}</IonLabel>
         </IonTabButton>
 
-        <IonTabButton tab="profile" href={`${base}/profile`}>
-          <IonIcon icon={person} />
-          <IonLabel>{t("profile")}</IonLabel>
+        <IonTabButton tab="cart" href={`${base}/cart`}>
+          <IonIcon icon={cart} />
+          <IonLabel>{t("basket")}</IonLabel>
+          {itemCount > 0 && (
+            <IonBadge color="danger" className="storefront-bottom-nav__badge">
+              {itemCount}
+            </IonBadge>
+          )}
         </IonTabButton>
       </IonTabBar>
     </IonTabs>

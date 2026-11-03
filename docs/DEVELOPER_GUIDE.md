@@ -38,9 +38,15 @@ render/effect loop; a user action produces at most one in-flight request.
 - Changing slug clears the prior cart and customer session.
 - Cart state is tenant-scoped local convenience; checkout is server-authoritative.
 - Only active/scheduled offers and active products for the resolved tenant show.
+- Missing `preferences.showStockQuantity` is false. Cards, detail and cart use
+  `in_stock`; numeric quantity is optional and must never be reconstructed.
 - Every user-visible string exists in English, Hindi, Marathi, and Gujarati.
 - 390px mobile, 768px tablet, and desktop must remain readable without page
   overflow; horizontal offer/category rails may scroll intentionally.
+
+The Modern Bazaar home keeps six primary category tiles in total: For You,
+four live categories and All Categories. Do not restore an unbounded segment
+row; additional categories belong in the category sheet.
 
 ## Verification
 

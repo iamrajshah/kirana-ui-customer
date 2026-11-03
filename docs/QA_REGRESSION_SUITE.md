@@ -4,10 +4,13 @@
 
 Customer baseline `b709620` passed 9 test files / 19 tests, lint, production
 build, API storefront reads, and deployed desktop/tablet/mobile browser journeys.
-Both showcase slugs resolved to different tenant branding, visible offer/product
-media loaded, anonymous checkout was rejected, and changing shop cleared the
-tenant-scoped cart. No crash boundary, console exception, failed request, or page
-overflow was observed.
+The subsequent Modern Bazaar release candidate passed 14 test files / 33 tests,
+lint, and production build. Both showcase slugs resolved to different tenant
+branding, visible offer/product media loaded, anonymous checkout was rejected,
+and changing shop cleared the tenant-scoped cart. No crash boundary, console
+exception, failed request, or page overflow was observed in the deployed
+baseline; repeat the viewport journey for the exact Modern Bazaar revision
+before release.
 
 ## Public catalogue
 
@@ -20,6 +23,10 @@ overflow was observed.
    broken-image icon appears.
 6. Add/increment/decrement/remove/clear cart, refresh, then change to another shop
    and confirm the previous cart/session is gone.
+7. Leave owner stock sharing OFF. Cards and product detail show Available/Out of
+   stock, and public JSON omits both quantity and low-stock threshold.
+8. Turn owner stock sharing ON, reload the storefront, and confirm exact counts
+   appear only for that tenant and cart increment is capped at the known count.
 
 ## OTP checkout and orders
 
@@ -43,6 +50,10 @@ Use an approved test mobile and avoid repeated paid OTP sends:
 Run at 390x844, 768x1024, and at least 1440x900 in light/dark mode. Check long
 shop/product/offer names, keyboard checkout, safe bottom navigation, intentional
 horizontal rails, and English/Hindi/Marathi/Gujarati completeness.
+
+Before signing in, change language and theme from the compact header. Confirm the
+choice persists after navigation and refresh. The main category row must contain
+exactly six tiles; open All Categories to reach every remaining category.
 
 ## Stop-release defects
 

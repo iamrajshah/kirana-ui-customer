@@ -10,7 +10,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image_url?: string;
-  max_quantity: number; // Stock limit
+  max_quantity?: number; // Present only when the shop publicly shares exact stock.
 }
 
 interface CartState {
@@ -35,6 +35,9 @@ export const useCartStore = create<CartState>((set, get) => {
     storageService.setCart(items);
   };
 
+  const capToKnownStock = (quantity: number, maximum?: number) =>
+    typeof maximum === "number" ? Math.min(quantity, maximum) : quantity;
+
   return {
     items: savedCart || [],
 
@@ -45,7 +48,7 @@ export const useCartStore = create<CartState>((set, get) => {
       let newItems: CartItem[];
       if (existingItem) {
         // Update quantity
-        const newQty = Math.min(
+        const newQty = capToKnownStock(
           existingItem.quantity + quantity,
           item.max_quantity,
         );
@@ -56,7 +59,7 @@ export const useCartStore = create<CartState>((set, get) => {
         // Add new item
         newItems = [
           ...items,
-          { ...item, quantity: Math.min(quantity, item.max_quantity) },
+          { ...item, quantity: capToKnownStock(quantity, item.max_quantity) },
         ];
       }
 
@@ -84,7 +87,7 @@ export const useCartStore = create<CartState>((set, get) => {
         return;
       }
 
-      const newQty = Math.min(quantity, item.max_quantity);
+      const newQty = capToKnownStock(quantity, item.max_quantity);
       const newItems = items.map((i) =>
         i.variant_id === variant_id ? { ...i, quantity: newQty } : i,
       );
