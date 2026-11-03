@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader,
   IonCardTitle, IonCheckbox, IonContent, IonHeader, IonInput, IonItem, IonLabel,
@@ -13,6 +13,7 @@ import { toast } from "@services/toast";
 import { useAuthStore } from "@store/auth.store";
 import { useCartStore } from "@store/cart.store";
 import { formatCurrency } from "@utils/currency";
+import { createSingleFlight } from "@utils/singleFlight";
 import { storefrontPath } from "@features/storefront/storefrontPath";
 
 const CheckoutPage: React.FC = () => {
@@ -37,6 +38,7 @@ const CheckoutPage: React.FC = () => {
   const [saveAddress, setSaveAddress] = useState(true);
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
+  const otpSubmission = useRef(createSingleFlight());
 
   useEffect(() => {
     const address = customer?.addresses?.[0];
@@ -48,7 +50,7 @@ const CheckoutPage: React.FC = () => {
     setPostalCode(address.postal_code ?? "");
   }, [customer]);
 
-  const requestOtp = async () => {
+  const requestOtp = () => otpSubmission.current.run(async () => {
     if (!/^\d{10}$/.test(phone) || name.trim().length < 2) {
       toast.error(t("checkout_identity_required"));
       return;
@@ -59,10 +61,16 @@ const CheckoutPage: React.FC = () => {
       setOtpRequested(true);
       if (response.data?.debugOtp) setOtp(response.data.debugOtp);
       toast.success(t("otp_sent"));
+    } catch {
+      // The API interceptor presents the server's actionable error message.
     } finally { setLoading(false); }
-  };
+  });
 
-  const verifyOtp = async () => {
+  const verifyOtp = () => otpSubmission.current.run(async () => {
+    if (!/^\d{6}$/.test(otp)) {
+      toast.error(t("verification_code_required"));
+      return;
+    }
     setLoading(true);
     try {
       const response = await apiService.verifyOtp({ phone, otp, name: name.trim() });
@@ -70,8 +78,10 @@ const CheckoutPage: React.FC = () => {
         ? { id: storefront.tenantId, name: storefront.name }
         : undefined);
       toast.success(t("phone_verified"));
+    } catch {
+      // The API interceptor presents the server's actionable error message.
     } finally { setLoading(false); }
-  };
+  });
 
   const placeOrder = async () => {
     if (!isAuthenticated) { toast.error(t("verify_phone_before_order")); return; }
@@ -106,9 +116,9 @@ const CheckoutPage: React.FC = () => {
         <IonList>
           <IonItem><IonInput label={t("name")} labelPlacement="stacked" value={name} disabled={isAuthenticated} onIonInput={(e) => setName(String(e.detail.value ?? ""))} /></IonItem>
           <IonItem><IonInput label={t("phone")} labelPlacement="stacked" inputMode="tel" maxlength={10} value={phone} disabled={isAuthenticated} onIonInput={(e) => setPhone(String(e.detail.value ?? ""))} /></IonItem>
-          {!isAuthenticated && otpRequested && <IonItem><IonInput label={t("verification_code")} labelPlacement="stacked" inputMode="numeric" maxlength={6} value={otp} onIonInput={(e) => setOtp(String(e.detail.value ?? ""))} /></IonItem>}
+          {!isAuthenticated && otpRequested && <IonItem><IonInput label={t("verification_code")} labelPlacement="stacked" inputMode="numeric" autocomplete="one-time-code" maxlength={6} value={otp} onIonInput={(e) => setOtp(String(e.detail.value ?? ""))} /></IonItem>}
         </IonList>
-        {!isAuthenticated && <IonButton expand="block" fill={otpRequested ? "solid" : "outline"} onClick={otpRequested ? verifyOtp : requestOtp}>{otpRequested ? t("verify_phone") : t("send_verification_code")}</IonButton>}
+        {!isAuthenticated && <IonButton type="button" expand="block" fill={otpRequested ? "solid" : "outline"} disabled={loading} onClick={otpRequested ? verifyOtp : requestOtp}>{otpRequested ? t("verify_phone") : t("send_verification_code")}</IonButton>}
         {isAuthenticated && <IonNote color="success">{t("phone_verified")}</IonNote>}
       </IonCardContent></IonCard>
 
