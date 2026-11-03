@@ -11,6 +11,8 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 - Switching to another shop clears the previous customer session.
 - Do not accept a tenant ID from a query string or a customer-editable form.
 - A production build must have `VITE_API_BASE_URL`; it must never silently point at localhost.
+- `VITE_API_BASE_URL` is the HTTPS server origin only. The client adds `/api/v1` itself.
+- Customer storefront access is a Business-plan entitlement. Hiding a link in a UI is not an access control.
 
 ## Supported workflow
 
@@ -42,6 +44,7 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 - **Catalog empty:** verify products are active, visible and have saleable variants for that tenant.
 - **Cart mismatch:** inspect `/api/v1/cart` responses and variant IDs; local storage is only a UI cache.
 - **Cloudflare deep link 404:** confirm `public/_redirects` is present in `dist`.
+- **Completely blank page:** inspect the browser console first. Production builds now fail before release when the API URL is missing, local, non-HTTPS, or includes `/api/v1`.
 
 ## Ownership
 
