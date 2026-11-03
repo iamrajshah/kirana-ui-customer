@@ -53,14 +53,19 @@ horizontal rails, and English/Hindi/Marathi/Gujarati completeness.
 
 Before signing in, change language and theme from the compact header. Confirm the
 choice persists after navigation and refresh. The main category row must contain
-exactly six tiles; open All Categories to reach every remaining category.
+exactly six tiles. At each viewport, open the inline category browser using both
+`See all` and `All Categories`, select a category outside the first four, and
+confirm the browser closes, the chosen category remains visible/selected, and
+only matching products remain. Then open one published offer and one product
+card: both URLs must keep the current `/shop/<slug>` prefix. Confirm the browser
+console has no interaction exception and the tenant-scoped cart is unchanged.
 
 ## Stop-release defects
 
 Wrong tenant, retained cross-shop cart/session, OTP loop, duplicated order,
 stale customer status, broken media without fallback, incorrect price/stock,
-unusable mobile checkout, raw server/provider error, or a broken deep link stops
-release.
+inert category/offer/product actions, unusable mobile checkout, raw
+server/provider error, or a broken deep link stops release.
 
 ## Repeat-order and live-status regression
 

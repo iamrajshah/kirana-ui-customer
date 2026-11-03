@@ -48,7 +48,7 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 - Branded storefront link resolution
 - Public catalogue, category, product and published-offer search
 - Modern Bazaar home with six uncluttered category shortcuts; every remaining
-  category stays available in the All Categories sheet
+  category stays available in the inline All Categories browser
 - Language and light/dark controls remain available before customer sign-in
 - Tenant-isolated device-local cart with server-authoritative checkout
 - Phone OTP identity at checkout
@@ -108,6 +108,16 @@ cart, and the document remained contained to each tested viewport.
 
 Use [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) for diagnosis and
 [`docs/QA_REGRESSION_SUITE.md`](docs/QA_REGRESSION_SUITE.md) for future runs.
+
+## Bazaar category navigation
+
+`See all` and the `All Categories` shortcut open the same inline, accessible
+category browser below the primary shortcuts. The browser is deliberately part
+of the page rather than an Ionic sheet modal: the previous modal could remain
+`overlay-hidden` after a valid click on both browser and mobile builds. Selecting
+a category closes the browser, keeps the selected category in the six primary
+shortcuts, and refreshes only the product catalogue. It must not change the shop
+slug, storefront identity, customer session, or tenant-scoped cart.
 
 ## Live order and marketplace update — 3 November 2026
 
