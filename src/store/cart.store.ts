@@ -29,7 +29,7 @@ interface CartState {
 
 export const useCartStore = create<CartState>((set, get) => {
   // Initialize from localStorage
-  const savedCart = storageService.getCart();
+  const savedCart = storageService.getCart<CartItem[]>();
 
   const saveToStorage = (items: CartItem[]) => {
     storageService.setCart(items);
@@ -63,7 +63,6 @@ export const useCartStore = create<CartState>((set, get) => {
       // Update UI immediately (optimistic update)
       saveToStorage(newItems);
       set({ items: newItems });
-
     },
 
     removeItem: async (variant_id) => {
@@ -72,7 +71,6 @@ export const useCartStore = create<CartState>((set, get) => {
       // Update UI immediately
       saveToStorage(newItems);
       set({ items: newItems });
-
     },
 
     updateQuantity: async (variant_id, quantity) => {
@@ -94,7 +92,6 @@ export const useCartStore = create<CartState>((set, get) => {
       // Update UI immediately
       saveToStorage(newItems);
       set({ items: newItems });
-
     },
 
     clearCart: async (localOnly = false) => {
@@ -110,7 +107,7 @@ export const useCartStore = create<CartState>((set, get) => {
     },
 
     loadCart: async () => {
-      set({ items: storageService.getCart() || [] });
+      set({ items: storageService.getCart<CartItem[]>() || [] });
     },
 
     getTotal: () => {

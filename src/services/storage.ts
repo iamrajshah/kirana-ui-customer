@@ -1,11 +1,16 @@
 const STORAGE_KEYS = {
-  AUTH_TOKEN: 'kirana_auth_token',
-  USER_DATA: 'kirana_user_data',
-  TENANT_DATA: 'kirana_tenant_data',
-  STOREFRONT: 'kirana_storefront',
-  CART: 'kirana_cart',
-  LANGUAGE: 'kirana_language',
+  AUTH_TOKEN: "kirana_auth_token",
+  USER_DATA: "kirana_user_data",
+  TENANT_DATA: "kirana_tenant_data",
+  STOREFRONT: "kirana_storefront",
+  CART: "kirana_cart",
+  LANGUAGE: "kirana_language",
 };
+
+interface StoredCart<T = unknown> {
+  tenantId: string;
+  items: T;
+}
 
 class StorageService {
   private readJson<T>(key: string): T | null {
@@ -70,13 +75,26 @@ class StorageService {
   }
 
   // Cart
-  setCart(cart: any) {
-    localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
+  setCart<T>(cart: T) {
+    const tenantId = this.getStorefront()?.tenantId;
+    if (!tenantId) {
+      this.removeCart();
+      return;
+    }
+    localStorage.setItem(
+      STORAGE_KEYS.CART,
+      JSON.stringify({ tenantId, items: cart }),
+    );
   }
 
-  getCart(): any | null {
-    const cart = localStorage.getItem(STORAGE_KEYS.CART);
-    return cart ? JSON.parse(cart) : null;
+  getCart<T>(): T | null {
+    const stored = this.readJson<StoredCart<T>>(STORAGE_KEYS.CART);
+    const activeTenantId = this.getStorefront()?.tenantId;
+    if (!stored || !activeTenantId || stored.tenantId !== activeTenantId) {
+      this.removeCart();
+      return null;
+    }
+    return stored.items;
   }
 
   removeCart() {
