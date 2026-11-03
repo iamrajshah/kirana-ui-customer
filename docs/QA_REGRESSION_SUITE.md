@@ -4,13 +4,13 @@
 
 Customer baseline `b709620` passed 9 test files / 19 tests, lint, production
 build, API storefront reads, and deployed desktop/tablet/mobile browser journeys.
-The subsequent Modern Bazaar release candidate passed 14 test files / 33 tests,
-lint, and production build. Both showcase slugs resolved to different tenant
-branding, visible offer/product media loaded, anonymous checkout was rejected,
-and changing shop cleared the tenant-scoped cart. No crash boundary, console
-exception, failed request, or page overflow was observed in the deployed
-baseline; repeat the viewport journey for the exact Modern Bazaar revision
-before release.
+Deployed Modern Bazaar revision `e23949a` passed 14 test files / 34 tests, lint,
+production build, and production browser checks at 390, 820 and 1440 pixels.
+Both showcase slugs resolved to different tenant branding, visible offer/product
+media loaded, anonymous checkout was rejected, and changing shop cleared the
+tenant-scoped cart. The document width matched every tested viewport, with all
+header and bottom-navigation actions visible. Repeat this journey for each exact
+release revision.
 
 ## Public catalogue
 
