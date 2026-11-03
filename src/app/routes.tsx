@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import { useAuthStore } from "@store/auth.store";
 import { IonSpinner } from "@ionic/react";
 import { useTranslation } from "react-i18next";
@@ -28,15 +28,17 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Suspense fallback={loading}>
-      <Route exact path="/shop/:slug" component={StorefrontEntryPage} />
-      <Route exact path="/login" component={isAuthenticated ? undefined : LoginPage}>
-        {isAuthenticated && <Redirect to="/home" />}
-      </Route>
-      <Route exact path="/register" component={isAuthenticated ? undefined : RegisterPage}>
-        {isAuthenticated && <Redirect to="/home" />}
-      </Route>
+      <Switch>
+        <Route exact path="/shop/:slug" component={StorefrontEntryPage} />
+        <Route exact path="/login" component={isAuthenticated ? undefined : LoginPage}>
+          {isAuthenticated && <Redirect to="/home" />}
+        </Route>
+        <Route exact path="/register" component={isAuthenticated ? undefined : RegisterPage}>
+          {isAuthenticated && <Redirect to="/home" />}
+        </Route>
 
-      <Route path="/" render={() => <TabsLayout />} />
+        <Route path="/" render={() => <TabsLayout />} />
+      </Switch>
     </Suspense>
   );
 };
