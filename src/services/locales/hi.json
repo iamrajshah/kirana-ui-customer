@@ -134,6 +134,7 @@
   "shop_online_from": "ऑनलाइन खरीदें",
   "show_all_products": "सभी सामान दिखाएं",
   "view_offers": "आज के ऑफर देखें ({{count}})",
+  "published_offers": "इस दुकान के ऑफर",
   "no_products_available": "कोई सामान उपलब्ध नहीं है",
   "load_product_failed": "सामान की जानकारी लोड नहीं हो सकी",
   "product_details": "सामान की जानकारी",

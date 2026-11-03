@@ -31,13 +31,24 @@ const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
+  const [offers, setOffers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [offersOnly, setOffersOnly] = useState(false);
   const storefront = storageService.getStorefront();
 
   useEffect(() => {
     loadCategories();
+    loadOffers();
   }, []);
+
+  const loadOffers = async () => {
+    try {
+      const response = await apiService.getOffers();
+      if (response.success) setOffers(response.data ?? []);
+    } catch (error) {
+      console.error("Failed to load offers:", error);
+    }
+  };
 
   useEffect(() => {
     loadProducts();
@@ -97,6 +108,7 @@ const HomePage: React.FC = () => {
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
     await loadCategories();
+    await loadOffers();
     await loadProducts();
     event.detail.complete();
   };
@@ -182,6 +194,99 @@ const HomePage: React.FC = () => {
               : t("view_offers", { count: discountedProducts.length })}
           </button>
         </section>
+
+        {offers.length > 0 && (
+          <section
+            aria-label={t("published_offers")}
+            style={{ padding: "8px 12px" }}
+          >
+            <h2 style={{ margin: "4px 0 10px", fontSize: "1.2rem" }}>
+              {t("published_offers")}
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridAutoFlow: "column",
+                gridAutoColumns: "minmax(250px, 78vw)",
+                gap: 10,
+                overflowX: "auto",
+                scrollSnapType: "x mandatory",
+                paddingBottom: 6,
+              }}
+            >
+              {offers.map((offer) => {
+                const image =
+                  offer.image_url ||
+                  offer.product?.image_url ||
+                  offer.product?.product_variants?.[0]?.image_url;
+                return (
+                  <button
+                    type="button"
+                    key={offer.id}
+                    onClick={() =>
+                      offer.product_id &&
+                      handleProductClick(String(offer.product_id))
+                    }
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: image ? "82px 1fr" : "1fr",
+                      gap: 12,
+                      minHeight: 118,
+                      padding: 14,
+                      textAlign: "left",
+                      border: "1px solid rgba(8,127,91,.18)",
+                      borderRadius: 18,
+                      background: "linear-gradient(135deg,#fff8e8,#f1fbf6)",
+                      boxShadow: "0 8px 22px rgba(20,78,63,.08)",
+                      scrollSnapAlign: "start",
+                    }}
+                  >
+                    {image && (
+                      <img
+                        src={image}
+                        alt=""
+                        style={{
+                          width: 82,
+                          height: 82,
+                          objectFit: "contain",
+                          borderRadius: 12,
+                        }}
+                      />
+                    )}
+                    <span>
+                      {offer.badge_text && (
+                        <small
+                          style={{
+                            display: "inline-block",
+                            marginBottom: 5,
+                            color: "#087f5b",
+                            fontWeight: 800,
+                          }}
+                        >
+                          {offer.badge_text}
+                        </small>
+                      )}
+                      <strong style={{ display: "block", fontSize: "1.05rem" }}>
+                        {offer.title}
+                      </strong>
+                      {offer.description && (
+                        <span
+                          style={{
+                            display: "block",
+                            marginTop: 5,
+                            color: "#53645d",
+                          }}
+                        >
+                          {offer.description}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {loading ? (
           <div
