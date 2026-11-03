@@ -13,6 +13,7 @@ import { toast } from "@services/toast";
 import { useAuthStore } from "@store/auth.store";
 import { useCartStore } from "@store/cart.store";
 import { formatCurrency } from "@utils/currency";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 
 const CheckoutPage: React.FC = () => {
   const { t } = useTranslation();
@@ -92,14 +93,14 @@ const CheckoutPage: React.FC = () => {
       });
       await clearCart(true);
       toast.success(response.message || t("order_placed_successfully"));
-      history.replace(`/order/${response.data.id}`);
+      history.replace(storefrontPath(`/order/${response.data.id}`));
     } finally { setLoading(false); }
   };
 
-  if (items.length === 0) { history.replace("/cart"); return null; }
+  if (items.length === 0) { history.replace(storefrontPath("/cart")); return null; }
 
   return <IonPage>
-    <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton defaultHref="/cart" /></IonButtons><IonTitle>{t("checkout")}</IonTitle></IonToolbar></IonHeader>
+    <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton defaultHref={storefrontPath("/cart")} /></IonButtons><IonTitle>{t("checkout")}</IonTitle></IonToolbar></IonHeader>
     <IonContent className="ion-padding">
       <IonCard><IonCardHeader><IonCardTitle>{t("contact_and_verification")}</IonCardTitle></IonCardHeader><IonCardContent>
         <IonList>

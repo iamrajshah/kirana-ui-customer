@@ -15,9 +15,6 @@ if (import.meta.env.PROD && !configuredApiBaseUrl) {
 }
 const API_BASE_URL = configuredApiBaseUrl || "http://localhost:5000";
 
-// Configure your tenant ID here (each shop has unique tenant)
-const ENV_TENANT_ID = import.meta.env.VITE_TENANT_ID || "";
-
 class ApiService {
   private api: AxiosInstance;
 
@@ -30,8 +27,7 @@ class ApiService {
     // Request interceptor - add auth token
     this.api.interceptors.request.use(
       (config) => {
-        const tenantId =
-          storageService.getStorefront()?.tenantId || ENV_TENANT_ID;
+        const tenantId = storageService.getStorefront()?.tenantId;
         if (tenantId) config.headers["X-Tenant-ID"] = tenantId;
         const token = useAuthStore.getState().token;
         if (token) {

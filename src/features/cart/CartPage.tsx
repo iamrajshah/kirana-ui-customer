@@ -1,4 +1,5 @@
 import React from 'react';
+import { storefrontPath } from '@features/storefront/storefrontPath';
 import {
   IonPage,
   IonHeader,
@@ -31,7 +32,7 @@ const CartPage: React.FC = () => {
 
   const handleCheckout = () => {
     // Navigate to checkout flow
-    history.push('/checkout');
+    history.push(storefrontPath('/checkout'));
   };
 
   if (items.length === 0) {
@@ -47,7 +48,7 @@ const CartPage: React.FC = () => {
             icon="🛒"
             message={t('cart_empty')}
             actionLabel={t('continue_shopping')}
-            onAction={() => history.push('/home')}
+            onAction={() => history.push(storefrontPath('/home'))}
           />
         </IonContent>
       </IonPage>

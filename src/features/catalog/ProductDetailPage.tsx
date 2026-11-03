@@ -18,6 +18,8 @@ import ImageWithFallback from "@components/ImageWithFallback";
 import { formatCurrency } from "@utils/currency";
 import { toast } from "@services/toast";
 import ProductCard from "@components/ProductCard";
+import AppHeader from "@components/AppHeader";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 
 const ProductDetailPage: React.FC = () => {
   const { t } = useTranslation();
@@ -83,10 +85,11 @@ const ProductDetailPage: React.FC = () => {
 
   return (
     <IonPage>
+      <AppHeader />
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
+            <IonBackButton defaultHref={storefrontPath("/home")} />
           </IonButtons>
           <IonTitle>{t("product")}</IonTitle>
         </IonToolbar>
@@ -104,13 +107,13 @@ const ProductDetailPage: React.FC = () => {
             <IonSpinner />
           </div>
         ) : product ? (
-          <div>
+          <main className="product-detail-shell">
             <ImageWithFallback
               src={imageUrl}
               alt={product.name}
-              style={{ width: "100%", height: "300px", objectFit: "cover" }}
+              className="product-detail-image"
             />
-            <div style={{ padding: "16px" }}>
+            <div className="product-detail-copy">
               <h1
                 style={{
                   fontSize: "24px",
@@ -263,7 +266,7 @@ const ProductDetailPage: React.FC = () => {
                       <h2>{t("frequently_bought_together")}</h2>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 8 }}>
                         {recommendations.map((recommended) => (
-                          <ProductCard key={recommended.id} product={recommended} onProductClick={(productId) => history.push(`/product/${productId}`)} />
+                          <ProductCard key={recommended.id} product={recommended} onProductClick={(productId) => history.push(storefrontPath(`/product/${productId}`))} />
                         ))}
                       </div>
                     </section>
@@ -271,7 +274,7 @@ const ProductDetailPage: React.FC = () => {
                 </>
               )}
             </div>
-          </div>
+          </main>
         ) : (
           <div style={{ padding: "40px", textAlign: "center" }}>
             <p>{t("error_occurred")}</p>

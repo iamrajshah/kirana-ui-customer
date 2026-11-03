@@ -16,6 +16,7 @@ import {
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 import { useAuthStore } from "@store/auth.store";
 import { apiService } from "@services/api";
 import { toast } from "@services/toast";
@@ -73,7 +74,7 @@ const RegisterPage: React.FC = () => {
         // Auto-login after successful registration
         login(response.data.token, response.data.customer);
         toast.success(t("register_success"));
-        history.replace("/home");
+        history.replace(storefrontPath("/home"));
       } else {
         setError(response.message || t("registration_failed"));
       }
@@ -89,7 +90,7 @@ const RegisterPage: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/login" />
+            <IonBackButton defaultHref={storefrontPath("/login")} />
           </IonButtons>
           <IonTitle>{t("create_account")}</IonTitle>
         </IonToolbar>
@@ -174,7 +175,7 @@ const RegisterPage: React.FC = () => {
               <IonButton
                 expand="block"
                 fill="clear"
-                onClick={() => history.push("/login")}
+                onClick={() => history.push(storefrontPath("/login"))}
                 style={{ marginTop: "8px" }}
               >
                 {t("already_have_account")}

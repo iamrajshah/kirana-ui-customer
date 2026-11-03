@@ -6,6 +6,7 @@ import { storageService } from "@services/storage";
 import { useAuthStore } from "@store/auth.store";
 import { normalizeShopSlug, shouldResetCustomerSession } from "./storefront";
 import { useTranslation } from "react-i18next";
+import TabsLayout from "@features/layout/TabsLayout";
 
 const StorefrontEntryPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,11 +14,14 @@ const StorefrontEntryPage: React.FC = () => {
   const logout = useAuthStore((state) => state.logout);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [error, setError] = useState("");
+  const [ready, setReady] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
     let active = true;
     const bootstrap = async () => {
+      setReady(false);
+      setError("");
       try {
         const response = await apiService.resolveStorefront(
           normalizeShopSlug(slug),
@@ -38,7 +42,10 @@ const StorefrontEntryPage: React.FC = () => {
           "--ion-color-primary",
           response.data.brandColor,
         );
-        history.replace("/home");
+        setReady(true);
+        if (history.location.pathname === `/shop/${slug}` || history.location.pathname === `/shop/${slug}/`) {
+          history.replace(`/shop/${encodeURIComponent(response.data.slug)}/home`);
+        }
       } catch {
         if (active) setError(t("storefront_unavailable_message"));
       }
@@ -48,6 +55,8 @@ const StorefrontEntryPage: React.FC = () => {
       active = false;
     };
   }, [history, isAuthenticated, logout, slug, t]);
+
+  if (ready) return <TabsLayout />;
 
   return (
     <IonPage>

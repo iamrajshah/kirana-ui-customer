@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 import {
   IonPage,
   IonContent,
@@ -204,7 +205,7 @@ const LoginPage: React.FC = () => {
               <IonButton
                 expand="block"
                 fill="clear"
-                onClick={() => history.push("/register")}
+                onClick={() => history.push(storefrontPath("/register"))}
                 style={{ marginTop: "8px" }}
               >
                 {t("create_account")}
