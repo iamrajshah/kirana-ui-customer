@@ -20,3 +20,14 @@ export const getOrderStatusColor = (status: string): string =>
 
 export const getOrderStatusTranslationKey = (status: string): string =>
   `order_status_${status.toLowerCase()}`;
+
+export const activeOrderJourney: readonly CustomerOrderStatus[] = [
+  "PLACED",
+  "ACCEPTED",
+  "PREPARING",
+  "READY",
+  "COMPLETED",
+];
+
+export const getOrderJourneyIndex = (status: string): number =>
+  status === "CANCELLED" ? -1 : activeOrderJourney.indexOf(status as CustomerOrderStatus);

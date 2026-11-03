@@ -1,4 +1,3 @@
-import { IonToast } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { toast } from '../services/toast';
 
@@ -11,8 +10,6 @@ interface ToastMessage {
 
 export const ToastContainer = () => {
   const [toastData, setToastData] = useState<ToastMessage | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
   useEffect(() => {
     const unsubscribe = toast.subscribe((options) => {
       setToastData({
@@ -21,7 +18,6 @@ export const ToastContainer = () => {
         duration: options.duration || 3000,
         position: options.position || 'bottom',
       });
-      setIsOpen(true);
     });
 
     return () => {
@@ -29,28 +25,17 @@ export const ToastContainer = () => {
     };
   }, []);
 
-  const getColor = () => {
-    switch (toastData?.type) {
-      case 'success':
-        return 'success';
-      case 'error':
-        return 'danger';
-      case 'warning':
-        return 'warning';
-      case 'info':
-      default:
-        return 'primary';
-    }
-  };
+  useEffect(() => {
+    if (!toastData) return;
+    const handle = window.setTimeout(() => setToastData(null), toastData.duration);
+    return () => window.clearTimeout(handle);
+  }, [toastData]);
 
-  return (
-    <IonToast
-      isOpen={isOpen}
-      onDidDismiss={() => setIsOpen(false)}
-      message={toastData?.message}
-      duration={toastData?.duration}
-      position={toastData?.position}
-      color={getColor()}
-    />
-  );
+  if (!toastData) return null;
+
+  return <div
+    className={`storefront-toast storefront-toast--${toastData.type} storefront-toast--${toastData.position}`}
+    role={toastData.type === 'error' ? 'alert' : 'status'}
+    aria-live={toastData.type === 'error' ? 'assertive' : 'polite'}
+  >{toastData.message}</div>;
 };

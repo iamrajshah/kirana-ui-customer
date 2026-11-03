@@ -80,3 +80,14 @@ order polling remained foreground-only, and switching shops cleared the cart.
 
 Use [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) for diagnosis and
 [`docs/QA_REGRESSION_SUITE.md`](docs/QA_REGRESSION_SUITE.md) for future runs.
+
+## Live order and marketplace update — 3 November 2026
+
+Order list and detail poll only while the page is visible, every five seconds.
+The lightweight status response updates order status plus linked invoice number,
+payment status, paid amount and total; no full browser refresh is required. The
+authenticated tab bar keeps a stable DOM shape, and global feedback uses a plain
+React status element rather than an Ionic overlay, preventing the prior
+`selectedTab`/`isOpen` crash after checkout. The home screen now uses a responsive
+marketplace hierarchy, tenant branding, benefits, offer rail and richer product
+cards while preserving the original Kirana identity.
