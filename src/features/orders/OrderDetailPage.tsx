@@ -19,8 +19,6 @@ import {
   IonBadge,
   IonSpinner,
   IonThumbnail,
-  useIonViewDidLeave,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -30,6 +28,8 @@ import { toast } from "@services/toast";
 import ImageWithFallback from "@components/ImageWithFallback";
 import { startForegroundPolling } from "@utils/foregroundPolling";
 import {
+  activeOrderJourney,
+  getOrderJourneyIndex,
   getOrderStatusColor,
   getOrderStatusTranslationKey,
 } from "./orderStatus";
@@ -39,7 +39,7 @@ const OrderDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const activePage = useRef(false);
+  const activePage = useRef(true);
 
   const loadOrder = useCallback(
     async ({ showLoader = false, notifyError = false } = {}) => {
@@ -68,6 +68,11 @@ const OrderDetailPage: React.FC = () => {
             ? {
                 ...current,
                 status: response.data.status,
+                invoice_id: response.data.invoice_id,
+                invoice_number: response.data.invoice_number,
+                invoice_status: response.data.invoice_status,
+                paid_amount: response.data.paid_amount,
+                total_amount: response.data.total_amount,
                 updated_at: response.data.updated_at,
               }
             : current,
@@ -78,20 +83,19 @@ const OrderDetailPage: React.FC = () => {
     }
   }, [id]);
 
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     activePage.current = true;
-    void loadOrder({ showLoader: !order, notifyError: true });
-  }, [loadOrder, Boolean(order)]);
-
-  useIonViewDidLeave(() => {
-    activePage.current = false;
-  });
+    void loadOrder({ showLoader: true, notifyError: true });
+    return () => {
+      activePage.current = false;
+    };
+  }, [loadOrder]);
 
   useEffect(
     () =>
       startForegroundPolling({
         poll: refreshOrderStatus,
-        intervalMs: 10_000,
+        intervalMs: 5_000,
         isHidden: () => document.hidden || !activePage.current,
       }),
     [refreshOrderStatus],
@@ -181,6 +185,32 @@ const OrderDetailPage: React.FC = () => {
                 </div>
               </IonCardContent>
             </IonCard>
+
+            {order.status !== "CANCELLED" && (
+              <section className="customer-order-journey" aria-label={t("order_progress")}>
+                <div className="customer-order-journey__heading">
+                  <small>{t("live_order_updates")}</small>
+                  <strong>{t("order_progress")}</strong>
+                </div>
+                <ol>
+                  {activeOrderJourney.map((status, index) => {
+                    const currentIndex = getOrderJourneyIndex(order.status);
+                    const reached = index <= currentIndex;
+                    const current = index === currentIndex;
+                    return (
+                      <li
+                        key={status}
+                        className={reached ? "is-reached" : ""}
+                        aria-current={current ? "step" : undefined}
+                      >
+                        <span>{reached ? "✓" : index + 1}</span>
+                        <small>{t(getOrderStatusTranslationKey(status))}</small>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+            )}
 
             {/* Order Items */}
             <IonCard>

@@ -82,18 +82,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
 
   return (
     <IonCard
+      className="storefront-product-card"
       onClick={() => onProductClick?.(product.id)}
-      style={{ margin: '0', cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}
     >
-      <div style={{ position: 'relative' }}>
+      <div className="storefront-product-card__media">
         <ImageWithFallback
-          src={product.image_url}
+          src={product.image_url || variant.image_url}
           alt={product.name}
-          style={{
-            width: '100%',
-            height: '140px',
-            objectFit: 'cover',
-          }}
+          className="storefront-product-card__image"
         />
         {isOutOfStock && (
           <IonBadge
@@ -123,7 +119,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
         )}
       </div>
 
-      <IonCardContent style={{ padding: '8px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <IonCardContent className="storefront-product-card__content">
         <div style={{ marginBottom: '8px', flex: 1 }}>
           <h3 
             style={{ 

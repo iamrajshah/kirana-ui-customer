@@ -195,32 +195,30 @@ const HomePage: React.FC = () => {
 
         <div className="storefront-content">
           <section
-            style={{
-              margin: "12px 12px 4px",
-              padding: 18,
-              borderRadius: 20,
-              color: "#fff",
-              background: `linear-gradient(135deg, ${storefront?.brandColor || "#087F5B"}, #164e3f)`,
-            }}
+            className="storefront-hero"
+            style={{ "--storefront-brand": storefront?.brandColor || "#087F5B" } as React.CSSProperties}
           >
-            <p style={{ margin: 0, opacity: 0.85 }}>{t("shop_online_from")}</p>
-            <h1 style={{ margin: "4px 0 12px" }}>
+            <div className="storefront-hero__glow" aria-hidden="true" />
+            <p>{t("shop_online_from")}</p>
+            <h1>
               {storefront?.name || t("app_name")}
             </h1>
+            <span className="storefront-hero__message">{t("storefront_hero_message")}</span>
             <button
               type="button"
               onClick={() => setOffersOnly((value) => !value)}
-              style={{
-                border: 0,
-                borderRadius: 999,
-                padding: "8px 14px",
-                fontWeight: 700,
-              }}
+              className="storefront-hero__action"
             >
               {offersOnly
                 ? t("show_all_products")
                 : t("view_offers", { count: discountedProducts.length })}
             </button>
+          </section>
+
+          <section className="storefront-benefits" aria-label={t("shopping_benefits")}>
+            <span><b>✓</b>{t("benefit_shop_prices")}</span>
+            <span><b>◷</b>{t("benefit_quick_order")}</span>
+            <span><b>⌂</b>{t("benefit_pickup_delivery")}</span>
           </section>
 
           {offers.length > 0 && (
@@ -300,15 +298,21 @@ const HomePage: React.FC = () => {
               }
             />
           ) : (
-            <div className="storefront-product-grid">
-              {visibleProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onProductClick={handleProductClick}
-                />
-              ))}
-            </div>
+            <section className="storefront-products" aria-label={t("shop_products")}>
+              <div className="storefront-section-heading">
+                <div><small>{t("everyday_essentials")}</small><h2>{t("shop_products")}</h2></div>
+                <span>{t("product_count", { count: visibleProducts.length })}</span>
+              </div>
+              <div className="storefront-product-grid">
+                {visibleProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onProductClick={handleProductClick}
+                  />
+                ))}
+              </div>
+            </section>
           )}
         </div>
       </IonContent>

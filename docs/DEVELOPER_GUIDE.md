@@ -58,3 +58,12 @@ shops and one disposable order journey.
 Cloudflare Pages hosts `kirana-customer.pages.dev`. Verify `/release.json`, the
 root landing page, and direct `/shop/<slug>`/order routes. Publish the exact tested
 main revision; documentation-only changes do not require deployment.
+
+## Post-checkout stability contract
+
+Do not conditionally add or remove `IonTabButton` children when authentication
+changes. Keep the tab structure stable and guard route content instead. Do not
+drive global feedback through a controlled `IonToast` across route transitions;
+the shared React toast owns its timer and DOM lifecycle. Customer order polling
+must merge invoice payment fields as well as order status and must stop while the
+document is hidden or the page unmounts.

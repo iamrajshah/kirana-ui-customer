@@ -13,8 +13,6 @@ import {
   IonRefresher,
   IonRefresherContent,
   RefresherEventDetail,
-  useIonViewDidLeave,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -35,7 +33,7 @@ const OrdersPage: React.FC = () => {
   const history = useHistory();
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const activePage = useRef(false);
+  const activePage = useRef(true);
 
   const loadOrders = useCallback(
     async ({ showLoader = false, notifyError = false } = {}) => {
@@ -55,20 +53,19 @@ const OrdersPage: React.FC = () => {
     [t],
   );
 
-  useIonViewWillEnter(() => {
+  useEffect(() => {
     activePage.current = true;
-    void loadOrders({ showLoader: orders.length === 0, notifyError: true });
-  }, [loadOrders, orders.length]);
-
-  useIonViewDidLeave(() => {
-    activePage.current = false;
-  });
+    void loadOrders({ showLoader: true, notifyError: true });
+    return () => {
+      activePage.current = false;
+    };
+  }, [loadOrders]);
 
   useEffect(
     () =>
       startForegroundPolling({
         poll: () => loadOrders(),
-        intervalMs: 15_000,
+        intervalMs: 5_000,
         isHidden: () => document.hidden || !activePage.current,
       }),
     [loadOrders],

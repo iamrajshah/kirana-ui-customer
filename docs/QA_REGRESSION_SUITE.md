@@ -50,3 +50,12 @@ Wrong tenant, retained cross-shop cart/session, OTP loop, duplicated order,
 stale customer status, broken media without fallback, incorrect price/stock,
 unusable mobile checkout, raw server/provider error, or a broken deep link stops
 release.
+
+## Repeat-order and live-status regression
+
+Place an order, remain signed in, return Home and add a second order without
+reloading. There must be no `selectedTab`, overlay, or toast exception and no
+blank route. Keep the first order detail open while POS moves it through Accepted,
+Preparing, Ready, Paid and Completed. Each state and payment badge must update in
+at most one polling interval while the tab is visible; background tabs must not
+continue polling.

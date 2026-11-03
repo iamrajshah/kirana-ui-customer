@@ -95,19 +95,15 @@ const TabsLayout: React.FC = () => {
           )}
         </IonTabButton>
 
-        {isAuthenticated && (
-          <IonTabButton tab="orders" href={`${base}/orders`}>
-            <IonIcon icon={receipt} />
-            <IonLabel>{t("orders")}</IonLabel>
-          </IonTabButton>
-        )}
+        <IonTabButton tab="orders" href={`${base}/orders`}>
+          <IonIcon icon={receipt} />
+          <IonLabel>{t("orders")}</IonLabel>
+        </IonTabButton>
 
-        {isAuthenticated && (
-          <IonTabButton tab="profile" href={`${base}/profile`}>
-            <IonIcon icon={person} />
-            <IonLabel>{t("profile")}</IonLabel>
-          </IonTabButton>
-        )}
+        <IonTabButton tab="profile" href={`${base}/profile`}>
+          <IonIcon icon={person} />
+          <IonLabel>{t("profile")}</IonLabel>
+        </IonTabButton>
       </IonTabBar>
     </IonTabs>
   );

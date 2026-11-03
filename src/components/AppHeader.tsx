@@ -29,7 +29,7 @@ const AppHeader: React.FC = () => {
 
   return (
     <IonHeader>
-      <IonToolbar>
+      <IonToolbar className="storefront-app-toolbar">
         <IonTitle>
           <div
             style={{
