@@ -166,6 +166,7 @@
   "delivery_address_required": "डिलीवरी पता दर्ज करें",
   "contact_and_verification": "संपर्क और सत्यापन",
   "verification_code": "सत्यापन कोड",
+  "verification_code_required": "6 अंकों का सत्यापन कोड दर्ज करें",
   "verify_phone": "मोबाइल सत्यापित करें",
   "send_verification_code": "सत्यापन कोड भेजें",
   "how_receive_order": "ऑर्डर कैसे लेना चाहेंगे?",

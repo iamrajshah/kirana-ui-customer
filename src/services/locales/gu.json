@@ -166,6 +166,7 @@
   "delivery_address_required": "ડિલિવરીનું સરનામું દાખલ કરો",
   "contact_and_verification": "સંપર્ક અને ચકાસણી",
   "verification_code": "ચકાસણી કોડ",
+  "verification_code_required": "6 અંકનો ચકાસણી કોડ દાખલ કરો",
   "verify_phone": "મોબાઇલ ચકાસો",
   "send_verification_code": "ચકાસણી કોડ મોકલો",
   "how_receive_order": "ઓર્ડર કેવી રીતે મેળવશો?",

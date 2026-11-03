@@ -166,6 +166,7 @@
   "delivery_address_required": "डिलिव्हरीचा पत्ता टाका",
   "contact_and_verification": "संपर्क आणि पडताळणी",
   "verification_code": "पडताळणी कोड",
+  "verification_code_required": "6 अंकी पडताळणी कोड टाका",
   "verify_phone": "मोबाइल पडताळा",
   "send_verification_code": "पडताळणी कोड पाठवा",
   "how_receive_order": "ऑर्डर कशी घ्यायची?",
