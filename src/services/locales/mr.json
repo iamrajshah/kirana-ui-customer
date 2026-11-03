@@ -135,6 +135,8 @@
   "show_all_products": "सर्व उत्पादने दाखवा",
   "view_offers": "आजच्या ऑफर्स पहा ({{count}})",
   "published_offers": "या दुकानच्या ऑफर्स",
+  "offer_save": "₹{{amount}} वाचवा",
+  "shop_offer_now": "ही ऑफर खरेदी करा",
   "no_products_available": "कोणतीही उत्पादने उपलब्ध नाहीत",
   "load_product_failed": "उत्पादन तपशील लोड झाले नाहीत",
   "product_details": "उत्पादन तपशील",
@@ -179,5 +181,9 @@
   "send_order_request": "ऑर्डर विनंती पाठवा",
   "please_wait": "कृपया थांबा...",
   "frequently_bought_together": "नेहमी एकत्र घेतले जाते",
-  "guest_browsing_note": "लॉगिनशिवाय खरेदी पाहा. चेकआउटवेळी मोबाईल सत्यापित करा."
+  "guest_browsing_note": "लॉगिनशिवाय खरेदी पाहा. चेकआउटवेळी मोबाईल सत्यापित करा.",
+  "storefront_landing_title": "तुमचे जवळचे दुकान उघडा",
+  "storefront_landing_message": "प्रत्येक दुकानाची स्वतंत्र सुरक्षित लिंक, वस्तू, किंमती आणि ऑफर्स आहेत. दुकानदाराने दिलेली लिंक वापरा.",
+  "open_demo_shop": "डेमो दुकान पाहा",
+  "storefront_link_hint": "दुकानाची लिंक /shop/your-shop-name अशी दिसते"
 }

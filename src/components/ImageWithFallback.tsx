@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface ImageWithFallbackProps {
   src?: string;
@@ -13,10 +13,15 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   alt,
   className = '',
   style,
-  fallbackSrc = 'https://placehold.co/300x300/png',
+  fallbackSrc = '/demo-products/grocery.svg',
 }) => {
   const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+    setImgSrc(src || fallbackSrc);
+  }, [fallbackSrc, src]);
 
   const handleError = () => {
     if (!hasError) {

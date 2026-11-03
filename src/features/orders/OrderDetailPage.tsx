@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 import {
   IonPage,
   IonHeader,
@@ -68,7 +69,7 @@ const OrderDetailPage: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/orders" />
+              <IonBackButton defaultHref={storefrontPath("/orders")} />
             </IonButtons>
             <IonTitle>{t("order_details")}</IonTitle>
           </IonToolbar>
@@ -93,7 +94,7 @@ const OrderDetailPage: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/orders" />
+            <IonBackButton defaultHref={storefrontPath("/orders")} />
           </IonButtons>
           <IonTitle>{t("order_details")}</IonTitle>
         </IonToolbar>

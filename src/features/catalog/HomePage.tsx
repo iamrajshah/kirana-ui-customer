@@ -22,6 +22,7 @@ import AppHeader from "@components/AppHeader";
 import { debounce } from "@utils/debounce";
 import { toast } from "@services/toast";
 import { storageService } from "@services/storage";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -114,7 +115,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleProductClick = (productId: string) => {
-    history.push(`/product/${productId}`);
+    history.push(storefrontPath(`/product/${productId}`));
   };
 
   const discountedProducts = products.filter((product) =>
@@ -166,6 +167,7 @@ const HomePage: React.FC = () => {
           <IonRefresherContent />
         </IonRefresher>
 
+        <div className="storefront-content">
         <section
           style={{
             margin: "12px 12px 4px",
@@ -219,6 +221,10 @@ const HomePage: React.FC = () => {
                   offer.image_url ||
                   offer.product?.image_url ||
                   offer.product?.product_variants?.[0]?.image_url;
+                const offerVariant = offer.product?.product_variants?.[0];
+                const sellingPrice = Number(offerVariant?.selling_price ?? 0);
+                const mrpPrice = Number(offerVariant?.mrp_price ?? 0);
+                const saving = Math.max(0, mrpPrice - sellingPrice);
                 return (
                   <button
                     type="button"
@@ -280,6 +286,28 @@ const HomePage: React.FC = () => {
                           {offer.description}
                         </span>
                       )}
+                      {saving > 0 && (
+                        <span
+                          style={{
+                            display: "block",
+                            marginTop: 7,
+                            color: "#087f5b",
+                            fontWeight: 800,
+                          }}
+                        >
+                          {t("offer_save", { amount: saving.toFixed(0) })}
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          display: "block",
+                          marginTop: 8,
+                          color: "#164e3f",
+                          fontWeight: 800,
+                        }}
+                      >
+                        {t("shop_offer_now")} →
+                      </span>
                     </span>
                   </button>
                 );
@@ -304,14 +332,7 @@ const HomePage: React.FC = () => {
             message={searchQuery ? t("no_results") : t("no_products_available")}
           />
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-              gap: "8px",
-              padding: "8px",
-            }}
-          >
+          <div className="storefront-product-grid">
             {visibleProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -321,6 +342,7 @@ const HomePage: React.FC = () => {
             ))}
           </div>
         )}
+        </div>
       </IonContent>
     </IonPage>
   );

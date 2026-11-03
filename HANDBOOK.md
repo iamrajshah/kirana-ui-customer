@@ -1,5 +1,11 @@
 # Kirana Customer Storefront Handbook
 
+## Canonical tenant links and demo media
+
+The root URL is a neutral landing page. A shop is always opened with `/shop/<storefront-slug>`, and product, cart, checkout and order URLs retain that slug. The shell resolves the slug with the server before tenant-scoped requests begin; there is no build-time tenant fallback.
+
+Demo catalogue artwork is checked in under `public/demo-products/`. The server's demo-media seed attaches those stable Cloudflare-hosted assets to all demo products and offers. The client keeps a local grocery fallback so a broken image URL never exposes a raw placeholder.
+
 ## Public shopping flow
 
 Customers enter through `/shop/:slug`. The slug is resolved by the server to

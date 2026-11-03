@@ -135,6 +135,8 @@
   "show_all_products": "Show all products",
   "view_offers": "View today's offers ({{count}})",
   "published_offers": "Offers from this shop",
+  "offer_save": "Save ₹{{amount}}",
+  "shop_offer_now": "Shop this offer",
   "no_products_available": "No products available",
   "load_product_failed": "Failed to load product details",
   "product_details": "Product details",
@@ -179,5 +181,9 @@
   "send_order_request": "Send order request",
   "please_wait": "Please wait...",
   "frequently_bought_together": "Often bought together",
-  "guest_browsing_note": "Browse freely. Verify your phone at checkout."
+  "guest_browsing_note": "Browse freely. Verify your phone at checkout.",
+  "storefront_landing_title": "Open your local shop",
+  "storefront_landing_message": "Each shop has its own secure link, catalogue, prices and offers. Use the link shared by your shopkeeper.",
+  "open_demo_shop": "Explore the demo shop",
+  "storefront_link_hint": "Shop links look like /shop/your-shop-name"
 }

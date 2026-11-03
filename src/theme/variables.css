@@ -35,6 +35,91 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.storefront-content {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 0 8px 18px;
+}
+
+.storefront-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 10px;
+  padding: 8px;
+}
+
+.product-detail-shell {
+  width: min(100%, 1080px);
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.product-detail-image {
+  width: 100%;
+  height: min(420px, 48vh);
+  object-fit: contain;
+  border-radius: 20px;
+  background: var(--ion-color-light);
+}
+
+.product-detail-copy {
+  padding: 18px 4px;
+}
+
+.storefront-landing {
+  min-height: calc(100vh - 32px);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  max-width: 620px;
+  margin: auto;
+  text-align: center;
+}
+
+.storefront-landing__mark {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  color: white;
+  background: linear-gradient(135deg, #087f5b, #164e3f);
+  font-size: 2.5rem;
+  font-weight: 800;
+  box-shadow: 0 14px 34px rgba(8, 127, 91, 0.22);
+}
+
+@media (min-width: 900px) {
+  ion-content::part(background) {
+    background: #f4f8f6;
+  }
+
+  .storefront-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+  }
+
+  .product-detail-shell {
+    display: grid;
+    grid-template-columns: minmax(320px, 460px) minmax(0, 1fr);
+    gap: 42px;
+    align-items: start;
+    margin-top: 22px;
+    border-radius: 26px;
+    background: var(--ion-card-background, #fff);
+    box-shadow: 0 18px 50px rgba(23, 68, 52, 0.1);
+  }
+
+  .product-detail-image {
+    height: 460px;
+  }
+
+  .product-detail-copy {
+    padding: 12px 10px 24px;
+  }
+}
+
 /* Dark Mode Support */
 body.dark {
   --ion-background-color: #121212;

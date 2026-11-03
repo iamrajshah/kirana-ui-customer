@@ -16,6 +16,7 @@ import {
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { storefrontPath } from "@features/storefront/storefrontPath";
 import { apiService } from "@services/api";
 import EmptyState from "@components/EmptyState";
 import AppHeader from "@components/AppHeader";
@@ -95,7 +96,7 @@ const OrdersPage: React.FC = () => {
             icon="📋"
             message={t("no_orders")}
             actionLabel={t("continue_shopping")}
-            onAction={() => history.push("/home")}
+            onAction={() => history.push(storefrontPath("/home"))}
           />
         ) : (
           <IonList>
@@ -103,7 +104,7 @@ const OrdersPage: React.FC = () => {
               <IonItem
                 key={order.id}
                 button
-                onClick={() => history.push(`/order/${order.id}`)}
+                onClick={() => history.push(storefrontPath(`/order/${order.id}`))}
               >
                 <IonLabel>
                   <h2 style={{ fontWeight: "bold" }}>
