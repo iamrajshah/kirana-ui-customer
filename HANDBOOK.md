@@ -90,11 +90,12 @@ Built by Rajesh Shah (@iamrajshah). Keep this handbook updated whenever storefro
 
 On 3 November 2026, the deployed storefront baseline passed 9 files / 19 tests,
 lint, production build, API checks, and desktop/tablet/mobile browser journeys.
-The subsequent Modern Bazaar release candidate passed 14 files / 33 tests,
-lint, and production build. Both showcase storefronts resolved independently,
-visible offer/product media loaded, anonymous checkout was denied, duplicate OTP
-verification was guarded, customer order polling remained foreground-only, and
-switching shops cleared the cart.
+The deployed Modern Bazaar revision `e23949a` passed 14 files / 34 tests, lint,
+production build, and production viewport checks at 390, 820 and 1440 pixels.
+Both showcase storefronts resolved independently, visible offer/product media
+loaded, anonymous checkout was denied, duplicate OTP verification was guarded,
+customer order polling remained foreground-only, switching shops cleared the
+cart, and the document remained contained to each tested viewport.
 
 Use [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) for diagnosis and
 [`docs/QA_REGRESSION_SUITE.md`](docs/QA_REGRESSION_SUITE.md) for future runs.
