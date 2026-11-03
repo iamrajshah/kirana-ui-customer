@@ -134,6 +134,7 @@
   "shop_online_from": "Shop online from",
   "show_all_products": "Show all products",
   "view_offers": "View today's offers ({{count}})",
+  "published_offers": "Offers from this shop",
   "no_products_available": "No products available",
   "load_product_failed": "Failed to load product details",
   "product_details": "Product details",

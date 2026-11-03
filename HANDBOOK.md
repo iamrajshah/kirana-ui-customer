@@ -2,7 +2,13 @@
 
 ## Public shopping flow
 
-Customers enter through `/shop/:slug`. Catalogue, search, offers, product details and the cart are public; the cart remains local on that device. Checkout asks for name and mobile, verifies the mobile with OTP, and then allows shop pickup or home delivery. A delivery address is saved only with customer consent. Submission creates an order request awaiting shop confirmation, not a completed sale.
+Customers enter through `/shop/:slug`. The slug is resolved by the server to
+one tenant before catalogue or offer data is loaded. Catalogue, search,
+published offers, product details and the cart are public; the cart remains
+local on that device. Checkout asks for name and mobile, verifies the mobile
+with OTP, and then allows shop pickup or home delivery. A delivery address is
+saved only with customer consent. Submission creates an order request awaiting
+shop confirmation, not a completed sale.
 
 Server prices and stock are authoritative. Product recommendations come from prior same-order purchases; an empty list is valid for a new shop. Product images use the shop's stored URL with a safe fallback.
 
@@ -19,6 +25,8 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 - A production build must have `VITE_API_BASE_URL`; it must never silently point at localhost.
 - `VITE_API_BASE_URL` is the HTTPS server origin only. The client adds `/api/v1` itself.
 - Customer storefront access is a Business-plan entitlement. Hiding a link in a UI is not an access control.
+- Offers are read from the resolved tenant only. The server filters out drafts,
+  paused offers and offers outside their configured schedule.
 
 ## Supported workflow
 

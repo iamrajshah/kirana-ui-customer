@@ -108,7 +108,9 @@ class ApiService {
   }
 
   async requestOtp(phone: string) {
-    const response = await this.api.post("/customer-auth/otp/request", { phone });
+    const response = await this.api.post("/customer-auth/otp/request", {
+      phone,
+    });
     return response.data;
   }
 
@@ -120,6 +122,11 @@ class ApiService {
   // Catalog APIs
   async getCategories() {
     const response = await this.api.get("/catalog/categories");
+    return response.data;
+  }
+
+  async getOffers() {
+    const response = await this.api.get("/catalog/offers");
     return response.data;
   }
 
@@ -139,7 +146,9 @@ class ApiService {
   }
 
   async getProductRecommendations(id: string) {
-    const response = await this.api.get(`/catalog/products/${id}/recommendations`);
+    const response = await this.api.get(
+      `/catalog/products/${id}/recommendations`,
+    );
     return response.data;
   }
 
