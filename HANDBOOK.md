@@ -37,11 +37,11 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 ## Supported workflow
 
 - Branded storefront link resolution
-- Phone/password customer registration and login
-- Catalog, category and product search
-- Stock-aware cart synchronized with the server
-- Cash, shop-payment and tenant-configured UPI selection
-- Order placement, history, detail and eligible cancellation
+- Public catalogue, category, product and published-offer search
+- Tenant-isolated device-local cart with server-authoritative checkout
+- Phone OTP identity at checkout
+- Pickup or consented saved delivery address
+- Order placement, foreground status refresh, history, detail and eligible cancellation
 - Light/dark theme
 - English, Hindi, Marathi and Gujarati with persisted language choice
 
@@ -69,3 +69,14 @@ This app is the optional buyer-facing storefront for a shop using Kirana POS. It
 ## Ownership
 
 Built by Rajesh Shah (@iamrajshah). Keep this handbook updated whenever storefront routes, tenant resolution, languages, cart contracts or deployment ownership change.
+
+## Current release qualification
+
+On 3 November 2026, the deployed storefront passed 9 files / 19 tests, lint,
+production build, API checks, and desktop/tablet/mobile browser journeys. Both
+showcase storefronts resolved independently, visible offer/product media loaded,
+anonymous checkout was denied, duplicate OTP verification was guarded, customer
+order polling remained foreground-only, and switching shops cleared the cart.
+
+Use [`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md) for diagnosis and
+[`docs/QA_REGRESSION_SUITE.md`](docs/QA_REGRESSION_SUITE.md) for future runs.

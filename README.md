@@ -6,9 +6,12 @@ Tenant-branded, customer-facing ordering UI for Kirana POS. It is an Ionic React
 
 1. Open the shop-specific URL: `/shop/<storefront-slug>`.
 2. The public storefront route resolves the tenant name, logo and brand colour.
-3. Register or sign in with a customer phone number and password.
-4. Browse/search the tenant catalog, maintain the server-backed cart, and place an order.
-5. Review or cancel eligible orders from **My Orders**.
+3. Browse/search the public tenant catalogue, published offers, and product
+   details; the device-local cart is isolated by tenant.
+4. At checkout, provide name/mobile and verify OTP.
+5. Choose pickup or delivery. Delivery collects an address and saves it only with
+   consent.
+6. Submit an order request, then review status or cancel while eligible.
 
 Never publish a generic login URL as the customer entry point. The shop slug establishes tenant context before authentication.
 
@@ -42,6 +45,11 @@ npx wrangler pages deploy dist --project-name kirana-customer --branch main
 ```
 
 `dist/release.json` identifies the deployed commit. See [HANDBOOK.md](./HANDBOOK.md) for product invariants and operational checks.
+
+Developer diagnosis is in
+[`docs/DEVELOPER_GUIDE.md`](docs/DEVELOPER_GUIDE.md); the executable public,
+OTP, order, responsive, media, and tenant-isolation pass is in
+[`docs/QA_REGRESSION_SUITE.md`](docs/QA_REGRESSION_SUITE.md).
 
 ## Technology
 
