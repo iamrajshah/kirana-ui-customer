@@ -35,4 +35,14 @@ describe("Modern Bazaar responsive layout", () => {
     expect(header).toContain("toggleTheme");
     expect(header).not.toMatch(/isAuthenticated\s*&&\s*\(\s*<IonSelect/);
   });
+
+  it("contains mobile grids and navigation inside the viewport", () => {
+    const styles = read("../../theme/variables.css");
+
+    expect(styles).toContain(".bazaar-page::part(scroll)");
+    expect(styles).toContain("grid-template-columns: repeat(3, minmax(0, 1fr))");
+    expect(styles).toMatch(
+      /\.storefront-bottom-nav ion-tab-button\s*\{[^}]*min-width:\s*0;/s,
+    );
+  });
 });
