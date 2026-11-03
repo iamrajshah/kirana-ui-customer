@@ -4,7 +4,16 @@
 
 The root URL is a neutral landing page. A shop is always opened with `/shop/<storefront-slug>`, and product, cart, checkout and order URLs retain that slug. The shell resolves the slug with the server before tenant-scoped requests begin; there is no build-time tenant fallback.
 
-Demo catalogue artwork is checked in under `public/demo-products/`. The server's demo-media seed attaches those stable Cloudflare-hosted assets to all demo products and offers. The client keeps a local grocery fallback so a broken image URL never exposes a raw placeholder.
+Demo catalogue artwork is checked in under `public/demo-products/`. Category SVGs remain the resilient fallback. The 100 seeded showcase products also have deterministic, original package illustrations under `public/demo-products/catalog/`; no third-party image is hotlinked.
+
+The server derives a product image from both SKU and product name:
+
+```text
+https://kirana-customer.pages.dev/demo-products/catalog/
+  <lowercase-sku>--<lowercase-hyphenated-product-name>.svg
+```
+
+For example, `DEMO-CATALOG-009` / `Tata Sampann Toor Dal 500 g` maps to `https://kirana-customer.pages.dev/demo-products/catalog/demo-catalog-009--tata-sampann-toor-dal-500-g.svg`. The slug rule uses lowercase ASCII, changes `&` to `-and-`, replaces other non-alphanumeric runs with one hyphen, and trims leading/trailing hyphens. `public/demo-products/catalog/manifest.json` is the server handoff contract. Run `npm run assets:demo` after changing the deterministic demo catalogue, then commit the generated files and run `npm run test:demo-assets`.
 
 ## Public shopping flow
 
