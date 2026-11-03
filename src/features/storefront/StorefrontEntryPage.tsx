@@ -4,7 +4,12 @@ import { useHistory, useParams } from "react-router-dom";
 import { apiService } from "@services/api";
 import { storageService } from "@services/storage";
 import { useAuthStore } from "@store/auth.store";
-import { normalizeShopSlug, shouldResetCustomerSession } from "./storefront";
+import { useCartStore } from "@store/cart.store";
+import {
+  hasStorefrontChanged,
+  normalizeShopSlug,
+  shouldResetCustomerSession,
+} from "./storefront";
 import { useTranslation } from "react-i18next";
 import TabsLayout from "@features/layout/TabsLayout";
 
@@ -13,6 +18,7 @@ const StorefrontEntryPage: React.FC = () => {
   const history = useHistory();
   const logout = useAuthStore((state) => state.logout);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const clearCart = useCartStore((state) => state.clearCart);
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
   const { t } = useTranslation();
@@ -28,6 +34,10 @@ const StorefrontEntryPage: React.FC = () => {
         );
         if (!active) return;
         const previous = storageService.getStorefront();
+        const storefrontChanged = hasStorefrontChanged(
+          previous?.tenantId,
+          response.data.tenantId,
+        );
         if (
           shouldResetCustomerSession(
             isAuthenticated,
@@ -36,6 +46,8 @@ const StorefrontEntryPage: React.FC = () => {
           )
         ) {
           logout();
+        } else if (storefrontChanged) {
+          await clearCart(true);
         }
         storageService.setStorefront(response.data);
         document.documentElement.style.setProperty(
@@ -43,8 +55,13 @@ const StorefrontEntryPage: React.FC = () => {
           response.data.brandColor,
         );
         setReady(true);
-        if (history.location.pathname === `/shop/${slug}` || history.location.pathname === `/shop/${slug}/`) {
-          history.replace(`/shop/${encodeURIComponent(response.data.slug)}/home`);
+        if (
+          history.location.pathname === `/shop/${slug}` ||
+          history.location.pathname === `/shop/${slug}/`
+        ) {
+          history.replace(
+            `/shop/${encodeURIComponent(response.data.slug)}/home`,
+          );
         }
       } catch {
         if (active) setError(t("storefront_unavailable_message"));
@@ -54,7 +71,7 @@ const StorefrontEntryPage: React.FC = () => {
     return () => {
       active = false;
     };
-  }, [history, isAuthenticated, logout, slug, t]);
+  }, [clearCart, history, isAuthenticated, logout, slug, t]);
 
   if (ready) return <TabsLayout />;
 
