@@ -177,5 +177,6 @@
   "shop_confirms_order_note": "दुकान उपलब्धता की पुष्टि के बाद ऑर्डर तैयार करेगी।",
   "send_order_request": "ऑर्डर अनुरोध भेजें",
   "please_wait": "कृपया प्रतीक्षा करें...",
-  "frequently_bought_together": "अक्सर साथ खरीदे जाते हैं"
+  "frequently_bought_together": "अक्सर साथ खरीदे जाते हैं",
+  "guest_browsing_note": "बिना लॉगिन खरीदारी देखें। चेकआउट पर मोबाइल सत्यापित करें।"
 }

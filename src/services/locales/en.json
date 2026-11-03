@@ -177,5 +177,6 @@
   "shop_confirms_order_note": "The shop will confirm availability before preparing this order.",
   "send_order_request": "Send order request",
   "please_wait": "Please wait...",
-  "frequently_bought_together": "Often bought together"
+  "frequently_bought_together": "Often bought together",
+  "guest_browsing_note": "Browse freely. Verify your phone at checkout."
 }

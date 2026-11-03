@@ -177,5 +177,6 @@
   "shop_confirms_order_note": "सामान उपलब्ध असल्याची खात्री करून दुकान ऑर्डर तयार करेल.",
   "send_order_request": "ऑर्डर विनंती पाठवा",
   "please_wait": "कृपया थांबा...",
-  "frequently_bought_together": "नेहमी एकत्र घेतले जाते"
+  "frequently_bought_together": "नेहमी एकत्र घेतले जाते",
+  "guest_browsing_note": "लॉगिनशिवाय खरेदी पाहा. चेकआउटवेळी मोबाईल सत्यापित करा."
 }

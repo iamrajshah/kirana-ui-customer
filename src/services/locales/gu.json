@@ -177,5 +177,6 @@
   "shop_confirms_order_note": "દુકાન ઉપલબ્ધતા ચકાસ્યા પછી ઓર્ડર તૈયાર કરશે.",
   "send_order_request": "ઓર્ડર વિનંતી મોકલો",
   "please_wait": "કૃપા કરીને રાહ જુઓ...",
-  "frequently_bought_together": "ઘણીવાર સાથે ખરીદાય છે"
+  "frequently_bought_together": "ઘણીવાર સાથે ખરીદાય છે",
+  "guest_browsing_note": "લૉગિન વિના ખરીદી જુઓ. ચેકઆઉટ વખતે મોબાઇલ ચકાસો."
 }
