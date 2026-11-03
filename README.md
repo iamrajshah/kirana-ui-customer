@@ -25,6 +25,10 @@ npm run dev
 
 Set `VITE_API_BASE_URL` to the API origin without `/api/v1`. `VITE_TENANT_ID` is a legacy local fallback; production tenant selection comes from the storefront slug.
 
+## Demo catalogue artwork
+
+`npm run assets:demo` regenerates the 100 product-specific, original SVG package illustrations plus the existing category fallbacks. Generated product URLs follow the documented SKU-and-name convention in [HANDBOOK.md](./HANDBOOK.md) and are validated by `npm run test:demo-assets`.
+
 ## Quality gate
 
 ```bash

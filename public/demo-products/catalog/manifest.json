@@ -1,0 +1,1002 @@
+[
+  {
+    "sku": "DEMO-MILK-1L",
+    "name": "Amul Taaza Milk",
+    "brand": "Amul",
+    "item": "Taaza Milk",
+    "size": "1 L",
+    "category": "Daily Essentials",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-milk-1l--amul-taaza-milk.svg"
+  },
+  {
+    "sku": "DEMO-SALT-1KG",
+    "name": "Tata Salt",
+    "brand": "Tata",
+    "item": "Salt",
+    "size": "1 kg",
+    "category": "Daily Essentials",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-salt-1kg--tata-salt.svg"
+  },
+  {
+    "sku": "DEMO-OIL-1L",
+    "name": "Fortune Sunflower Oil",
+    "brand": "Fortune",
+    "item": "Sunflower Oil",
+    "size": "1 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-oil-1l--fortune-sunflower-oil.svg"
+  },
+  {
+    "sku": "DEMO-PARLEG-800G",
+    "name": "Parle-G Biscuits",
+    "brand": "Parle",
+    "item": "G Biscuits",
+    "size": "800 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-parleg-800g--parle-g-biscuits.svg"
+  },
+  {
+    "sku": "DEMO-COKE-750ML",
+    "name": "Coca-Cola",
+    "brand": "Coca-Cola",
+    "item": "Cola",
+    "size": "750 ml",
+    "category": "Beverages",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-coke-750ml--coca-cola.svg"
+  },
+  {
+    "sku": "DEMO-SURF-1KG",
+    "name": "Surf Excel Easy Wash",
+    "brand": "Surf Excel",
+    "item": "Easy Wash",
+    "size": "1 kg",
+    "category": "Home Care",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-surf-1kg--surf-excel-easy-wash.svg"
+  },
+  {
+    "sku": "DEMO-COLGATE-200G",
+    "name": "Colgate Strong Teeth",
+    "brand": "Colgate",
+    "item": "Strong Teeth",
+    "size": "200 g",
+    "category": "Personal Care",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-colgate-200g--colgate-strong-teeth.svg"
+  },
+  {
+    "sku": "DEMO-RICE-5KG",
+    "name": "India Gate Basmati Rice",
+    "brand": "India Gate",
+    "item": "Basmati Rice",
+    "size": "5 kg",
+    "category": "Cooking",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-rice-5kg--india-gate-basmati-rice.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-009",
+    "name": "Tata Sampann Toor Dal 500 g",
+    "brand": "Tata Sampann",
+    "item": "Toor Dal",
+    "size": "500 g",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-009--tata-sampann-toor-dal-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-010",
+    "name": "Tata Sampann Toor Dal 1 kg",
+    "brand": "Tata Sampann",
+    "item": "Toor Dal",
+    "size": "1 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-010--tata-sampann-toor-dal-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-011",
+    "name": "Tata Sampann Toor Dal 2 kg",
+    "brand": "Tata Sampann",
+    "item": "Toor Dal",
+    "size": "2 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-011--tata-sampann-toor-dal-2-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-012",
+    "name": "Tata Sampann Toor Dal 5 kg",
+    "brand": "Tata Sampann",
+    "item": "Toor Dal",
+    "size": "5 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-012--tata-sampann-toor-dal-5-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-013",
+    "name": "Fortune Chana Dal 500 g",
+    "brand": "Fortune",
+    "item": "Chana Dal",
+    "size": "500 g",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-013--fortune-chana-dal-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-014",
+    "name": "Fortune Chana Dal 1 kg",
+    "brand": "Fortune",
+    "item": "Chana Dal",
+    "size": "1 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-014--fortune-chana-dal-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-015",
+    "name": "Fortune Chana Dal 2 kg",
+    "brand": "Fortune",
+    "item": "Chana Dal",
+    "size": "2 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-015--fortune-chana-dal-2-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-016",
+    "name": "Fortune Chana Dal 5 kg",
+    "brand": "Fortune",
+    "item": "Chana Dal",
+    "size": "5 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-016--fortune-chana-dal-5-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-017",
+    "name": "Aashirvaad Whole Wheat Atta 1 kg",
+    "brand": "Aashirvaad",
+    "item": "Whole Wheat Atta",
+    "size": "1 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-017--aashirvaad-whole-wheat-atta-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-018",
+    "name": "Aashirvaad Whole Wheat Atta 2 kg",
+    "brand": "Aashirvaad",
+    "item": "Whole Wheat Atta",
+    "size": "2 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-018--aashirvaad-whole-wheat-atta-2-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-019",
+    "name": "Aashirvaad Whole Wheat Atta 5 kg",
+    "brand": "Aashirvaad",
+    "item": "Whole Wheat Atta",
+    "size": "5 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-019--aashirvaad-whole-wheat-atta-5-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-020",
+    "name": "Aashirvaad Whole Wheat Atta 10 kg",
+    "brand": "Aashirvaad",
+    "item": "Whole Wheat Atta",
+    "size": "10 kg",
+    "category": "Pulses & Grains",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-020--aashirvaad-whole-wheat-atta-10-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-021",
+    "name": "Dhara Groundnut Oil 500 ml",
+    "brand": "Dhara",
+    "item": "Groundnut Oil",
+    "size": "500 ml",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-021--dhara-groundnut-oil-500-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-022",
+    "name": "Dhara Groundnut Oil 1 L",
+    "brand": "Dhara",
+    "item": "Groundnut Oil",
+    "size": "1 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-022--dhara-groundnut-oil-1-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-023",
+    "name": "Dhara Groundnut Oil 2 L",
+    "brand": "Dhara",
+    "item": "Groundnut Oil",
+    "size": "2 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-023--dhara-groundnut-oil-2-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-024",
+    "name": "Dhara Groundnut Oil 5 L",
+    "brand": "Dhara",
+    "item": "Groundnut Oil",
+    "size": "5 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-024--dhara-groundnut-oil-5-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-025",
+    "name": "Saffola Gold Oil 500 ml",
+    "brand": "Saffola",
+    "item": "Gold Oil",
+    "size": "500 ml",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-025--saffola-gold-oil-500-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-026",
+    "name": "Saffola Gold Oil 1 L",
+    "brand": "Saffola",
+    "item": "Gold Oil",
+    "size": "1 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-026--saffola-gold-oil-1-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-027",
+    "name": "Saffola Gold Oil 2 L",
+    "brand": "Saffola",
+    "item": "Gold Oil",
+    "size": "2 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-027--saffola-gold-oil-2-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-028",
+    "name": "Saffola Gold Oil 5 L",
+    "brand": "Saffola",
+    "item": "Gold Oil",
+    "size": "5 L",
+    "category": "Cooking",
+    "packaging": "POUCH",
+    "assetPath": "/demo-products/catalog/demo-catalog-028--saffola-gold-oil-5-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-029",
+    "name": "Everest Turmeric Powder 50 g",
+    "brand": "Everest",
+    "item": "Turmeric Powder",
+    "size": "50 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-029--everest-turmeric-powder-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-030",
+    "name": "Everest Turmeric Powder 100 g",
+    "brand": "Everest",
+    "item": "Turmeric Powder",
+    "size": "100 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-030--everest-turmeric-powder-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-031",
+    "name": "Everest Turmeric Powder 200 g",
+    "brand": "Everest",
+    "item": "Turmeric Powder",
+    "size": "200 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-031--everest-turmeric-powder-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-032",
+    "name": "Everest Turmeric Powder 500 g",
+    "brand": "Everest",
+    "item": "Turmeric Powder",
+    "size": "500 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-032--everest-turmeric-powder-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-033",
+    "name": "MDH Garam Masala 50 g",
+    "brand": "MDH",
+    "item": "Garam Masala",
+    "size": "50 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-033--mdh-garam-masala-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-034",
+    "name": "MDH Garam Masala 100 g",
+    "brand": "MDH",
+    "item": "Garam Masala",
+    "size": "100 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-034--mdh-garam-masala-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-035",
+    "name": "MDH Garam Masala 200 g",
+    "brand": "MDH",
+    "item": "Garam Masala",
+    "size": "200 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-035--mdh-garam-masala-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-036",
+    "name": "MDH Garam Masala 500 g",
+    "brand": "MDH",
+    "item": "Garam Masala",
+    "size": "500 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-036--mdh-garam-masala-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-037",
+    "name": "Catch Red Chilli Powder 50 g",
+    "brand": "Catch",
+    "item": "Red Chilli Powder",
+    "size": "50 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-037--catch-red-chilli-powder-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-038",
+    "name": "Catch Red Chilli Powder 100 g",
+    "brand": "Catch",
+    "item": "Red Chilli Powder",
+    "size": "100 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-038--catch-red-chilli-powder-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-039",
+    "name": "Catch Red Chilli Powder 200 g",
+    "brand": "Catch",
+    "item": "Red Chilli Powder",
+    "size": "200 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-039--catch-red-chilli-powder-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-040",
+    "name": "Catch Red Chilli Powder 500 g",
+    "brand": "Catch",
+    "item": "Red Chilli Powder",
+    "size": "500 g",
+    "category": "Spices",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-040--catch-red-chilli-powder-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-041",
+    "name": "Tata Tea Premium Tea 100 g",
+    "brand": "Tata Tea",
+    "item": "Premium Tea",
+    "size": "100 g",
+    "category": "Beverages",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-041--tata-tea-premium-tea-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-042",
+    "name": "Tata Tea Premium Tea 250 g",
+    "brand": "Tata Tea",
+    "item": "Premium Tea",
+    "size": "250 g",
+    "category": "Beverages",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-042--tata-tea-premium-tea-250-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-043",
+    "name": "Tata Tea Premium Tea 500 g",
+    "brand": "Tata Tea",
+    "item": "Premium Tea",
+    "size": "500 g",
+    "category": "Beverages",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-043--tata-tea-premium-tea-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-044",
+    "name": "Tata Tea Premium Tea 1 kg",
+    "brand": "Tata Tea",
+    "item": "Premium Tea",
+    "size": "1 kg",
+    "category": "Beverages",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-044--tata-tea-premium-tea-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-045",
+    "name": "Nescafe Classic Coffee 25 g",
+    "brand": "Nescafe",
+    "item": "Classic Coffee",
+    "size": "25 g",
+    "category": "Beverages",
+    "packaging": "JAR",
+    "assetPath": "/demo-products/catalog/demo-catalog-045--nescafe-classic-coffee-25-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-046",
+    "name": "Nescafe Classic Coffee 50 g",
+    "brand": "Nescafe",
+    "item": "Classic Coffee",
+    "size": "50 g",
+    "category": "Beverages",
+    "packaging": "JAR",
+    "assetPath": "/demo-products/catalog/demo-catalog-046--nescafe-classic-coffee-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-047",
+    "name": "Nescafe Classic Coffee 100 g",
+    "brand": "Nescafe",
+    "item": "Classic Coffee",
+    "size": "100 g",
+    "category": "Beverages",
+    "packaging": "JAR",
+    "assetPath": "/demo-products/catalog/demo-catalog-047--nescafe-classic-coffee-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-048",
+    "name": "Nescafe Classic Coffee 200 g",
+    "brand": "Nescafe",
+    "item": "Classic Coffee",
+    "size": "200 g",
+    "category": "Beverages",
+    "packaging": "JAR",
+    "assetPath": "/demo-products/catalog/demo-catalog-048--nescafe-classic-coffee-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-049",
+    "name": "Real Mixed Fruit Juice 200 ml",
+    "brand": "Real",
+    "item": "Mixed Fruit Juice",
+    "size": "200 ml",
+    "category": "Beverages",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-049--real-mixed-fruit-juice-200-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-050",
+    "name": "Real Mixed Fruit Juice 500 ml",
+    "brand": "Real",
+    "item": "Mixed Fruit Juice",
+    "size": "500 ml",
+    "category": "Beverages",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-050--real-mixed-fruit-juice-500-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-051",
+    "name": "Real Mixed Fruit Juice 1 L",
+    "brand": "Real",
+    "item": "Mixed Fruit Juice",
+    "size": "1 L",
+    "category": "Beverages",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-051--real-mixed-fruit-juice-1-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-052",
+    "name": "Real Mixed Fruit Juice 2 L",
+    "brand": "Real",
+    "item": "Mixed Fruit Juice",
+    "size": "2 L",
+    "category": "Beverages",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-052--real-mixed-fruit-juice-2-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-053",
+    "name": "Haldiram Aloo Bhujia 100 g",
+    "brand": "Haldiram",
+    "item": "Aloo Bhujia",
+    "size": "100 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-053--haldiram-aloo-bhujia-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-054",
+    "name": "Haldiram Aloo Bhujia 200 g",
+    "brand": "Haldiram",
+    "item": "Aloo Bhujia",
+    "size": "200 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-054--haldiram-aloo-bhujia-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-055",
+    "name": "Haldiram Aloo Bhujia 400 g",
+    "brand": "Haldiram",
+    "item": "Aloo Bhujia",
+    "size": "400 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-055--haldiram-aloo-bhujia-400-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-056",
+    "name": "Haldiram Aloo Bhujia 1 kg",
+    "brand": "Haldiram",
+    "item": "Aloo Bhujia",
+    "size": "1 kg",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-056--haldiram-aloo-bhujia-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-057",
+    "name": "Balaji Masala Wafers 50 g",
+    "brand": "Balaji",
+    "item": "Masala Wafers",
+    "size": "50 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-057--balaji-masala-wafers-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-058",
+    "name": "Balaji Masala Wafers 100 g",
+    "brand": "Balaji",
+    "item": "Masala Wafers",
+    "size": "100 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-058--balaji-masala-wafers-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-059",
+    "name": "Balaji Masala Wafers 200 g",
+    "brand": "Balaji",
+    "item": "Masala Wafers",
+    "size": "200 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-059--balaji-masala-wafers-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-060",
+    "name": "Balaji Masala Wafers 400 g",
+    "brand": "Balaji",
+    "item": "Masala Wafers",
+    "size": "400 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-060--balaji-masala-wafers-400-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-061",
+    "name": "Britannia Good Day Biscuits 75 g",
+    "brand": "Britannia",
+    "item": "Good Day Biscuits",
+    "size": "75 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-061--britannia-good-day-biscuits-75-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-062",
+    "name": "Britannia Good Day Biscuits 150 g",
+    "brand": "Britannia",
+    "item": "Good Day Biscuits",
+    "size": "150 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-062--britannia-good-day-biscuits-150-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-063",
+    "name": "Britannia Good Day Biscuits 300 g",
+    "brand": "Britannia",
+    "item": "Good Day Biscuits",
+    "size": "300 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-063--britannia-good-day-biscuits-300-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-064",
+    "name": "Britannia Good Day Biscuits 600 g",
+    "brand": "Britannia",
+    "item": "Good Day Biscuits",
+    "size": "600 g",
+    "category": "Snacks",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-064--britannia-good-day-biscuits-600-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-065",
+    "name": "Kelloggs Corn Flakes 100 g",
+    "brand": "Kelloggs",
+    "item": "Corn Flakes",
+    "size": "100 g",
+    "category": "Breakfast",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-065--kelloggs-corn-flakes-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-066",
+    "name": "Kelloggs Corn Flakes 250 g",
+    "brand": "Kelloggs",
+    "item": "Corn Flakes",
+    "size": "250 g",
+    "category": "Breakfast",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-066--kelloggs-corn-flakes-250-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-067",
+    "name": "Kelloggs Corn Flakes 475 g",
+    "brand": "Kelloggs",
+    "item": "Corn Flakes",
+    "size": "475 g",
+    "category": "Breakfast",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-067--kelloggs-corn-flakes-475-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-068",
+    "name": "Kelloggs Corn Flakes 1 kg",
+    "brand": "Kelloggs",
+    "item": "Corn Flakes",
+    "size": "1 kg",
+    "category": "Breakfast",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-068--kelloggs-corn-flakes-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-069",
+    "name": "Quaker Oats 200 g",
+    "brand": "Quaker",
+    "item": "Oats",
+    "size": "200 g",
+    "category": "Breakfast",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-069--quaker-oats-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-070",
+    "name": "Quaker Oats 500 g",
+    "brand": "Quaker",
+    "item": "Oats",
+    "size": "500 g",
+    "category": "Breakfast",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-070--quaker-oats-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-071",
+    "name": "Quaker Oats 1 kg",
+    "brand": "Quaker",
+    "item": "Oats",
+    "size": "1 kg",
+    "category": "Breakfast",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-071--quaker-oats-1-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-072",
+    "name": "Quaker Oats 2 kg",
+    "brand": "Quaker",
+    "item": "Oats",
+    "size": "2 kg",
+    "category": "Breakfast",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-072--quaker-oats-2-kg.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-073",
+    "name": "Amul Butter 50 g",
+    "brand": "Amul",
+    "item": "Butter",
+    "size": "50 g",
+    "category": "Dairy",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-073--amul-butter-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-074",
+    "name": "Amul Butter 100 g",
+    "brand": "Amul",
+    "item": "Butter",
+    "size": "100 g",
+    "category": "Dairy",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-074--amul-butter-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-075",
+    "name": "Amul Butter 200 g",
+    "brand": "Amul",
+    "item": "Butter",
+    "size": "200 g",
+    "category": "Dairy",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-075--amul-butter-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-076",
+    "name": "Amul Butter 500 g",
+    "brand": "Amul",
+    "item": "Butter",
+    "size": "500 g",
+    "category": "Dairy",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-076--amul-butter-500-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-077",
+    "name": "Amul Cheese Slices 100 g",
+    "brand": "Amul",
+    "item": "Cheese Slices",
+    "size": "100 g",
+    "category": "Dairy",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-077--amul-cheese-slices-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-078",
+    "name": "Amul Cheese Slices 200 g",
+    "brand": "Amul",
+    "item": "Cheese Slices",
+    "size": "200 g",
+    "category": "Dairy",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-078--amul-cheese-slices-200-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-079",
+    "name": "Amul Cheese Slices 400 g",
+    "brand": "Amul",
+    "item": "Cheese Slices",
+    "size": "400 g",
+    "category": "Dairy",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-079--amul-cheese-slices-400-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-080",
+    "name": "Amul Cheese Slices 750 g",
+    "brand": "Amul",
+    "item": "Cheese Slices",
+    "size": "750 g",
+    "category": "Dairy",
+    "packaging": "PACKET",
+    "assetPath": "/demo-products/catalog/demo-catalog-080--amul-cheese-slices-750-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-081",
+    "name": "Vim Dishwash Gel 250 ml",
+    "brand": "Vim",
+    "item": "Dishwash Gel",
+    "size": "250 ml",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-081--vim-dishwash-gel-250-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-082",
+    "name": "Vim Dishwash Gel 500 ml",
+    "brand": "Vim",
+    "item": "Dishwash Gel",
+    "size": "500 ml",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-082--vim-dishwash-gel-500-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-083",
+    "name": "Vim Dishwash Gel 1 L",
+    "brand": "Vim",
+    "item": "Dishwash Gel",
+    "size": "1 L",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-083--vim-dishwash-gel-1-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-084",
+    "name": "Vim Dishwash Gel 2 L",
+    "brand": "Vim",
+    "item": "Dishwash Gel",
+    "size": "2 L",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-084--vim-dishwash-gel-2-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-085",
+    "name": "Lizol Floor Cleaner 200 ml",
+    "brand": "Lizol",
+    "item": "Floor Cleaner",
+    "size": "200 ml",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-085--lizol-floor-cleaner-200-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-086",
+    "name": "Lizol Floor Cleaner 500 ml",
+    "brand": "Lizol",
+    "item": "Floor Cleaner",
+    "size": "500 ml",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-086--lizol-floor-cleaner-500-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-087",
+    "name": "Lizol Floor Cleaner 1 L",
+    "brand": "Lizol",
+    "item": "Floor Cleaner",
+    "size": "1 L",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-087--lizol-floor-cleaner-1-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-088",
+    "name": "Lizol Floor Cleaner 2 L",
+    "brand": "Lizol",
+    "item": "Floor Cleaner",
+    "size": "2 L",
+    "category": "Home Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-088--lizol-floor-cleaner-2-l.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-089",
+    "name": "Dove Bathing Bar 50 g",
+    "brand": "Dove",
+    "item": "Bathing Bar",
+    "size": "50 g",
+    "category": "Personal Care",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-089--dove-bathing-bar-50-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-090",
+    "name": "Dove Bathing Bar 75 g",
+    "brand": "Dove",
+    "item": "Bathing Bar",
+    "size": "75 g",
+    "category": "Personal Care",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-090--dove-bathing-bar-75-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-091",
+    "name": "Dove Bathing Bar 100 g",
+    "brand": "Dove",
+    "item": "Bathing Bar",
+    "size": "100 g",
+    "category": "Personal Care",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-091--dove-bathing-bar-100-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-092",
+    "name": "Dove Bathing Bar 150 g",
+    "brand": "Dove",
+    "item": "Bathing Bar",
+    "size": "150 g",
+    "category": "Personal Care",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-092--dove-bathing-bar-150-g.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-093",
+    "name": "Clinic Plus Shampoo 80 ml",
+    "brand": "Clinic Plus",
+    "item": "Shampoo",
+    "size": "80 ml",
+    "category": "Personal Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-093--clinic-plus-shampoo-80-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-094",
+    "name": "Clinic Plus Shampoo 175 ml",
+    "brand": "Clinic Plus",
+    "item": "Shampoo",
+    "size": "175 ml",
+    "category": "Personal Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-094--clinic-plus-shampoo-175-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-095",
+    "name": "Clinic Plus Shampoo 340 ml",
+    "brand": "Clinic Plus",
+    "item": "Shampoo",
+    "size": "340 ml",
+    "category": "Personal Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-095--clinic-plus-shampoo-340-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-096",
+    "name": "Clinic Plus Shampoo 650 ml",
+    "brand": "Clinic Plus",
+    "item": "Shampoo",
+    "size": "650 ml",
+    "category": "Personal Care",
+    "packaging": "BOTTLE",
+    "assetPath": "/demo-products/catalog/demo-catalog-096--clinic-plus-shampoo-650-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-097",
+    "name": "Goodknight Mosquito Refill 30 ml",
+    "brand": "Goodknight",
+    "item": "Mosquito Refill",
+    "size": "30 ml",
+    "category": "Household",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-097--goodknight-mosquito-refill-30-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-098",
+    "name": "Goodknight Mosquito Refill 45 ml",
+    "brand": "Goodknight",
+    "item": "Mosquito Refill",
+    "size": "45 ml",
+    "category": "Household",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-098--goodknight-mosquito-refill-45-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-099",
+    "name": "Goodknight Mosquito Refill 60 ml",
+    "brand": "Goodknight",
+    "item": "Mosquito Refill",
+    "size": "60 ml",
+    "category": "Household",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-099--goodknight-mosquito-refill-60-ml.svg"
+  },
+  {
+    "sku": "DEMO-CATALOG-100",
+    "name": "Goodknight Mosquito Refill 90 ml",
+    "brand": "Goodknight",
+    "item": "Mosquito Refill",
+    "size": "90 ml",
+    "category": "Household",
+    "packaging": "BOX",
+    "assetPath": "/demo-products/catalog/demo-catalog-100--goodknight-mosquito-refill-90-ml.svg"
+  }
+]
