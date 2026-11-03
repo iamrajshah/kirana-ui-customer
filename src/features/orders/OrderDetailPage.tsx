@@ -132,7 +132,7 @@ const OrderDetailPage: React.FC = () => {
                       color={
                         order.status === "CANCELLED"
                           ? "danger"
-                          : order.status === "DELIVERED"
+                          : order.status === "COMPLETED"
                             ? "success"
                             : order.status === "PLACED"
                               ? "primary"
@@ -242,8 +242,8 @@ const OrderDetailPage: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            {/* Payment Status */}
-            <IonCard>
+            {/* Payment status exists only after the shop accepts and creates a bill. */}
+            {order.invoice_id && <IonCard>
               <IonCardContent>
                 <div
                   style={{
@@ -304,7 +304,7 @@ const OrderDetailPage: React.FC = () => {
                   )}
                 </div>
               </IonCardContent>
-            </IonCard>
+            </IonCard>}
 
             {order.status === "PLACED" && (
               <IonButton

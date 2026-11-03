@@ -13,6 +13,7 @@ import {
 import { home, cart, receipt, person } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { useCartStore } from "@store/cart.store";
+import { useAuthStore } from "@store/auth.store";
 
 const HomePage = lazy(() => import("@features/catalog/HomePage"));
 const ProductDetailPage = lazy(
@@ -27,6 +28,7 @@ const ProfilePage = lazy(() => import("@features/profile/ProfilePage"));
 const TabsLayout: React.FC = () => {
   const { t } = useTranslation();
   const itemCount = useCartStore((state) => state.getItemCount());
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return (
     <IonTabs>
@@ -49,9 +51,15 @@ const TabsLayout: React.FC = () => {
           <Route exact path="/product/:id" component={ProductDetailPage} />
           <Route exact path="/cart" component={CartPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
-          <Route exact path="/orders" component={OrdersPage} />
-          <Route exact path="/order/:id" component={OrderDetailPage} />
-          <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/orders">
+            {isAuthenticated ? <OrdersPage /> : <Redirect to="/home" />}
+          </Route>
+          <Route exact path="/order/:id">
+            {isAuthenticated ? <OrderDetailPage /> : <Redirect to="/home" />}
+          </Route>
+          <Route exact path="/profile">
+            {isAuthenticated ? <ProfilePage /> : <Redirect to="/home" />}
+          </Route>
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
@@ -77,15 +85,19 @@ const TabsLayout: React.FC = () => {
           )}
         </IonTabButton>
 
-        <IonTabButton tab="orders" href="/orders">
-          <IonIcon icon={receipt} />
-          <IonLabel>{t("orders")}</IonLabel>
-        </IonTabButton>
+        {isAuthenticated && (
+          <IonTabButton tab="orders" href="/orders">
+            <IonIcon icon={receipt} />
+            <IonLabel>{t("orders")}</IonLabel>
+          </IonTabButton>
+        )}
 
-        <IonTabButton tab="profile" href="/profile">
-          <IonIcon icon={person} />
-          <IonLabel>{t("profile")}</IonLabel>
-        </IonTabButton>
+        {isAuthenticated && (
+          <IonTabButton tab="profile" href="/profile">
+            <IonIcon icon={person} />
+            <IonLabel>{t("profile")}</IonLabel>
+          </IonTabButton>
+        )}
       </IonTabBar>
     </IonTabs>
   );

@@ -26,30 +26,14 @@ const AppRoutes: React.FC = () => {
     </div>
   );
 
-  if (!isAuthenticated) {
-    return (
-      <Suspense fallback={loading}>
-        <Route exact path="/shop/:slug" component={StorefrontEntryPage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/register" component={RegisterPage} />
-        <Route exact path="/">
-          <Redirect to="/login" />
-        </Route>
-        <Route path="*">
-          <Redirect to="/login" />
-        </Route>
-      </Suspense>
-    );
-  }
-
   return (
     <Suspense fallback={loading}>
       <Route exact path="/shop/:slug" component={StorefrontEntryPage} />
-      <Route exact path="/login">
-        <Redirect to="/home" />
+      <Route exact path="/login" component={isAuthenticated ? undefined : LoginPage}>
+        {isAuthenticated && <Redirect to="/home" />}
       </Route>
-      <Route exact path="/register">
-        <Redirect to="/home" />
+      <Route exact path="/register" component={isAuthenticated ? undefined : RegisterPage}>
+        {isAuthenticated && <Redirect to="/home" />}
       </Route>
 
       <Route path="/" render={() => <TabsLayout />} />

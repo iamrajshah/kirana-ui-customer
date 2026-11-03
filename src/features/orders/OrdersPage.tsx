@@ -56,7 +56,8 @@ const OrdersPage: React.FC = () => {
     const colors: Record<string, string> = {
       DRAFT: "medium",
       PENDING: "warning",
-      CONFIRMED: "primary",
+      PLACED: "warning",
+      ACCEPTED: "primary",
       PREPARING: "tertiary",
       READY: "success",
       COMPLETED: "success",

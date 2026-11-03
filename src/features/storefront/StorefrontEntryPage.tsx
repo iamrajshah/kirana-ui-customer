@@ -38,11 +38,7 @@ const StorefrontEntryPage: React.FC = () => {
           "--ion-color-primary",
           response.data.brandColor,
         );
-        history.replace(
-          isAuthenticated && previous?.tenantId === response.data.tenantId
-            ? "/home"
-            : "/login",
-        );
+        history.replace("/home");
       } catch {
         if (active) setError(t("storefront_unavailable_message"));
       }

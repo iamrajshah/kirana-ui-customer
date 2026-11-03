@@ -1,5 +1,11 @@
 # Kirana Customer Storefront Handbook
 
+## Public shopping flow
+
+Customers enter through `/shop/:slug`. Catalogue, search, offers, product details and the cart are public; the cart remains local on that device. Checkout asks for name and mobile, verifies the mobile with OTP, and then allows shop pickup or home delivery. A delivery address is saved only with customer consent. Submission creates an order request awaiting shop confirmation, not a completed sale.
+
+Server prices and stock are authoritative. Product recommendations come from prior same-order purchases; an empty list is valid for a new shop. Product images use the shop's stored URL with a safe fallback.
+
 ## Purpose
 
 This app is the optional buyer-facing storefront for a shop using Kirana POS. It is not the owner/cashier POS and it is not a separate backend service. Catalog, cart, customer login and orders all use `kirana-server`.

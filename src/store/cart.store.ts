@@ -1,8 +1,5 @@
 import { create } from "zustand";
 import { storageService } from "@services/storage";
-import { apiService } from "@services/api";
-import { toast } from "@services/toast";
-import i18n from "@services/i18n";
 
 export interface CartItem {
   variant_id: string;
@@ -67,13 +64,6 @@ export const useCartStore = create<CartState>((set, get) => {
       saveToStorage(newItems);
       set({ items: newItems });
 
-      // Call API in background
-      try {
-        await apiService.addToCart(item.variant_id, quantity);
-      } catch (error) {
-        console.error("Failed to sync cart with server:", error);
-        toast.error(i18n.t("sync_failed"));
-      }
     },
 
     removeItem: async (variant_id) => {
@@ -83,13 +73,6 @@ export const useCartStore = create<CartState>((set, get) => {
       saveToStorage(newItems);
       set({ items: newItems });
 
-      // Call API in background
-      try {
-        await apiService.removeFromCart(variant_id);
-      } catch (error) {
-        console.error("Failed to sync remove with server:", error);
-        toast.error(i18n.t("sync_failed"));
-      }
     },
 
     updateQuantity: async (variant_id, quantity) => {
@@ -112,13 +95,6 @@ export const useCartStore = create<CartState>((set, get) => {
       saveToStorage(newItems);
       set({ items: newItems });
 
-      // Call API in background
-      try {
-        await apiService.updateCartItem(variant_id, quantity);
-      } catch (error) {
-        console.error("Failed to sync update with server:", error);
-        toast.error(i18n.t("sync_failed"));
-      }
     },
 
     clearCart: async (localOnly = false) => {
@@ -129,53 +105,12 @@ export const useCartStore = create<CartState>((set, get) => {
         return;
       }
 
-      try {
-        await apiService.clearCart();
-        storageService.removeCart();
-        set({ items: [] });
-      } catch (error) {
-        console.error("Failed to clear cart:", error);
-        toast.error(i18n.t("clear_cart_failed"));
-        // Still clear locally
-        storageService.removeCart();
-        set({ items: [] });
-      }
+      storageService.removeCart();
+      set({ items: [] });
     },
 
     loadCart: async () => {
-      try {
-        const response = await apiService.getCart();
-        if (
-          response.success &&
-          response.data &&
-          response.data.items &&
-          response.data.items.length > 0
-        ) {
-          // Transform API data to CartItem format
-          const cartItems: CartItem[] = response.data.items.map(
-            (item: any) => ({
-              variant_id: item.variant_id.toString(),
-              product_id: item.product_id?.toString() || "",
-              product_name: item.product_name || "",
-              brand: item.brand || "",
-              unit: item.size || item.packaging || "",
-              price: Number(item.selling_price_snapshot || item.price || 0),
-              quantity: item.quantity || 1,
-              image_url: item.variant_image_url || item.product_image_url || "",
-              max_quantity: item.stock_quantity || 999,
-            }),
-          );
-          saveToStorage(cartItems);
-          set({ items: cartItems });
-        } else {
-          // Cart is empty on server, clear local data
-          storageService.removeCart();
-          set({ items: [] });
-        }
-      } catch (error) {
-        console.error("Failed to load cart from API:", error);
-        // Keep local storage data on error
-      }
+      set({ items: storageService.getCart() || [] });
     },
 
     getTotal: () => {

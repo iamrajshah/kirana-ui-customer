@@ -1,32 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonSelect,
-  IonSelectOption,
-  IonBackButton,
-  IonButtons,
-  IonLoading,
-  IonToast,
-  IonText,
+  IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader,
+  IonCardTitle, IonCheckbox, IonContent, IonHeader, IonInput, IonItem, IonLabel,
+  IonList, IonLoading, IonNote, IonPage, IonSegment, IonSegmentButton, IonTextarea,
+  IonTitle, IonToolbar,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { useCartStore } from "@store/cart.store";
-import { useAuthStore } from "@store/auth.store";
 import { apiService } from "@services/api";
-import QRCode from "qrcode";
+import { storageService } from "@services/storage";
+import { toast } from "@services/toast";
+import { useAuthStore } from "@store/auth.store";
+import { useCartStore } from "@store/cart.store";
 import { formatCurrency } from "@utils/currency";
 
 const CheckoutPage: React.FC = () => {
@@ -35,285 +20,122 @@ const CheckoutPage: React.FC = () => {
   const items = useCartStore((state) => state.items);
   const total = useCartStore((state) => state.getTotal());
   const clearCart = useCartStore((state) => state.clearCart);
-  const loadCart = useCartStore((state) => state.loadCart);
-  const { customer, tenant } = useAuthStore();
-
-  const [paymentMethod, setPaymentMethod] = useState<"CASH" | "ONLINE" | "UPI">(
-    "CASH",
-  );
+  const { isAuthenticated, customer, login } = useAuthStore();
+  const storefront = storageService.getStorefront();
+  const [name, setName] = useState(customer?.name ?? "");
+  const [phone, setPhone] = useState(customer?.phone ?? "");
+  const [otp, setOtp] = useState("");
+  const [otpRequested, setOtpRequested] = useState(false);
+  const [fulfillment, setFulfillment] = useState<"PICKUP" | "DELIVERY">("PICKUP");
+  const savedAddress = customer?.addresses?.[0];
+  const [addressLine1, setAddressLine1] = useState(savedAddress?.address_line1 ?? "");
+  const [addressLine2, setAddressLine2] = useState(savedAddress?.address_line2 ?? "");
+  const [landmark, setLandmark] = useState(savedAddress?.landmark ?? "");
+  const [city, setCity] = useState(savedAddress?.city ?? "");
+  const [postalCode, setPostalCode] = useState(savedAddress?.postal_code ?? "");
+  const [saveAddress, setSaveAddress] = useState(true);
+  const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
 
-  // Generate QR code when payment method is UPI/ONLINE
   useEffect(() => {
-    if (
-      (paymentMethod === "UPI" || paymentMethod === "ONLINE") &&
-      tenant?.upi_id
-    ) {
-      generateQRCode();
-    } else {
-      setQrCodeUrl("");
-    }
-  }, [paymentMethod, tenant, total]);
+    const address = customer?.addresses?.[0];
+    if (!address) return;
+    setAddressLine1(address.address_line1);
+    setAddressLine2(address.address_line2 ?? "");
+    setLandmark(address.landmark ?? "");
+    setCity(address.city ?? "");
+    setPostalCode(address.postal_code ?? "");
+  }, [customer]);
 
-  const generateQRCode = async () => {
-    if (!tenant?.upi_id) return;
-
-    try {
-      // UPI payment string format: upi://pay?pa=<UPI_ID>&pn=<NAME>&am=<AMOUNT>&cu=INR
-      const upiString = `upi://pay?pa=${tenant.upi_id}&pn=${encodeURIComponent(tenant.name)}&am=${total.toFixed(2)}&cu=INR`;
-      const qrUrl = await QRCode.toDataURL(upiString, {
-        width: 300,
-        margin: 2,
-        color: {
-          dark: "#000000",
-          light: "#FFFFFF",
-        },
-      });
-      setQrCodeUrl(qrUrl);
-    } catch (err) {
-      console.error("Failed to generate QR code:", err);
-    }
-  };
-
-  const handlePlaceOrder = async () => {
-    if (items.length === 0) {
-      setError(t("cart_empty"));
+  const requestOtp = async () => {
+    if (!/^\d{10}$/.test(phone) || name.trim().length < 2) {
+      toast.error(t("checkout_identity_required"));
       return;
     }
-
     setLoading(true);
     try {
-      const orderData = {
-        customerId: customer?.id ? parseInt(customer.id) : undefined,
-        items: items.map((item) => ({
-          productId: parseInt(item.product_id),
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        paymentMethod,
-        total: total,
-      };
-
-      const response = await apiService.createOrder(orderData);
-
-      if (response.success) {
-        // Clear cart and refresh from API to ensure sync
-        await clearCart();
-        await loadCart();
-
-        setSuccess(t("order_placed_successfully"));
-        setTimeout(() => {
-          history.push("/orders");
-        }, 2500);
-      } else {
-        setError(response.message || t("order_failed"));
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || t("order_failed"));
-    } finally {
-      setLoading(false);
-    }
+      const response = await apiService.requestOtp(phone);
+      setOtpRequested(true);
+      if (response.data?.debugOtp) setOtp(response.data.debugOtp);
+      toast.success(t("otp_sent"));
+    } finally { setLoading(false); }
   };
 
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/cart" />
-          </IonButtons>
-          <IonTitle>{t("checkout")}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+  const verifyOtp = async () => {
+    setLoading(true);
+    try {
+      const response = await apiService.verifyOtp({ phone, otp, name: name.trim() });
+      login(response.data.token, response.data.customer, storefront
+        ? { id: storefront.tenantId, name: storefront.name }
+        : undefined);
+      toast.success(t("phone_verified"));
+    } finally { setLoading(false); }
+  };
 
-      <IonContent className="ion-padding">
-        {/* Customer Details */}
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>{t("customer_details")}</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonList>
-              <IonItem>
-                <IonLabel>
-                  <h2>{customer?.name}</h2>
-                  <p>{customer?.phone}</p>
-                  {tenant && (
-                    <p>
-                      {t("store")}: {tenant.name}
-                    </p>
-                  )}
-                </IonLabel>
-              </IonItem>
-            </IonList>
-          </IonCardContent>
-        </IonCard>
+  const placeOrder = async () => {
+    if (!isAuthenticated) { toast.error(t("verify_phone_before_order")); return; }
+    if (fulfillment === "DELIVERY" && addressLine1.trim().length < 3) {
+      toast.error(t("delivery_address_required")); return;
+    }
+    setLoading(true);
+    try {
+      const response = await apiService.checkout({
+        items: items.map((item) => ({ variant_id: item.variant_id, quantity: item.quantity })),
+        fulfillment_type: fulfillment,
+        customer_note: note.trim() || undefined,
+        address: fulfillment === "DELIVERY" ? {
+          label: t("home_address"), address_line1: addressLine1.trim(),
+          address_line2: addressLine2.trim() || undefined,
+          landmark: landmark.trim() || undefined, city: city.trim() || undefined,
+          postal_code: postalCode.trim() || undefined, save: saveAddress,
+        } : undefined,
+      });
+      await clearCart(true);
+      toast.success(response.message || t("order_placed_successfully"));
+      history.replace(`/order/${response.data.id}`);
+    } finally { setLoading(false); }
+  };
 
-        {/* Order Summary */}
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>{t("order_summary")}</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonList>
-              {items.map((item) => (
-                <IonItem key={item.variant_id}>
-                  <IonLabel>
-                    <h3>{item.product_name}</h3>
-                    <p>
-                      {t("quantity")}: {item.quantity} ×{" "}
-                      {formatCurrency(item.price)}
-                    </p>
-                  </IonLabel>
-                  <IonLabel slot="end" style={{ textAlign: "right" }}>
-                    <h2
-                      style={{
-                        fontWeight: "bold",
-                        color: "var(--ion-text-color, #000)",
-                      }}
-                    >
-                      {formatCurrency(item.quantity * item.price)}
-                    </h2>
-                  </IonLabel>
-                </IonItem>
-              ))}
+  if (items.length === 0) { history.replace("/cart"); return null; }
 
-              <IonItem>
-                <IonLabel>
-                  <h2 style={{ fontWeight: "bold" }}>{t("total")}</h2>
-                </IonLabel>
-                <IonLabel slot="end" style={{ textAlign: "right" }}>
-                  <h2
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "20px",
-                      color: "var(--ion-text-color, #000)",
-                    }}
-                  >
-                    {formatCurrency(total)}
-                  </h2>
-                </IonLabel>
-              </IonItem>
-            </IonList>
-          </IonCardContent>
-        </IonCard>
+  return <IonPage>
+    <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton defaultHref="/cart" /></IonButtons><IonTitle>{t("checkout")}</IonTitle></IonToolbar></IonHeader>
+    <IonContent className="ion-padding">
+      <IonCard><IonCardHeader><IonCardTitle>{t("contact_and_verification")}</IonCardTitle></IonCardHeader><IonCardContent>
+        <IonList>
+          <IonItem><IonInput label={t("name")} labelPlacement="stacked" value={name} disabled={isAuthenticated} onIonInput={(e) => setName(String(e.detail.value ?? ""))} /></IonItem>
+          <IonItem><IonInput label={t("phone")} labelPlacement="stacked" inputMode="tel" maxlength={10} value={phone} disabled={isAuthenticated} onIonInput={(e) => setPhone(String(e.detail.value ?? ""))} /></IonItem>
+          {!isAuthenticated && otpRequested && <IonItem><IonInput label={t("verification_code")} labelPlacement="stacked" inputMode="numeric" maxlength={6} value={otp} onIonInput={(e) => setOtp(String(e.detail.value ?? ""))} /></IonItem>}
+        </IonList>
+        {!isAuthenticated && <IonButton expand="block" fill={otpRequested ? "solid" : "outline"} onClick={otpRequested ? verifyOtp : requestOtp}>{otpRequested ? t("verify_phone") : t("send_verification_code")}</IonButton>}
+        {isAuthenticated && <IonNote color="success">{t("phone_verified")}</IonNote>}
+      </IonCardContent></IonCard>
 
-        {/* Payment Method */}
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>{t("payment_method")}</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonItem>
-              <IonLabel>{t("payment_method")}</IonLabel>
-              <IonSelect
-                value={paymentMethod}
-                onIonChange={(e) =>
-                  setPaymentMethod(e.detail.value as "CASH" | "ONLINE" | "UPI")
-                }
-                interface="action-sheet"
-              >
-                <IonSelectOption value="CASH">
-                  {t("cash")} - {t("payment_cash")}
-                </IonSelectOption>
-                <IonSelectOption value="UPI">
-                  {t("upi")} - {t("payment_upi")}
-                </IonSelectOption>
-                <IonSelectOption value="ONLINE">
-                  {t("online")} - {t("payment_at_shop")}
-                </IonSelectOption>
-              </IonSelect>
-            </IonItem>
-          </IonCardContent>
-        </IonCard>
+      <IonCard><IonCardHeader><IonCardTitle>{t("how_receive_order")}</IonCardTitle></IonCardHeader><IonCardContent>
+        <IonSegment value={fulfillment} onIonChange={(e) => setFulfillment(e.detail.value as "PICKUP" | "DELIVERY")}>
+          <IonSegmentButton value="PICKUP"><IonLabel>{t("pickup")}</IonLabel></IonSegmentButton>
+          <IonSegmentButton value="DELIVERY"><IonLabel>{t("home_delivery")}</IonLabel></IonSegmentButton>
+        </IonSegment>
+        {fulfillment === "DELIVERY" && <IonList>
+          <IonItem><IonTextarea label={t("address")} labelPlacement="stacked" autoGrow value={addressLine1} onIonInput={(e) => setAddressLine1(String(e.detail.value ?? ""))} /></IonItem>
+          <IonItem><IonInput label={t("address_line_2")} labelPlacement="stacked" value={addressLine2} onIonInput={(e) => setAddressLine2(String(e.detail.value ?? ""))} /></IonItem>
+          <IonItem><IonInput label={t("landmark")} labelPlacement="stacked" value={landmark} onIonInput={(e) => setLandmark(String(e.detail.value ?? ""))} /></IonItem>
+          <IonItem><IonInput label={t("city")} labelPlacement="stacked" value={city} onIonInput={(e) => setCity(String(e.detail.value ?? ""))} /></IonItem>
+          <IonItem><IonInput label={t("postal_code")} labelPlacement="stacked" inputMode="numeric" maxlength={6} value={postalCode} onIonInput={(e) => setPostalCode(String(e.detail.value ?? ""))} /></IonItem>
+          <IonItem><IonCheckbox checked={saveAddress} onIonChange={(e) => setSaveAddress(e.detail.checked)}>{t("save_address")}</IonCheckbox></IonItem>
+        </IonList>}
+        <IonItem><IonTextarea label={t("order_note_optional")} labelPlacement="stacked" autoGrow value={note} onIonInput={(e) => setNote(String(e.detail.value ?? ""))} /></IonItem>
+      </IonCardContent></IonCard>
 
-        {/* QR Code for UPI/Online Payment */}
-        {(paymentMethod === "UPI" || paymentMethod === "ONLINE") && (
-          <IonCard>
-            <IonCardHeader>
-              <IonCardTitle>{t("payment_upi")}</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              {tenant?.upi_id && qrCodeUrl ? (
-                <div style={{ textAlign: "center" }}>
-                  <img
-                    src={qrCodeUrl}
-                    alt={t("upi_qr_alt")}
-                    style={{
-                      maxWidth: "300px",
-                      width: "100%",
-                      border: "2px solid var(--ion-color-light)",
-                      borderRadius: "8px",
-                      padding: "16px",
-                      backgroundColor: "white",
-                    }}
-                  />
-                  <IonText color="medium">
-                    <p style={{ marginTop: "16px", fontSize: "14px" }}>
-                      {t("scan_upi")}
-                    </p>
-                    <p style={{ fontSize: "12px", marginTop: "8px" }}>
-                      {t("upi_id")}: {tenant.upi_id}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        marginTop: "8px",
-                        color: "var(--ion-color-primary)",
-                      }}
-                    >
-                      {t("amount")}: {formatCurrency(total)}
-                    </p>
-                  </IonText>
-                  <IonText color="warning">
-                    <p style={{ marginTop: "16px", fontSize: "13px" }}>
-                      ⚠️ {t("i_have_paid")}
-                    </p>
-                  </IonText>
-                </div>
-              ) : (
-                <IonText color="danger">
-                  <p style={{ textAlign: "center", padding: "20px" }}>
-                    {t("upi_unavailable")}
-                  </p>
-                </IonText>
-              )}
-            </IonCardContent>
-          </IonCard>
-        )}
-
-        {/* Place Order Button */}
-        <IonButton
-          expand="block"
-          onClick={handlePlaceOrder}
-          disabled={loading || items.length === 0}
-          style={{ marginTop: "20px", fontSize: "18px", height: "50px" }}
-        >
-          {t("place_order")} - {formatCurrency(total)}
-        </IonButton>
-
-        <IonLoading isOpen={loading} message={t("placing_order")} />
-        <IonToast
-          isOpen={!!error}
-          message={error}
-          duration={3000}
-          onDidDismiss={() => setError("")}
-          color="danger"
-        />
-        <IonToast
-          isOpen={!!success}
-          message={success}
-          duration={2500}
-          onDidDismiss={() => setSuccess("")}
-          color="success"
-        />
-      </IonContent>
-    </IonPage>
-  );
+      <IonCard><IonCardHeader><IonCardTitle>{t("order_summary")}</IonCardTitle></IonCardHeader><IonCardContent>
+        {items.map((item) => <p key={item.variant_id}>{item.quantity} × {item.product_name}<strong style={{ float: "right" }}>{formatCurrency(item.price * item.quantity)}</strong></p>)}
+        <hr /><p><strong>{t("total")}</strong><strong style={{ float: "right" }}>{formatCurrency(total)}</strong></p>
+        <IonNote>{t("shop_confirms_order_note")}</IonNote>
+      </IonCardContent></IonCard>
+      <IonButton expand="block" size="large" disabled={loading || !isAuthenticated} onClick={placeOrder}>{t("send_order_request")} · {formatCurrency(total)}</IonButton>
+      <IonLoading isOpen={loading} message={t("please_wait")} />
+    </IonContent>
+  </IonPage>;
 };
 
 export default CheckoutPage;
