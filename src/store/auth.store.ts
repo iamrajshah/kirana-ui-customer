@@ -7,6 +7,16 @@ interface Customer {
   name: string;
   phone: string;
   email?: string;
+  addresses?: Array<{
+    id: string;
+    label?: string;
+    address_line1: string;
+    address_line2?: string;
+    landmark?: string;
+    city?: string;
+    state?: string;
+    postal_code?: string;
+  }>;
 }
 
 interface Tenant {
@@ -45,10 +55,6 @@ export const useAuthStore = create<AuthState>((set) => {
       }
       set({ isAuthenticated: true, token, customer, tenant: tenant || null });
       
-      // Load cart from API after login
-      setTimeout(() => {
-        useCartStore.getState().loadCart();
-      }, 100);
     },
     
     logout: () => {

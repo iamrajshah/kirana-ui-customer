@@ -10,19 +10,22 @@ import {
   IonButton,
   IonSpinner,
 } from "@ionic/react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { apiService } from "@services/api";
 import { useCartStore } from "@store/cart.store";
 import ImageWithFallback from "@components/ImageWithFallback";
 import { formatCurrency } from "@utils/currency";
 import { toast } from "@services/toast";
+import ProductCard from "@components/ProductCard";
 
 const ProductDetailPage: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
   const { addItem } = useCartStore();
 
   useEffect(() => {
@@ -35,6 +38,12 @@ const ProductDetailPage: React.FC = () => {
       const response = await apiService.getProductById(id);
       if (response.success) {
         setProduct(response.data);
+      }
+      try {
+        const recommended = await apiService.getProductRecommendations(id);
+        if (recommended.success) setRecommendations(recommended.data);
+      } catch {
+        setRecommendations([]);
       }
     } catch (error) {
       console.error("Failed to load product:", error);
@@ -249,6 +258,16 @@ const ProductDetailPage: React.FC = () => {
                       {stockQty > 0 ? t("add_to_cart") : t("out_of_stock")}
                     </IonButton>
                   </div>
+                  {recommendations.length > 0 && (
+                    <section style={{ marginTop: 28 }}>
+                      <h2>{t("frequently_bought_together")}</h2>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 8 }}>
+                        {recommendations.map((recommended) => (
+                          <ProductCard key={recommended.id} product={recommended} onProductClick={(productId) => history.push(`/product/${productId}`)} />
+                        ))}
+                      </div>
+                    </section>
+                  )}
                 </>
               )}
             </div>

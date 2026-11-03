@@ -107,6 +107,16 @@ class ApiService {
     return response.data;
   }
 
+  async requestOtp(phone: string) {
+    const response = await this.api.post("/customer-auth/otp/request", { phone });
+    return response.data;
+  }
+
+  async verifyOtp(data: { phone: string; otp: string; name: string }) {
+    const response = await this.api.post("/customer-auth/otp/verify", data);
+    return response.data;
+  }
+
   // Catalog APIs
   async getCategories() {
     const response = await this.api.get("/catalog/categories");
@@ -125,6 +135,11 @@ class ApiService {
 
   async getProductById(id: string) {
     const response = await this.api.get(`/catalog/products/${id}`);
+    return response.data;
+  }
+
+  async getProductRecommendations(id: string) {
+    const response = await this.api.get(`/catalog/products/${id}/recommendations`);
     return response.data;
   }
 
@@ -168,13 +183,22 @@ class ApiService {
   }
 
   // Order APIs
-  async createOrder(orderData: {
-    customerId?: number;
-    items: Array<{ productId: number; quantity: number; price: number }>;
-    paymentMethod: string;
-    total: number;
+  async checkout(orderData: {
+    items: Array<{ variant_id: string; quantity: number }>;
+    fulfillment_type: "PICKUP" | "DELIVERY";
+    customer_note?: string;
+    address?: {
+      label?: string;
+      address_line1: string;
+      address_line2?: string;
+      landmark?: string;
+      city?: string;
+      state?: string;
+      postal_code?: string;
+      save: boolean;
+    };
   }) {
-    const response = await this.api.post("/orders", orderData);
+    const response = await this.api.post("/orders/checkout", orderData);
     return response.data;
   }
 
