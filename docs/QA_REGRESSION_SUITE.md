@@ -39,6 +39,21 @@ release revision.
 
 ## OTP checkout and orders
 
+The built-browser checkout regression types real keystrokes into Name, Phone,
+OTP, address, City, PIN code and order note at 390, 820 and 1440 pixels. It changes
+pickup/delivery and address consent, checks OTP feedback, submits exactly one
+mocked order and verifies order navigation, React toast feedback and the mobile
+basket navigation. The app deliberately does not register/use Ionic toast/tab
+components for these flows. Every console error and page exception
+fails the run; Ionic often logs watcher failures without throwing a page error.
+The language overlay suite checks both error channels too. A successful order
+response alone is not a pass when the form logs errors on each keystroke.
+
+Release builds must pass `npm run verify:ionic-runtime`; this resolves the actual
+Ionic/Ionicons dependency contexts and rejects incompatible nested or linked
+Stencil installations even when the root package/lockfile claims the right
+version. Run `npm ci`, build, and run browser tests before deploying that artifact.
+
 Use an approved test mobile and avoid repeated paid OTP sends:
 
 1. Start checkout once; verify one OTP request, countdown, resend guard, and

@@ -5,9 +5,10 @@
   "scripts": {
     "assets:demo": "node scripts/generate-demo-product-assets.mjs",
     "dev": "vite",
-    "build": "tsc && vite build && node scripts/write-release-manifest.mjs",
+    "build": "npm run verify:ionic-runtime && tsc && vite build && node scripts/write-release-manifest.mjs",
+    "verify:ionic-runtime": "node scripts/verify-ionic-runtime.mjs",
     "test:demo-assets": "node --test scripts/demo-product-assets.checks.mjs",
-    "test": "node --test scripts/validate-release-config.checks.mjs scripts/demo-product-assets.checks.mjs scripts/ionic-runtime.checks.mjs && vitest run",
+    "test": "node --test scripts/validate-release-config.checks.mjs scripts/demo-product-assets.checks.mjs scripts/ionic-runtime.checks.mjs scripts/verify-ionic-runtime.checks.mjs && vitest run",
     "test:browser": "playwright test",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

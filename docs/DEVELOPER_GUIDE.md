@@ -28,6 +28,7 @@ creates the draft invoice; storefront checkout is not a completed sale.
 | Order missing in POS | entitlement, tenant ID, customer JWT, checkout response |
 | Desktop looks oversized | max-width grid/product layout and responsive breakpoints |
 | `See all` does nothing | category-browser state/region; never reintroduce an Ionic sheet modal that can remain `overlay-hidden` |
+| `l[p] is not a function` on input/selection | incompatible Stencil runtime in the built artifact; run the resolved-runtime check and rebuild from `npm ci` |
 
 Never show provider secrets or raw API errors. Do not retry OTP verification in a
 render/effect loop; a user action produces at most one in-flight request.
@@ -54,10 +55,19 @@ browser and calls the same catalogue filter used by a primary tile.
 ## Verification
 
 ```bash
+npm ci
+npm run verify:ionic-runtime
 npm test
 npm run lint
 VITE_API_BASE_URL=https://api.example npm run build
+npm run test:browser
 ```
+
+Ionic 7's compiled watcher metadata requires Stencil `4.12.2` in this project.
+The build verifies the runtime actually resolved from the real Ionic and
+Ionicons package locations, including nested and linked dependencies. A correct
+override/lockfile alone does not prove that an existing `node_modules` directory
+or `dist` artifact is correct. Do not reuse a build made before dependency repair.
 
 Then run [`QA_REGRESSION_SUITE.md`](QA_REGRESSION_SUITE.md) against both showcase
 shops and one disposable order journey.
@@ -67,13 +77,17 @@ shops and one disposable order journey.
 Cloudflare Pages hosts `kirana-customer.pages.dev`. Verify `/release.json`, the
 root landing page, and direct `/shop/<slug>`/order routes. Publish the exact tested
 main revision; documentation-only changes do not require deployment.
+Compare the release manifest with the intended commit before publishing. Browser
+tests must run against that same freshly built artifact.
 
 ## Post-checkout stability contract
 
 The mobile bottom bar is ordinary tenant-aware React Router navigation. Do not
 reintroduce `IonTabs`/`IonTabButton` selection state around product, cart, order
-or authentication transitions: the Stencil selected-tab setter caused a
-production-only repeated `l[p] is not a function` exception. Guard protected
+or authentication transitions without rendered-browser coverage. A mismatched
+Stencil runtime previously caused repeated watcher exceptions on selected tabs,
+input values and overlays; changing navigation alone did not repair input
+watchers. Guard protected
 route content instead. Do not drive global feedback through a controlled
 `IonToast` across route transitions; the shared React toast owns its timer and
 DOM lifecycle. Customer order polling must merge invoice payment fields as well
