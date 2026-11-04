@@ -186,6 +186,7 @@
   "address_line_2": "Building / area (optional)",
   "landmark": "Landmark (optional)",
   "postal_code": "PIN code",
+  "city": "City",
   "save_address": "Save this address for next time",
   "home_address": "Home",
   "order_note_optional": "Note for the shop (optional)",

@@ -186,6 +186,7 @@
   "address_line_2": "इमारत / परिसर (ऐच्छिक)",
   "landmark": "खूण (ऐच्छिक)",
   "postal_code": "पिन कोड",
+  "city": "शहर",
   "save_address": "पुढच्या वेळेसाठी पत्ता जतन करा",
   "home_address": "घर",
   "order_note_optional": "दुकानासाठी सूचना (ऐच्छिक)",
