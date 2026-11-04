@@ -1,5 +1,6 @@
 /* Ionic Variables and Theming */
 :root {
+  color-scheme: light;
   --ion-color-primary: #087f5b;
   --ion-color-primary-rgb: 8, 127, 91;
   --ion-color-primary-contrast: #ffffff;
@@ -20,6 +21,29 @@
   --ion-color-danger: #eb445a;
   --ion-color-medium: #92949c;
   --ion-color-light: #f4f5f8;
+  --ion-overlay-background-color: var(--bazaar-surface);
+  --ion-placeholder-color: var(--bazaar-muted);
+}
+
+/* Ionic creates overlays outside the page that opened them. Theme their public
+   host properties so popovers, language sheets and checkout alerts stay legible. */
+ion-modal,
+ion-alert,
+ion-popover,
+ion-action-sheet {
+  --background: var(--ion-overlay-background-color);
+  color: var(--ion-text-color);
+}
+
+ion-modal ion-content,
+ion-popover ion-content {
+  --background: var(--ion-overlay-background-color);
+}
+
+ion-popover ion-list,
+ion-popover ion-item {
+  --background: var(--ion-overlay-background-color);
+  --ion-item-background: var(--ion-overlay-background-color);
 }
 
 * {
@@ -501,6 +525,9 @@ body {
 
 /* Dark Mode Support */
 body.dark {
+  color-scheme: dark;
+  --ion-overlay-background-color: var(--bazaar-surface);
+  --ion-placeholder-color: var(--bazaar-muted);
   --ion-background-color: #121212;
   --ion-background-color-rgb: 18, 18, 18;
 
@@ -1228,6 +1255,29 @@ body.dark {
   --bazaar-line: rgba(192, 227, 211, 0.12);
   --bazaar-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
   --ion-color-light: #1b2e26;
+  --ion-color-light-rgb: 27, 46, 38;
+  --ion-color-light-contrast: #eef8f3;
+  --ion-color-light-contrast-rgb: 238, 248, 243;
+  --ion-color-light-shade: #182822;
+  --ion-color-light-tint: #32433c;
+  --ion-color-dark: #eef8f3;
+  --ion-color-dark-rgb: 238, 248, 243;
+  --ion-color-dark-contrast: #0d1713;
+  --ion-color-dark-contrast-rgb: 13, 23, 19;
+  --ion-color-dark-shade: #d1dad6;
+  --ion-color-dark-tint: #f0f9f4;
+  --ion-color-primary: #56d5aa;
+  --ion-color-primary-rgb: 86, 213, 170;
+  --ion-color-primary-contrast: #092c20;
+  --ion-color-primary-contrast-rgb: 9, 44, 32;
+  --ion-color-primary-shade: #4cbb96;
+  --ion-color-primary-tint: #67d9b3;
+  --ion-background-color: var(--bazaar-page);
+  --ion-text-color: var(--bazaar-ink);
+  --ion-card-background: var(--bazaar-surface);
+  --ion-item-background: var(--bazaar-surface);
+  --ion-toolbar-background: var(--bazaar-surface);
+  --ion-border-color: var(--bazaar-line);
 }
 
 body.dark .storefront-app-toolbar,
