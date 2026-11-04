@@ -7,6 +7,10 @@ import gu from "./gu.json";
 const keys = (value: Record<string, string>) => Object.keys(value).sort();
 
 describe("customer storefront translations", () => {
+  it.each([en, hi, mr, gu])("translates the delivery city field", (translations) => {
+    expect(translations.city).toBeTruthy();
+  });
+
   it.each([
     ["Hindi", hi],
     ["Marathi", mr],

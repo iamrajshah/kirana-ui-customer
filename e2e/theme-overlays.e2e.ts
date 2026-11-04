@@ -36,6 +36,9 @@ for (const theme of ["light", "dark"]) {
       await page.setViewportSize({ width, height: 900 });
       const errors: string[] = [];
       page.on("pageerror", (error) => errors.push(error.message));
+      page.on("console", (message) => {
+        if (message.type() === "error") errors.push(message.text());
+      });
       await page.route("**/api/v1/**", (route) => {
         const pathname = new URL(route.request().url()).pathname;
         const data = pathname.endsWith("/storefront/shop-2")

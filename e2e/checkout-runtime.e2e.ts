@@ -1,8 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
-test("checkout creates one order and navigates without Ionic runtime errors", async ({
-  page,
-}) => {
+async function checkoutRuntime(page: Page) {
   const browserErrors: string[] = [];
   let checkoutRequests = 0;
 
@@ -45,6 +43,37 @@ test("checkout creates one order and navigates without Ionic runtime errors", as
           success: true,
           message: "Order placed successfully",
           data: { id: "999" },
+        }),
+      });
+      return;
+    }
+
+    if (pathname.endsWith("/customer-auth/otp/request")) {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          data: { expiresInSeconds: 900 },
+        }),
+      });
+      return;
+    }
+
+    if (pathname.endsWith("/customer-auth/otp/verify")) {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          success: true,
+          data: {
+            token: "browser-regression-token",
+            customer: {
+              id: "96",
+              name: "Browser Customer",
+              phone: "9000000203",
+            },
+          },
         }),
       });
       return;
@@ -111,11 +140,6 @@ test("checkout creates one order and navigates without Ionic runtime errors", as
   });
 
   await page.addInitScript(() => {
-    localStorage.setItem("kirana_auth_token", "browser-regression-token");
-    localStorage.setItem(
-      "kirana_user_data",
-      JSON.stringify({ id: "96", name: "Rahul Desai", phone: "9000000203" }),
-    );
     localStorage.setItem(
       "kirana_tenant_data",
       JSON.stringify({ id: "2", name: "Kirana Demo Store" }),
@@ -149,12 +173,56 @@ test("checkout creates one order and navigates without Ionic runtime errors", as
   });
 
   await page.goto("/shop/shop-2/checkout");
+  await page
+    .locator('ion-input[label="Name"] input')
+    .pressSequentially("Browser Customer", { delay: 15 });
+  await page
+    .locator('ion-input[label="Phone"] input')
+    .pressSequentially("9000000203", { delay: 15 });
+  await page
+    .locator("ion-button:visible")
+    .filter({ hasText: "Send verification code" })
+    .click();
+  await expect(page.locator(".storefront-toast--success")).toBeVisible();
+  await page
+    .locator('ion-input[label="Verification code"] input')
+    .pressSequentially("123456", { delay: 15 });
+  await page
+    .locator("ion-button:visible")
+    .filter({ hasText: "Verify mobile" })
+    .click();
   await expect(page.getByText(/verified/i).first()).toBeVisible();
+  await page.locator('ion-segment-button[value="DELIVERY"]').click();
+  const address = page.locator('ion-textarea[label="Address"] textarea');
+  await address.pressSequentially("12 Market Road", { delay: 15 });
+  await page
+    .locator("ion-input")
+    .filter({ hasText: /city/i })
+    .locator("input")
+    .pressSequentially("Mumbai", { delay: 15 });
+  await page
+    .locator("ion-input")
+    .filter({ hasText: "PIN code" })
+    .locator("input")
+    .pressSequentially("400001", { delay: 15 });
+  await page
+    .locator("ion-textarea")
+    .last()
+    .locator("textarea")
+    .pressSequentially("Please call before delivery", { delay: 15 });
+  await expect(address).toHaveValue("12 Market Road");
+  await page.locator("ion-checkbox").click();
+  await page.locator("ion-checkbox").click();
   const submit = page
     .locator("ion-button:visible")
     .filter({ hasText: /send order request/i })
     .first();
   await expect(submit).toBeVisible();
+
+  await test.info().attach("checkout-ready", {
+    body: await page.screenshot(),
+    contentType: "image/png",
+  });
 
   await submit.click();
   await expect(page).toHaveURL(/\/shop\/shop-2\/order\/999$/);
@@ -162,5 +230,20 @@ test("checkout creates one order and navigates without Ionic runtime errors", as
   await page.waitForTimeout(500);
 
   expect(checkoutRequests).toBe(1);
+  await expect(page.locator(".storefront-toast--success")).toBeVisible();
+  const basket = page.locator('nav.storefront-bottom-nav a[href$="/cart"]');
+  if (await basket.isVisible()) {
+    await basket.click();
+    await expect(page).toHaveURL(/\/shop\/shop-2\/cart$/);
+  }
   expect(browserErrors).toEqual([]);
-});
+}
+
+for (const width of [390, 820, 1440]) {
+  test(`guest checkout typing and order navigation have no runtime errors at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await checkoutRuntime(page);
+  });
+}
