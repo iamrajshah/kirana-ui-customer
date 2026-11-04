@@ -70,9 +70,11 @@ main revision; documentation-only changes do not require deployment.
 
 ## Post-checkout stability contract
 
-Do not conditionally add or remove `IonTabButton` children when authentication
-changes. Keep the tab structure stable and guard route content instead. Do not
-drive global feedback through a controlled `IonToast` across route transitions;
-the shared React toast owns its timer and DOM lifecycle. Customer order polling
-must merge invoice payment fields as well as order status and must stop while the
-document is hidden or the page unmounts.
+The mobile bottom bar is ordinary tenant-aware React Router navigation. Do not
+reintroduce `IonTabs`/`IonTabButton` selection state around product, cart, order
+or authentication transitions: the Stencil selected-tab setter caused a
+production-only repeated `l[p] is not a function` exception. Guard protected
+route content instead. Do not drive global feedback through a controlled
+`IonToast` across route transitions; the shared React toast owns its timer and
+DOM lifecycle. Customer order polling must merge invoice payment fields as well
+as order status and must stop while the document is hidden or the page unmounts.

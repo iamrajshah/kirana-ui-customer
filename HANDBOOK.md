@@ -97,6 +97,12 @@ Built by Rajesh Shah (@iamrajshah). Keep this handbook updated whenever storefro
 
 ## Current release qualification
 
+On 4 November 2026, deployed revision `5c972bc` passed 10 release checks,
+14 test files / 36 tests, lint, production build and the responsive production
+browser matrix. Product-card navigation, offers and tenant identity passed at
+390, 820 and 1440 pixels without a console/runtime exception. The complete
+cross-application browser run passed 62/62 scenarios.
+
 On 3 November 2026, the deployed storefront baseline passed 9 files / 19 tests,
 lint, production build, API checks, and desktop/tablet/mobile browser journeys.
 The deployed Modern Bazaar revision `e23949a` passed 14 files / 34 tests, lint,
@@ -128,4 +134,6 @@ authenticated tab bar keeps a stable DOM shape, and global feedback uses a plain
 React status element rather than an Ionic overlay, preventing the prior
 `selectedTab`/`isOpen` crash after checkout. The home screen now uses a responsive
 marketplace hierarchy, tenant branding, benefits, offer rail and richer product
-cards while preserving the original Kirana identity.
+cards while preserving the original Kirana identity. On 4 November, the mobile
+bottom navigation moved from Ionic tab-selection state to tenant-aware React
+Router links after production browser testing reproduced `selectedTab` errors.
