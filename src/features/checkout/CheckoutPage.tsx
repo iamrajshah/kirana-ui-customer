@@ -191,7 +191,7 @@ const CheckoutPage: React.FC = () => {
           <IonTitle>{t("checkout")}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding storefront-checkout-content">
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>{t("contact_and_verification")}</IonCardTitle>

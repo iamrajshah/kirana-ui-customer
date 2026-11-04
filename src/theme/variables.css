@@ -1328,6 +1328,10 @@ body.dark .bazaar-featured-deal__copy del {
     display: flex;
   }
 
+  .storefront-checkout-content {
+    --padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+
   .bazaar-hero-layout {
     grid-template-columns: 1fr;
   }
