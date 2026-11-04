@@ -1,5 +1,14 @@
 # Customer Storefront QA Regression Suite
 
+## Release evidence — 4 November 2026
+
+Deployed revision `5c972bc` passed 10 release checks, 14 test files / 36 tests,
+ESLint, TypeScript and production Vite build. The final cross-application browser
+matrix passed 62/62 scenarios; Customer Bazaar, tenant identity, offer action and
+product navigation passed on 1440x900, 820x1180 and 390x844 with no console or
+page error. This run specifically closed the Ionic selected-tab exception found
+by the preceding deployed-browser pass.
+
 ## Release evidence — 3 November 2026
 
 Customer baseline `b709620` passed 9 test files / 19 tests, lint, production
