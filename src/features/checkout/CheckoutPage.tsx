@@ -1,9 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader,
-  IonCardTitle, IonCheckbox, IonContent, IonHeader, IonInput, IonItem, IonLabel,
-  IonList, IonLoading, IonNote, IonPage, IonSegment, IonSegmentButton, IonTextarea,
-  IonTitle, IonToolbar,
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonCheckbox,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonNote,
+  IonPage,
+  IonSegment,
+  IonSegmentButton,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -28,10 +45,16 @@ const CheckoutPage: React.FC = () => {
   const [phone, setPhone] = useState(customer?.phone ?? "");
   const [otp, setOtp] = useState("");
   const [otpRequested, setOtpRequested] = useState(false);
-  const [fulfillment, setFulfillment] = useState<"PICKUP" | "DELIVERY">("PICKUP");
+  const [fulfillment, setFulfillment] = useState<"PICKUP" | "DELIVERY">(
+    "PICKUP",
+  );
   const savedAddress = customer?.addresses?.[0];
-  const [addressLine1, setAddressLine1] = useState(savedAddress?.address_line1 ?? "");
-  const [addressLine2, setAddressLine2] = useState(savedAddress?.address_line2 ?? "");
+  const [addressLine1, setAddressLine1] = useState(
+    savedAddress?.address_line1 ?? "",
+  );
+  const [addressLine2, setAddressLine2] = useState(
+    savedAddress?.address_line2 ?? "",
+  );
   const [landmark, setLandmark] = useState(savedAddress?.landmark ?? "");
   const [city, setCity] = useState(savedAddress?.city ?? "");
   const [postalCode, setPostalCode] = useState(savedAddress?.postal_code ?? "");
@@ -39,6 +62,22 @@ const CheckoutPage: React.FC = () => {
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const otpSubmission = useRef(createSingleFlight());
+  const orderSubmission = useRef(createSingleFlight());
+  const leavingCheckout = useRef(false);
+  const mounted = useRef(true);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (items.length === 0 && !leavingCheckout.current) {
+      history.replace(storefrontPath("/cart"));
+    }
+  }, [history, items.length]);
 
   useEffect(() => {
     const address = customer?.addresses?.[0];
@@ -50,103 +89,295 @@ const CheckoutPage: React.FC = () => {
     setPostalCode(address.postal_code ?? "");
   }, [customer]);
 
-  const requestOtp = () => otpSubmission.current.run(async () => {
-    if (!/^\d{10}$/.test(phone) || name.trim().length < 2) {
-      toast.error(t("checkout_identity_required"));
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await apiService.requestOtp(phone);
-      setOtpRequested(true);
-      if (response.data?.debugOtp) setOtp(response.data.debugOtp);
-      toast.success(t("otp_sent"));
-    } catch {
-      // The API interceptor presents the server's actionable error message.
-    } finally { setLoading(false); }
-  });
+  const requestOtp = () =>
+    otpSubmission.current.run(async () => {
+      if (!/^\d{10}$/.test(phone) || name.trim().length < 2) {
+        toast.error(t("checkout_identity_required"));
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await apiService.requestOtp(phone);
+        setOtpRequested(true);
+        if (response.data?.debugOtp) setOtp(response.data.debugOtp);
+        toast.success(t("otp_sent"));
+      } catch {
+        // The API interceptor presents the server's actionable error message.
+      } finally {
+        setLoading(false);
+      }
+    });
 
-  const verifyOtp = () => otpSubmission.current.run(async () => {
-    if (!/^\d{6}$/.test(otp)) {
-      toast.error(t("verification_code_required"));
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await apiService.verifyOtp({ phone, otp, name: name.trim() });
-      login(response.data.token, response.data.customer, storefront
-        ? { id: storefront.tenantId, name: storefront.name }
-        : undefined);
-      toast.success(t("phone_verified"));
-    } catch {
-      // The API interceptor presents the server's actionable error message.
-    } finally { setLoading(false); }
-  });
+  const verifyOtp = () =>
+    otpSubmission.current.run(async () => {
+      if (!/^\d{6}$/.test(otp)) {
+        toast.error(t("verification_code_required"));
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await apiService.verifyOtp({
+          phone,
+          otp,
+          name: name.trim(),
+        });
+        login(
+          response.data.token,
+          response.data.customer,
+          storefront
+            ? { id: storefront.tenantId, name: storefront.name }
+            : undefined,
+        );
+        toast.success(t("phone_verified"));
+      } catch {
+        // The API interceptor presents the server's actionable error message.
+      } finally {
+        setLoading(false);
+      }
+    });
 
-  const placeOrder = async () => {
-    if (!isAuthenticated) { toast.error(t("verify_phone_before_order")); return; }
-    if (fulfillment === "DELIVERY" && addressLine1.trim().length < 3) {
-      toast.error(t("delivery_address_required")); return;
-    }
-    setLoading(true);
-    try {
-      const response = await apiService.checkout({
-        items: items.map((item) => ({ variant_id: item.variant_id, quantity: item.quantity })),
-        fulfillment_type: fulfillment,
-        customer_note: note.trim() || undefined,
-        address: fulfillment === "DELIVERY" ? {
-          label: t("home_address"), address_line1: addressLine1.trim(),
-          address_line2: addressLine2.trim() || undefined,
-          landmark: landmark.trim() || undefined, city: city.trim() || undefined,
-          postal_code: postalCode.trim() || undefined, save: saveAddress,
-        } : undefined,
-      });
-      await clearCart(true);
-      toast.success(response.message || t("order_placed_successfully"));
-      history.replace(storefrontPath(`/order/${response.data.id}`));
-    } finally { setLoading(false); }
-  };
+  const placeOrder = () =>
+    orderSubmission.current.run(async () => {
+      if (!isAuthenticated) {
+        toast.error(t("verify_phone_before_order"));
+        return;
+      }
+      if (fulfillment === "DELIVERY" && addressLine1.trim().length < 3) {
+        toast.error(t("delivery_address_required"));
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await apiService.checkout({
+          items: items.map((item) => ({
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+          })),
+          fulfillment_type: fulfillment,
+          customer_note: note.trim() || undefined,
+          address:
+            fulfillment === "DELIVERY"
+              ? {
+                  label: t("home_address"),
+                  address_line1: addressLine1.trim(),
+                  address_line2: addressLine2.trim() || undefined,
+                  landmark: landmark.trim() || undefined,
+                  city: city.trim() || undefined,
+                  postal_code: postalCode.trim() || undefined,
+                  save: saveAddress,
+                }
+              : undefined,
+        });
+        leavingCheckout.current = true;
+        await clearCart(true);
+        toast.success(response.message || t("order_placed_successfully"));
+        history.replace(storefrontPath(`/order/${response.data.id}`));
+      } catch {
+        // The API interceptor presents the server's actionable error message.
+      } finally {
+        if (mounted.current && !leavingCheckout.current) setLoading(false);
+      }
+    });
 
-  if (items.length === 0) { history.replace(storefrontPath("/cart")); return null; }
+  if (items.length === 0) return null;
 
-  return <IonPage>
-    <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton defaultHref={storefrontPath("/cart")} /></IonButtons><IonTitle>{t("checkout")}</IonTitle></IonToolbar></IonHeader>
-    <IonContent className="ion-padding">
-      <IonCard><IonCardHeader><IonCardTitle>{t("contact_and_verification")}</IonCardTitle></IonCardHeader><IonCardContent>
-        <IonList>
-          <IonItem><IonInput label={t("name")} labelPlacement="stacked" value={name} disabled={isAuthenticated} onIonInput={(e) => setName(String(e.detail.value ?? ""))} /></IonItem>
-          <IonItem><IonInput label={t("phone")} labelPlacement="stacked" inputMode="tel" maxlength={10} value={phone} disabled={isAuthenticated} onIonInput={(e) => setPhone(String(e.detail.value ?? ""))} /></IonItem>
-          {!isAuthenticated && otpRequested && <IonItem><IonInput label={t("verification_code")} labelPlacement="stacked" inputMode="numeric" autocomplete="one-time-code" maxlength={6} value={otp} onIonInput={(e) => setOtp(String(e.detail.value ?? ""))} /></IonItem>}
-        </IonList>
-        {!isAuthenticated && <IonButton type="button" expand="block" fill={otpRequested ? "solid" : "outline"} disabled={loading} onClick={otpRequested ? verifyOtp : requestOtp}>{otpRequested ? t("verify_phone") : t("send_verification_code")}</IonButton>}
-        {isAuthenticated && <IonNote color="success">{t("phone_verified")}</IonNote>}
-      </IonCardContent></IonCard>
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref={storefrontPath("/cart")} />
+          </IonButtons>
+          <IonTitle>{t("checkout")}</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>{t("contact_and_verification")}</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonList>
+              <IonItem>
+                <IonInput
+                  label={t("name")}
+                  labelPlacement="stacked"
+                  value={name}
+                  disabled={isAuthenticated}
+                  onIonInput={(e) => setName(String(e.detail.value ?? ""))}
+                />
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  label={t("phone")}
+                  labelPlacement="stacked"
+                  inputMode="tel"
+                  maxlength={10}
+                  value={phone}
+                  disabled={isAuthenticated}
+                  onIonInput={(e) => setPhone(String(e.detail.value ?? ""))}
+                />
+              </IonItem>
+              {!isAuthenticated && otpRequested && (
+                <IonItem>
+                  <IonInput
+                    label={t("verification_code")}
+                    labelPlacement="stacked"
+                    inputMode="numeric"
+                    autocomplete="one-time-code"
+                    maxlength={6}
+                    value={otp}
+                    onIonInput={(e) => setOtp(String(e.detail.value ?? ""))}
+                  />
+                </IonItem>
+              )}
+            </IonList>
+            {!isAuthenticated && (
+              <IonButton
+                type="button"
+                expand="block"
+                fill={otpRequested ? "solid" : "outline"}
+                disabled={loading}
+                onClick={otpRequested ? verifyOtp : requestOtp}
+              >
+                {otpRequested ? t("verify_phone") : t("send_verification_code")}
+              </IonButton>
+            )}
+            {isAuthenticated && (
+              <IonNote color="success">{t("phone_verified")}</IonNote>
+            )}
+          </IonCardContent>
+        </IonCard>
 
-      <IonCard><IonCardHeader><IonCardTitle>{t("how_receive_order")}</IonCardTitle></IonCardHeader><IonCardContent>
-        <IonSegment value={fulfillment} onIonChange={(e) => setFulfillment(e.detail.value as "PICKUP" | "DELIVERY")}>
-          <IonSegmentButton value="PICKUP"><IonLabel>{t("pickup")}</IonLabel></IonSegmentButton>
-          <IonSegmentButton value="DELIVERY"><IonLabel>{t("home_delivery")}</IonLabel></IonSegmentButton>
-        </IonSegment>
-        {fulfillment === "DELIVERY" && <IonList>
-          <IonItem><IonTextarea label={t("address")} labelPlacement="stacked" autoGrow value={addressLine1} onIonInput={(e) => setAddressLine1(String(e.detail.value ?? ""))} /></IonItem>
-          <IonItem><IonInput label={t("address_line_2")} labelPlacement="stacked" value={addressLine2} onIonInput={(e) => setAddressLine2(String(e.detail.value ?? ""))} /></IonItem>
-          <IonItem><IonInput label={t("landmark")} labelPlacement="stacked" value={landmark} onIonInput={(e) => setLandmark(String(e.detail.value ?? ""))} /></IonItem>
-          <IonItem><IonInput label={t("city")} labelPlacement="stacked" value={city} onIonInput={(e) => setCity(String(e.detail.value ?? ""))} /></IonItem>
-          <IonItem><IonInput label={t("postal_code")} labelPlacement="stacked" inputMode="numeric" maxlength={6} value={postalCode} onIonInput={(e) => setPostalCode(String(e.detail.value ?? ""))} /></IonItem>
-          <IonItem><IonCheckbox checked={saveAddress} onIonChange={(e) => setSaveAddress(e.detail.checked)}>{t("save_address")}</IonCheckbox></IonItem>
-        </IonList>}
-        <IonItem><IonTextarea label={t("order_note_optional")} labelPlacement="stacked" autoGrow value={note} onIonInput={(e) => setNote(String(e.detail.value ?? ""))} /></IonItem>
-      </IonCardContent></IonCard>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>{t("how_receive_order")}</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonSegment
+              value={fulfillment}
+              onIonChange={(e) =>
+                setFulfillment(e.detail.value as "PICKUP" | "DELIVERY")
+              }
+            >
+              <IonSegmentButton value="PICKUP">
+                <IonLabel>{t("pickup")}</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="DELIVERY">
+                <IonLabel>{t("home_delivery")}</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+            {fulfillment === "DELIVERY" && (
+              <IonList>
+                <IonItem>
+                  <IonTextarea
+                    label={t("address")}
+                    labelPlacement="stacked"
+                    autoGrow
+                    value={addressLine1}
+                    onIonInput={(e) =>
+                      setAddressLine1(String(e.detail.value ?? ""))
+                    }
+                  />
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    label={t("address_line_2")}
+                    labelPlacement="stacked"
+                    value={addressLine2}
+                    onIonInput={(e) =>
+                      setAddressLine2(String(e.detail.value ?? ""))
+                    }
+                  />
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    label={t("landmark")}
+                    labelPlacement="stacked"
+                    value={landmark}
+                    onIonInput={(e) =>
+                      setLandmark(String(e.detail.value ?? ""))
+                    }
+                  />
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    label={t("city")}
+                    labelPlacement="stacked"
+                    value={city}
+                    onIonInput={(e) => setCity(String(e.detail.value ?? ""))}
+                  />
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    label={t("postal_code")}
+                    labelPlacement="stacked"
+                    inputMode="numeric"
+                    maxlength={6}
+                    value={postalCode}
+                    onIonInput={(e) =>
+                      setPostalCode(String(e.detail.value ?? ""))
+                    }
+                  />
+                </IonItem>
+                <IonItem>
+                  <IonCheckbox
+                    checked={saveAddress}
+                    onIonChange={(e) => setSaveAddress(e.detail.checked)}
+                  >
+                    {t("save_address")}
+                  </IonCheckbox>
+                </IonItem>
+              </IonList>
+            )}
+            <IonItem>
+              <IonTextarea
+                label={t("order_note_optional")}
+                labelPlacement="stacked"
+                autoGrow
+                value={note}
+                onIonInput={(e) => setNote(String(e.detail.value ?? ""))}
+              />
+            </IonItem>
+          </IonCardContent>
+        </IonCard>
 
-      <IonCard><IonCardHeader><IonCardTitle>{t("order_summary")}</IonCardTitle></IonCardHeader><IonCardContent>
-        {items.map((item) => <p key={item.variant_id}>{item.quantity} × {item.product_name}<strong style={{ float: "right" }}>{formatCurrency(item.price * item.quantity)}</strong></p>)}
-        <hr /><p><strong>{t("total")}</strong><strong style={{ float: "right" }}>{formatCurrency(total)}</strong></p>
-        <IonNote>{t("shop_confirms_order_note")}</IonNote>
-      </IonCardContent></IonCard>
-      <IonButton expand="block" size="large" disabled={loading || !isAuthenticated} onClick={placeOrder}>{t("send_order_request")} · {formatCurrency(total)}</IonButton>
-      <IonLoading isOpen={loading} message={t("please_wait")} />
-    </IonContent>
-  </IonPage>;
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>{t("order_summary")}</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            {items.map((item) => (
+              <p key={item.variant_id}>
+                {item.quantity} × {item.product_name}
+                <strong style={{ float: "right" }}>
+                  {formatCurrency(item.price * item.quantity)}
+                </strong>
+              </p>
+            ))}
+            <hr />
+            <p>
+              <strong>{t("total")}</strong>
+              <strong style={{ float: "right" }}>
+                {formatCurrency(total)}
+              </strong>
+            </p>
+            <IonNote>{t("shop_confirms_order_note")}</IonNote>
+          </IonCardContent>
+        </IonCard>
+        <IonButton
+          expand="block"
+          size="large"
+          aria-busy={loading}
+          onClick={placeOrder}
+        >
+          {loading
+            ? t("please_wait")
+            : `${t("send_order_request")} · ${formatCurrency(total)}`}
+        </IonButton>
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default CheckoutPage;

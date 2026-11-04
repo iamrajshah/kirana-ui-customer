@@ -24,4 +24,20 @@ describe("Ionic storefront stability contracts", () => {
     expect(source).not.toContain("IonToast");
     expect(source).toContain("storefront-toast");
   });
+
+  it("completes checkout without mutating an Ionic loading overlay during navigation", () => {
+    const source = readFileSync(
+      new URL("../features/checkout/CheckoutPage.tsx", import.meta.url),
+      "utf8",
+    );
+
+    expect(source).not.toContain("IonLoading");
+    expect(source).not.toContain("disabled={loading || !isAuthenticated}");
+    expect(source).toContain("orderSubmission.current.run");
+    expect(source).toContain("leavingCheckout.current = true");
+    expect(source).toContain("if (items.length === 0) return null");
+    expect(source).not.toMatch(
+      /if \(items\.length === 0\)[^{]*\{[^}]*history\.replace/s,
+    );
+  });
 });
