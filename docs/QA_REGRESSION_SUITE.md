@@ -56,6 +56,14 @@ Use an approved test mobile and avoid repeated paid OTP sends:
 
 ## Responsive and localization
 
+Theme overlays are browser-tested by `e2e/theme-overlays.e2e.ts` in both themes
+at 390, 820 and 1440 pixels. `npm run build && npm run test:browser` checks the
+real Ionic language popover and action sheet, including a 4.5:1 minimum text
+contrast. Keep the overlay surface distinct from the page, labels and selected
+options readable, and native form controls on the app's chosen color scheme.
+Repeat the same visual check for checkout inputs and confirmation alerts; unit
+tests that mock Ionic cannot prove shadow-root CSS or rendered contrast.
+
 Run at 390x844, 768x1024, and at least 1440x900 in light/dark mode. Check long
 shop/product/offer names, keyboard checkout, safe bottom navigation, intentional
 horizontal rails, and English/Hindi/Marathi/Gujarati completeness.
