@@ -778,7 +778,7 @@ body.dark {
 }
 
 .bazaar-category-shortcut,
-.bazaar-category-sheet__grid button {
+.bazaar-category-browser__grid button {
   appearance: none;
   min-height: 88px;
   display: grid;
@@ -796,13 +796,13 @@ body.dark {
 }
 
 .bazaar-category-shortcut:hover,
-.bazaar-category-sheet__grid button:hover {
+.bazaar-category-browser__grid button:hover {
   border-color: color-mix(in srgb, var(--ion-color-primary) 45%, transparent);
   transform: translateY(-2px);
 }
 
 .bazaar-category-shortcut[data-selected="true"],
-.bazaar-category-sheet__grid button[data-selected="true"] {
+.bazaar-category-browser__grid button[data-selected="true"] {
   color: var(--ion-color-primary-shade);
   border-color: color-mix(in srgb, var(--ion-color-primary) 42%, transparent);
   background: color-mix(
@@ -814,12 +814,12 @@ body.dark {
 
 .bazaar-category-shortcut > span,
 .bazaar-category-shortcut > ion-icon,
-.bazaar-category-sheet__grid button > span {
+.bazaar-category-browser__grid button > span {
   font-size: 1.75rem;
 }
 
 .bazaar-category-shortcut strong,
-.bazaar-category-sheet__grid strong {
+.bazaar-category-browser__grid strong {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -832,11 +832,65 @@ body.dark {
   border-style: dashed;
 }
 
-.bazaar-category-sheet {
-  --border-radius: 24px 24px 0 0;
+.bazaar-category-browser {
+  margin: 2px 3px 14px;
+  overflow: hidden;
+  border: 1px solid var(--bazaar-line);
+  border-radius: 22px;
+  background: var(--bazaar-surface);
+  box-shadow: var(--bazaar-shadow);
+  scroll-margin-top: 94px;
+  animation: bazaar-category-browser-enter 180ms ease-out;
 }
 
-.bazaar-category-sheet__grid {
+.bazaar-category-browser__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 4px;
+}
+
+.bazaar-category-browser__header small {
+  color: var(--ion-color-primary);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bazaar-category-browser__header h3 {
+  margin: 2px 0 0;
+  color: var(--bazaar-ink);
+  font-size: 1.15rem;
+}
+
+.bazaar-category-browser__close {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  flex: 0 0 42px;
+  place-items: center;
+  padding: 0;
+  color: var(--bazaar-ink);
+  border: 1px solid var(--bazaar-line);
+  border-radius: 14px;
+  background: var(--bazaar-soft);
+  cursor: pointer;
+}
+
+@keyframes bazaar-category-browser-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bazaar-category-browser__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
   gap: 12px;
@@ -1296,6 +1350,27 @@ body.dark .bazaar-featured-deal__copy del {
   .bazaar-category-shortcut > span,
   .bazaar-category-shortcut > ion-icon {
     font-size: 1.5rem;
+  }
+
+  .bazaar-category-browser {
+    margin-inline: 1px;
+    border-radius: 18px;
+    scroll-margin-top: 76px;
+  }
+
+  .bazaar-category-browser__header {
+    padding: 13px 13px 3px;
+  }
+
+  .bazaar-category-browser__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .bazaar-category-browser__grid button {
+    min-height: 74px;
+    border-radius: 15px;
   }
 
   .bazaar-hero-layout {

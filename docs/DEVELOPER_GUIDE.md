@@ -27,6 +27,7 @@ creates the draft invoice; storefront checkout is not a completed sale.
 | Status stays stale | foreground polling lifecycle and order status endpoint |
 | Order missing in POS | entitlement, tenant ID, customer JWT, checkout response |
 | Desktop looks oversized | max-width grid/product layout and responsive breakpoints |
+| `See all` does nothing | category-browser state/region; never reintroduce an Ionic sheet modal that can remain `overlay-hidden` |
 
 Never show provider secrets or raw API errors. Do not retry OTP verification in a
 render/effect loop; a user action produces at most one in-flight request.
@@ -46,7 +47,9 @@ render/effect loop; a user action produces at most one in-flight request.
 
 The Modern Bazaar home keeps six primary category tiles in total: For You,
 four live categories and All Categories. Do not restore an unbounded segment
-row; additional categories belong in the category sheet.
+row; additional categories belong in the inline category browser. Both `See all`
+and `All Categories` must target `#bazaar-category-browser`; selection closes the
+browser and calls the same catalogue filter used by a primary tile.
 
 ## Verification
 

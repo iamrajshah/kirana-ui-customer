@@ -1,14 +1,5 @@
-import React, { useMemo, useState } from "react";
-import {
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonModal,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import React, { useMemo, useRef, useState } from "react";
+import { IonIcon } from "@ionic/react";
 import { chevronForward, close, gridOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -30,6 +21,7 @@ const CategoryNavigator: React.FC<CategoryNavigatorProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const browserRef = useRef<HTMLDivElement>(null);
   const shortcuts = useMemo(
     () => getCategoryShortcuts(categories, selectedCategory),
     [categories, selectedCategory],
@@ -38,6 +30,16 @@ const CategoryNavigator: React.FC<CategoryNavigatorProps> = ({
   const selectCategory = (categoryId: string) => {
     onSelect(categoryId);
     setIsOpen(false);
+  };
+
+  const openCategoryBrowser = () => {
+    setIsOpen(true);
+    window.requestAnimationFrame(() => {
+      browserRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    });
   };
 
   if (categories.length === 0) return null;
@@ -55,7 +57,9 @@ const CategoryNavigator: React.FC<CategoryNavigatorProps> = ({
         <button
           type="button"
           className="bazaar-text-action"
-          onClick={() => setIsOpen(true)}
+          aria-controls="bazaar-category-browser"
+          aria-expanded={isOpen}
+          onClick={openCategoryBrowser}
         >
           {t("see_all")} <IonIcon icon={chevronForward} />
         </button>
@@ -95,35 +99,39 @@ const CategoryNavigator: React.FC<CategoryNavigatorProps> = ({
         <button
           type="button"
           className="bazaar-category-shortcut bazaar-category-shortcut--all"
-          onClick={() => setIsOpen(true)}
+          aria-controls="bazaar-category-browser"
+          aria-expanded={isOpen}
+          onClick={openCategoryBrowser}
         >
           <IonIcon icon={gridOutline} aria-hidden="true" />
           <strong>{t("all_categories")}</strong>
         </button>
       </div>
 
-      <IonModal
-        className="bazaar-category-sheet"
-        isOpen={isOpen}
-        onDidDismiss={() => setIsOpen(false)}
-        initialBreakpoint={0.72}
-        breakpoints={[0, 0.72, 0.94]}
-      >
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>{t("all_categories")}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton
-                aria-label={t("close")}
-                onClick={() => setIsOpen(false)}
-              >
-                <IonIcon icon={close} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <div className="bazaar-category-sheet__grid">
+      {isOpen && (
+        <div
+          ref={browserRef}
+          id="bazaar-category-browser"
+          className="bazaar-category-browser"
+          data-category-browser="open"
+          role="region"
+          aria-label={t("all_categories")}
+        >
+          <div className="bazaar-category-browser__header">
+            <div>
+              <small>{t("browse_categories")}</small>
+              <h3>{t("all_categories")}</h3>
+            </div>
+            <button
+              type="button"
+              className="bazaar-category-browser__close"
+              aria-label={t("close")}
+              onClick={() => setIsOpen(false)}
+            >
+              <IonIcon icon={close} />
+            </button>
+          </div>
+          <div className="bazaar-category-browser__grid">
             <button
               type="button"
               aria-pressed={selectedCategory === "all"}
@@ -151,8 +159,8 @@ const CategoryNavigator: React.FC<CategoryNavigatorProps> = ({
               );
             })}
           </div>
-        </IonContent>
-      </IonModal>
+        </div>
+      )}
     </section>
   );
 };
