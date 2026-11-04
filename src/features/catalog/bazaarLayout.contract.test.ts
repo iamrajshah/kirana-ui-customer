@@ -65,7 +65,7 @@ describe("Modern Bazaar responsive layout", () => {
       "grid-template-columns: repeat(3, minmax(0, 1fr))",
     );
     expect(styles).toMatch(
-      /\.storefront-bottom-nav ion-tab-button\s*\{[^}]*min-width:\s*0;/s,
+      /\.storefront-bottom-nav__item\s*\{[^}]*min-width:\s*0;/s,
     );
   });
 });

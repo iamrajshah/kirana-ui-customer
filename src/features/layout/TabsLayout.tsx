@@ -1,10 +1,13 @@
 import React, { Suspense, lazy } from "react";
-import { Route, Redirect, useParams } from "react-router-dom";
 import {
-  IonTabs,
+  Link,
+  Route,
+  Redirect,
+  useLocation,
+  useParams,
+} from "react-router-dom";
+import {
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
   IonIcon,
   IonLabel,
   IonBadge,
@@ -32,10 +35,16 @@ const TabsLayout: React.FC = () => {
   const itemCount = useCartStore((state) => state.getItemCount());
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const base = `/shop/${encodeURIComponent(slug)}`;
 
+  const navClassName = (path: string) =>
+    `storefront-bottom-nav__item${
+      location.pathname === path ? " storefront-bottom-nav__item--active" : ""
+    }`;
+
   return (
-    <IonTabs>
+    <>
       <IonRouterOutlet>
         <Suspense
           fallback={
@@ -96,15 +105,18 @@ const TabsLayout: React.FC = () => {
         </Suspense>
       </IonRouterOutlet>
 
-      <IonTabBar slot="bottom" className="storefront-bottom-nav">
-        <IonTabButton tab="home" href={`${base}/home`}>
+      <nav
+        className="storefront-bottom-nav"
+        aria-label={t("primary_navigation")}
+      >
+        <Link className={navClassName(`${base}/home`)} to={`${base}/home`}>
           <IonIcon icon={home} />
           <IonLabel>{t("home")}</IonLabel>
-        </IonTabButton>
+        </Link>
 
-        <IonTabButton
-          tab="browse"
-          href={`${base}/home#catalog`}
+        <Link
+          className="storefront-bottom-nav__item"
+          to={`${base}/home#catalog`}
           onClick={() =>
             document
               .getElementById("catalog")
@@ -113,14 +125,14 @@ const TabsLayout: React.FC = () => {
         >
           <IonIcon icon={compassOutline} />
           <IonLabel>{t("browse")}</IonLabel>
-        </IonTabButton>
+        </Link>
 
-        <IonTabButton tab="orders" href={`${base}/orders`}>
+        <Link className={navClassName(`${base}/orders`)} to={`${base}/orders`}>
           <IonIcon icon={receipt} />
           <IonLabel>{t("orders")}</IonLabel>
-        </IonTabButton>
+        </Link>
 
-        <IonTabButton tab="cart" href={`${base}/cart`}>
+        <Link className={navClassName(`${base}/cart`)} to={`${base}/cart`}>
           <IonIcon icon={cart} />
           <IonLabel>{t("basket")}</IonLabel>
           {itemCount > 0 && (
@@ -128,9 +140,9 @@ const TabsLayout: React.FC = () => {
               {itemCount}
             </IonBadge>
           )}
-        </IonTabButton>
-      </IonTabBar>
-    </IonTabs>
+        </Link>
+      </nav>
+    </>
   );
 };
 

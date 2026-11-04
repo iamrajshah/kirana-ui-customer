@@ -8,10 +8,11 @@ describe("Ionic storefront stability contracts", () => {
       "utf8",
     );
 
-    expect(source).toContain('tab="orders"');
-    expect(source).toContain('tab="browse"');
-    expect(source).toContain('tab="cart"');
-    expect(source).not.toMatch(/isAuthenticated\s*&&\s*\(\s*<IonTabButton/);
+    expect(source).toContain("to={`${base}/orders`}");
+    expect(source).toContain("to={`${base}/home#catalog`}");
+    expect(source).toContain("to={`${base}/cart`}");
+    expect(source).not.toContain("IonTabs");
+    expect(source).not.toContain("IonTabButton");
   });
 
   it("uses a React toast instead of mutating an Ionic overlay after navigation", () => {
