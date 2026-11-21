@@ -3,6 +3,7 @@ import { useAuthStore } from "@store/auth.store";
 import { toast } from "./toast";
 import { storageService, type StorefrontSelection } from "./storage";
 import i18n from "./i18n";
+import { checkoutRequestKey, completeCheckoutAttempt } from "./checkoutAttempt";
 
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim().replace(
   /\/$/,
@@ -203,7 +204,20 @@ class ApiService {
       save: boolean;
     };
   }) {
-    const response = await this.api.post("/orders/checkout", orderData);
+    const tenantId = storageService.getStorefront()?.tenantId;
+    const customerId = storageService.getUserData()?.id;
+    if (!tenantId || !customerId)
+      throw new Error("Verified shopper and shop are required");
+    const key = await checkoutRequestKey(
+      String(tenantId),
+      String(customerId),
+      orderData,
+    );
+    const response = await this.api.post("/orders/checkout", {
+      ...orderData,
+      idempotency_key: key,
+    });
+    completeCheckoutAttempt(String(tenantId), String(customerId), key);
     return response.data;
   }
 

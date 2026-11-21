@@ -1,8 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
-async function checkoutRuntime(page: Page) {
+async function checkoutRuntime(page: Page, loseFirstResponse = false) {
   const browserErrors: string[] = [];
   let checkoutRequests = 0;
+  const checkoutKeys: string[] = [];
 
   page.on("console", (message) => {
     if (message.type() === "error") browserErrors.push(message.text());
@@ -35,6 +36,12 @@ async function checkoutRuntime(page: Page) {
 
     if (pathname.endsWith("/orders/checkout") && request.method() === "POST") {
       checkoutRequests += 1;
+      const body = request.postDataJSON() as { idempotency_key: string };
+      checkoutKeys.push(body.idempotency_key);
+      if (loseFirstResponse && checkoutRequests === 1) {
+        await route.abort("failed");
+        return;
+      }
       await new Promise((resolve) => setTimeout(resolve, 250));
       await route.fulfill({
         status: 201,
@@ -225,19 +232,41 @@ async function checkoutRuntime(page: Page) {
   });
 
   await submit.click();
+  if (loseFirstResponse) {
+    await expect(page.locator(".storefront-toast--error")).toBeVisible();
+    await expect(submit).toBeEnabled();
+    await submit.click();
+  }
   await expect(page).toHaveURL(/\/shop\/shop-2\/order\/999$/);
   await expect(page.getByText("Order ID: #999", { exact: true })).toBeVisible();
   await page.waitForTimeout(500);
 
-  expect(checkoutRequests).toBe(1);
+  expect(checkoutRequests).toBe(loseFirstResponse ? 2 : 1);
+  expect(
+    checkoutKeys.every((key) => typeof key === "string" && key.length >= 8),
+  ).toBe(true);
+  expect(new Set(checkoutKeys).size).toBe(1);
   await expect(page.locator(".storefront-toast--success")).toBeVisible();
   const basket = page.locator('nav.storefront-bottom-nav a[href$="/cart"]');
   if (await basket.isVisible()) {
     await basket.click();
     await expect(page).toHaveURL(/\/shop\/shop-2\/cart$/);
   }
-  expect(browserErrors).toEqual([]);
+  if (loseFirstResponse) {
+    expect(
+      browserErrors.filter((error) => !error.includes("net::ERR_FAILED")),
+    ).toEqual([]);
+  } else {
+    expect(browserErrors).toEqual([]);
+  }
 }
+
+test("lost checkout response retains one request key for the explicit retry", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await checkoutRuntime(page, true);
+});
 
 for (const width of [390, 820, 1440]) {
   test(`guest checkout typing and order navigation have no runtime errors at ${width}px`, async ({
